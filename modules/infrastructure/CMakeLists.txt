@@ -42,36 +42,38 @@ set(CMAKE_CXX_STANDARD          17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 if (CMAKE_BUILD_TYPE STREQUAL Release)
-    set(LIBRARY_OUTPUT_NAME ${PROJECT_NAME})
+    set(INFRASTRUCTURE_LIB_OUTPUT_NAME ${PROJECT_NAME})
 else()
-    set(LIBRARY_OUTPUT_NAME ${PROJECT_NAME}d)
+    set(INFRASTRUCTURE_LIB_OUTPUT_NAME ${PROJECT_NAME}d)
 endif()
 
+message(STATUS "${PROJECT_NAME} Version: ${PROJECT_VERSION}")
+message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
+
 add_library(
-    ${LIBRARY_OUTPUT_NAME} SHARED
+    ${INFRASTRUCTURE_LIB_OUTPUT_NAME} SHARED
     
     ${PROJECT_SOURCE_DIR}/include/improc/exception.h
     ${PROJECT_SOURCE_DIR}/include/improc/improc_defs.h
 
     ${PROJECT_SOURCE_DIR}/src/file.cpp
 )
-set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS True)
 
-target_include_directories  (${LIBRARY_OUTPUT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/include)
-target_include_directories  (${LIBRARY_OUTPUT_NAME}   INTERFACE ${PROJECT_SOURCE_DIR}/include)
+target_include_directories  (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/include)
+target_include_directories  (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   INTERFACE ${PROJECT_SOURCE_DIR}/include)
 
 # Link dependencies
-target_link_libraries       (${LIBRARY_OUTPUT_NAME}   PRIVATE   spdlog)
-target_link_libraries       (${LIBRARY_OUTPUT_NAME}   PRIVATE   jsoncpp_lib)
-target_link_libraries       (${LIBRARY_OUTPUT_NAME}   INTERFACE spdlog)
-target_link_libraries       (${LIBRARY_OUTPUT_NAME}   INTERFACE jsoncpp_lib)
+target_link_libraries       (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   PRIVATE   spdlog)
+target_link_libraries       (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   PRIVATE   jsoncpp_lib)
+target_link_libraries       (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   INTERFACE spdlog)
+target_link_libraries       (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   INTERFACE jsoncpp_lib)
 
 if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
     add_executable(
-        ${LIBRARY_OUTPUT_NAME}_test 
+        ${INFRASTRUCTURE_LIB_OUTPUT_NAME}_test 
         
         ${PROJECT_SOURCE_DIR}/test/main.cpp
     )
 
-    target_link_libraries(${LIBRARY_OUTPUT_NAME}_test  PRIVATE ${LIBRARY_OUTPUT_NAME})
+    target_link_libraries(${INFRASTRUCTURE_LIB_OUTPUT_NAME}_test  PRIVATE ${INFRASTRUCTURE_LIB_OUTPUT_NAME})
 endif()
