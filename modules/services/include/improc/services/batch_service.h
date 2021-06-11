@@ -6,7 +6,8 @@
 #include <spdlog/spdlog.h>
 #endif
 
-#include <improc/memory/context.h>
+#include <improc/improc_defs.h>
+#include <improc/services/context.h>
 #include <improc/services/base_service.h>
 
 #include <map>
@@ -14,7 +15,7 @@
 namespace improc
 {
     template <typename key_type = std::string>
-    class BatchService
+    class IMPROC_EXPORTS BatchService
     {
         private:
             std::map<key_type,improc::BaseService<key_type>*> data_;

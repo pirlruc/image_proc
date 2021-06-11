@@ -6,12 +6,13 @@
 #include <spdlog/spdlog.h>
 #endif
 
+#include <improc/improc_defs.h>
 #include <improc/services/base_service.h>
 
 namespace improc
 {
     template <typename key_type = std::string>
-    class ServicesFactory : public Container<key_type>
+    class IMPROC_EXPORTS ServicesFactory : public Container<key_type>
     {
         public:
             ServicesFactory();

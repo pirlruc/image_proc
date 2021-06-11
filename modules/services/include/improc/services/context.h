@@ -6,12 +6,13 @@
 #include <spdlog/spdlog.h>
 #endif
 
+#include <improc/improc_defs.h>
 #include <improc/services/container.h>
 
 namespace improc
 {
     template <typename key_type>
-    class Context : public Container<key_type>
+    class IMPROC_EXPORTS Context : public Container<key_type>
     {
         public:
             Context();

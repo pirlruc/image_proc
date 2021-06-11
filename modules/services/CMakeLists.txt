@@ -5,12 +5,9 @@ project(
     VERSION     1.0
 )
 
-set(CMAKE_CXX_STANDARD          17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-
 # Add dependencies
 if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
-	add_subdirectory(../infrastructure ${CMAKE_BINARY_DIR}/infrastructure)
+	add_subdirectory(${PROJECT_SOURCE_DIR}/../infrastructure ${CMAKE_BINARY_DIR}/infrastructure)
 endif()
 
 # Project configuration
@@ -19,41 +16,45 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib" CACHE PATH "Library
 set(CMAKE_PDB_OUTPUT_DIRECTORY     "${CMAKE_BINARY_DIR}/bin" CACHE PATH "PDB (MSVC debug symbol)output dir.")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Executable/dll output dir.")
 set(BUILD_SHARED_LIBS                   ON)
+set(CMAKE_CXX_STANDARD                  17)
+set(CMAKE_CXX_STANDARD_REQUIRED         True)
 
 if (CMAKE_BUILD_TYPE STREQUAL Release)
-    set(LIBRARY_OUTPUT_NAME ${PROJECT_NAME})
+    set(SERVICES_LIB_OUTPUT_NAME        ${PROJECT_NAME})
+    set(INFRASTRUCTURE_LIB_OUTPUT_NAME  improc_infrastructure)
 else()
-    set(LIBRARY_OUTPUT_NAME ${PROJECT_NAME}d)
+    set(SERVICES_LIB_OUTPUT_NAME        ${PROJECT_NAME}d)
+    set(INFRASTRUCTURE_LIB_OUTPUT_NAME  improc_infrastructured)
 endif()
 
-add_library(
-    ${LIBRARY_OUTPUT_NAME} SHARED
-    
-    include/improc/services/exception.h
+message(STATUS "${PROJECT_NAME} Version: ${PROJECT_VERSION}")
+message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 
-    src/container.cpp
-    src/context.cpp
-    src/factory.cpp
-    src/base_service.cpp
+add_library(
+    ${SERVICES_LIB_OUTPUT_NAME} SHARED
+    
+    ${PROJECT_SOURCE_DIR}/src/container.cpp
+    ${PROJECT_SOURCE_DIR}/src/context.cpp
+    ${PROJECT_SOURCE_DIR}/src/factory.cpp
+    ${PROJECT_SOURCE_DIR}/src/base_service.cpp
 )
 
-target_include_directories  (${LIBRARY_OUTPUT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/include)
-target_include_directories  (${LIBRARY_OUTPUT_NAME}   INTERFACE ${PROJECT_SOURCE_DIR}/include)
-target_include_directories  (${LIBRARY_OUTPUT_NAME}   INTERFACE ${PROJECT_SOURCE_DIR}/src)
+target_include_directories  (${SERVICES_LIB_OUTPUT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/include)
+target_include_directories  (${SERVICES_LIB_OUTPUT_NAME}   INTERFACE ${PROJECT_SOURCE_DIR}/include)
+target_include_directories  (${SERVICES_LIB_OUTPUT_NAME}   INTERFACE ${PROJECT_SOURCE_DIR}/src)
 
 # Link dependencies
-target_link_libraries       (${LIBRARY_OUTPUT_NAME}   PRIVATE   spdlog)
-target_link_libraries       (${LIBRARY_OUTPUT_NAME}   PRIVATE   jsoncpp_lib)
+target_link_libraries       (${SERVICES_LIB_OUTPUT_NAME}   PRIVATE   ${INFRASTRUCTURE_LIB_OUTPUT_NAME})
+target_link_libraries       (${SERVICES_LIB_OUTPUT_NAME}   INTERFACE ${INFRASTRUCTURE_LIB_OUTPUT_NAME})
 
 if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
     add_executable(
-        improc_services_test 
-        main_ex2.cpp
+        ${SERVICES_LIB_OUTPUT_NAME}_test 
+        
+        ${PROJECT_SOURCE_DIR}/test/main_ex2.cpp
     )
 
-    target_link_libraries(improc_services_test PRIVATE ${LIBRARY_OUTPUT_NAME})
-    target_link_libraries(improc_services_test PRIVATE spdlog)
-    target_link_libraries(improc_services_test PRIVATE jsoncpp_lib)
+    target_link_libraries(${SERVICES_LIB_OUTPUT_NAME}_test PRIVATE ${SERVICES_LIB_OUTPUT_NAME})
 endif()
 
 # if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)

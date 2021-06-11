@@ -6,7 +6,7 @@
 #include <spdlog/spdlog.h>
 #endif
 
-#include <improc/services/exception.h>
+#include <improc/exception.h>
 
 #include <unordered_map>
 #include <any>

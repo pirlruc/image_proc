@@ -6,14 +6,16 @@
 #include <spdlog/spdlog.h>
 #endif
 
+#include <improc/improc_defs.h>
 #include <improc/services/context.h>
+
 #include <json/json.h>
 
 #include <vector>
 
 namespace improc{
     template <typename key_type>
-    class BaseService
+    class IMPROC_EXPORTS BaseService
     {
         protected:
             std::vector<key_type> inputs_;
