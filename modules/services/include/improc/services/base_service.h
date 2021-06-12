@@ -18,7 +18,8 @@ namespace improc{
     class IMPROC_EXPORTS BaseService
     {
         protected:
-            std::vector<key_type> inputs_;
+            key_type                output_;
+            std::vector<key_type>   inputs_;
 
         public:
             BaseService();
