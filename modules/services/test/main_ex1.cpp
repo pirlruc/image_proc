@@ -12,52 +12,18 @@ class Increment : public improc::StringKeyBaseService
 
     public:
         Increment() : improc::StringKeyBaseService() {}
-        void    Load   (const Json::Value& service_json) 
+        void    Load   (const Json::Value& service_json) override
         {
-            const std::string kInputKey  = "inputs";
-            const std::string kOutputKey = "outputs";
+            this->improc::StringKeyBaseService::Load(service_json);
 
-            for (Json::Value::const_iterator service_field_iter = service_json.begin(); service_field_iter != service_json.end(); ++service_field_iter)
-            {
-                #ifdef WITH_DEBUG
-                SPDLOG_DEBUG("");
-                spdlog::debug("Analyzing field {} for increment service...",service_field_iter.name());
-                #endif
-
-                if (service_field_iter.name() == kInputKey)
-                {
-                    if (service_field_iter->isArray() == true)
-                    {
-                        for (Json::Value::const_iterator input_iter = service_field_iter->begin(); input_iter != service_field_iter->end(); ++input_iter)
-                        {
-                            this->inputs_.push_back(input_iter->asString());
-                        }
-                    }
-                    else
-                    {
-                        this->inputs_.push_back(service_field_iter->asString());
-                    }
-                }
-                else if (service_field_iter.name() == kOutputKey)
-                {
-                    this->output_ = service_field_iter->asString();
-                }
-                else 
-                {
-                    #ifdef WITH_DEBUG
-                    SPDLOG_WARN("");
-                    spdlog::warn("WARN_01: Member {} not recognized for increment service.",service_field_iter.name());
-                    #endif
-                }
-            }
-            std::cout << "--- INCREMENT SERVICE ---"   << std::endl;
-            std::cout << "Input :" << this->inputs_[0] << std::endl;
-            std::cout << "Output:" << this->output_    << std::endl;
+            std::cout << "--- INCREMENT SERVICE ---"    << std::endl;
+            std::cout << "Input :" << this->inputs_[0]  << std::endl;
+            std::cout << "Output:" << this->outputs_[0] << std::endl;
         }
 
-        void    Run    (improc::StringKeyContext&  context)
+        void    Run    (improc::StringKeyContext&  context) override
         {
-            context[this->output_] = std::any_cast<int>(context.Get(this->inputs_[0])) + 1;
+            context[this->outputs_[0]] = std::any_cast<int>(context.Get(this->inputs_[0])) + 1;
         }
 };
 
@@ -68,38 +34,20 @@ class Subtract : public improc::StringKeyBaseService
 
     public:
         Subtract() : improc::StringKeyBaseService() {}
-        void    Load   (const Json::Value& service_json) 
+        void    Load   (const Json::Value& service_json) override
         {
-            const std::string kInputKey  = "inputs";
-            const std::string kOutputKey = "outputs";
-            const std::string kNumberKey = "number";
+            this->improc::StringKeyBaseService::Load(service_json);
 
             for (Json::Value::const_iterator service_field_iter = service_json.begin(); service_field_iter != service_json.end(); ++service_field_iter)
             {
+                const std::string kNumberKey = "number";
+                
                 #ifdef WITH_DEBUG
                 SPDLOG_DEBUG("");
                 spdlog::debug("Analyzing field {} for subtract service...",service_field_iter.name());
                 #endif
 
-                if (service_field_iter.name() == kInputKey)
-                {
-                    if (service_field_iter->isArray() == true)
-                    {
-                        for (Json::Value::const_iterator input_iter = service_field_iter->begin(); input_iter != service_field_iter->end(); ++input_iter)
-                        {
-                            this->inputs_.push_back(input_iter->asString());
-                        }
-                    }
-                    else
-                    {
-                        this->inputs_.push_back(service_field_iter->asString());
-                    }
-                }
-                else if (service_field_iter.name() == kOutputKey)
-                {
-                    this->output_ = service_field_iter->asString();
-                }
-                else if (service_field_iter.name() == kNumberKey)
+                if (service_field_iter.name() == kNumberKey)
                 {
                     this->number_to_subtract_ = service_field_iter->asInt();
                 }
@@ -111,15 +59,15 @@ class Subtract : public improc::StringKeyBaseService
                     #endif
                 }
             }
-            std::cout << "--- SUBTRACT SERVICE ---"   << std::endl;
-            std::cout << "Input :" << this->inputs_[0] << std::endl;
-            std::cout << "Output:" << this->output_    << std::endl;
+            std::cout << "--- SUBTRACT SERVICE ---"     << std::endl;
+            std::cout << "Input :" << this->inputs_[0]  << std::endl;
+            std::cout << "Output:" << this->outputs_[0] << std::endl;
             std::cout << "Number:" << this->number_to_subtract_ << std::endl;
         }
 
-        void    Run    (improc::StringKeyContext&  context)
+        void    Run    (improc::StringKeyContext&  context) override
         {
-            context[this->output_] = std::any_cast<int>(context.Get(this->inputs_[0])) - this->number_to_subtract_;
+            context[this->outputs_[0]] = std::any_cast<int>(context.Get(this->inputs_[0])) - this->number_to_subtract_;
         }
 };
 
@@ -130,38 +78,20 @@ class Multiply : public improc::StringKeyBaseService
 
     public:
         Multiply() : improc::StringKeyBaseService() {}
-        void    Load   (const Json::Value& service_json) 
+        void    Load   (const Json::Value& service_json) override
         {
-            const std::string kInputKey  = "inputs";
-            const std::string kOutputKey = "outputs";
-            const std::string kNumberKey = "number";
+            this->improc::StringKeyBaseService::Load(service_json);
 
             for (Json::Value::const_iterator service_field_iter = service_json.begin(); service_field_iter != service_json.end(); ++service_field_iter)
             {
+                const std::string kNumberKey = "number";
+
                 #ifdef WITH_DEBUG
                 SPDLOG_DEBUG("");
                 spdlog::debug("Analyzing field {} for multiply service...",service_field_iter.name());
                 #endif
 
-                if (service_field_iter.name() == kInputKey)
-                {
-                    if (service_field_iter->isArray() == true)
-                    {
-                        for (Json::Value::const_iterator input_iter = service_field_iter->begin(); input_iter != service_field_iter->end(); ++input_iter)
-                        {
-                            this->inputs_.push_back(input_iter->asString());
-                        }
-                    }
-                    else
-                    {
-                        this->inputs_.push_back(service_field_iter->asString());
-                    }
-                }
-                else if (service_field_iter.name() == kOutputKey)
-                {
-                    this->output_ = service_field_iter->asString();
-                }
-                else if (service_field_iter.name() == kNumberKey)
+                if (service_field_iter.name() == kNumberKey)
                 {
                     this->number_to_multiply_ = service_field_iter->asInt();
                 }
@@ -173,15 +103,15 @@ class Multiply : public improc::StringKeyBaseService
                     #endif
                 }
             }
-            std::cout << "--- MULTIPLY SERVICE ---"   << std::endl;
-            std::cout << "Input :" << this->inputs_[0] << std::endl;
-            std::cout << "Output:" << this->output_    << std::endl;
+            std::cout << "--- MULTIPLY SERVICE ---"     << std::endl;
+            std::cout << "Input :" << this->inputs_[0]  << std::endl;
+            std::cout << "Output:" << this->outputs_[0] << std::endl;
             std::cout << "Number:" << this->number_to_multiply_ << std::endl;
         }
 
-        void    Run    (improc::StringKeyContext&  context)
+        void    Run    (improc::StringKeyContext&  context) override
         {
-            context[this->output_] = std::any_cast<int>(context.Get(this->inputs_[0])) * this->number_to_multiply_;
+            context[this->outputs_[0]] = std::any_cast<int>(context.Get(this->inputs_[0])) * this->number_to_multiply_;
         }
 };
 

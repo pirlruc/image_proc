@@ -7,6 +7,7 @@
 #endif
 
 #include <improc/improc_defs.h>
+#include <improc/exception.h>
 #include <improc/services/context.h>
 
 #include <json/json.h>
@@ -18,14 +19,14 @@ namespace improc{
     class IMPROC_EXPORTS BaseService
     {
         protected:
-            key_type                output_;
             std::vector<key_type>   inputs_;
+            std::vector<key_type>   outputs_;
 
         public:
             BaseService();
 
-            virtual void Load   (const Json::Value& service_json)       = 0;
-            virtual void Run    (improc::Context<key_type>& context)    = 0;
+            virtual void    Load    (const Json::Value& service_json);
+            virtual void    Run     (improc::Context<key_type>& context)    = 0;
     };
 
     typedef BaseService<std::string>    StringKeyBaseService;
