@@ -6,6 +6,10 @@
 #include <base_service.cpp>
 
 #include <iostream>
+#include <variant>
+
+template<class... Ts> struct overload : Ts... { using Ts::operator()...; };
+template<class... Ts> overload(Ts...) -> overload<Ts...>;
 
 class Increment : public improc::StringKeyBaseService
 {
@@ -25,6 +29,8 @@ class Increment : public improc::StringKeyBaseService
         {
             context[this->outputs_[0]] = std::any_cast<int>(context.Get(this->inputs_[0])) + 1;
         }
+
+        std::string get_name() {return "IncrementService"; }
 };
 
 class Subtract : public improc::StringKeyBaseService
@@ -50,13 +56,7 @@ class Subtract : public improc::StringKeyBaseService
                 if (service_field_iter.name() == kNumberKey)
                 {
                     this->number_to_subtract_ = service_field_iter->asInt();
-                }
-                else 
-                {
-                    #ifdef WITH_DEBUG
-                    SPDLOG_WARN("");
-                    spdlog::warn("WARN_01: Member {} not recognized for subtract service.",service_field_iter.name());
-                    #endif
+                    break;
                 }
             }
             std::cout << "--- SUBTRACT SERVICE ---"     << std::endl;
@@ -69,6 +69,8 @@ class Subtract : public improc::StringKeyBaseService
         {
             context[this->outputs_[0]] = std::any_cast<int>(context.Get(this->inputs_[0])) - this->number_to_subtract_;
         }
+
+        std::string get_name() {return "SubtractService"; }
 };
 
 class Multiply : public improc::StringKeyBaseService
@@ -94,13 +96,7 @@ class Multiply : public improc::StringKeyBaseService
                 if (service_field_iter.name() == kNumberKey)
                 {
                     this->number_to_multiply_ = service_field_iter->asInt();
-                }
-                else 
-                {
-                    #ifdef WITH_DEBUG
-                    SPDLOG_WARN("");
-                    spdlog::warn("WARN_01: Member {} not recognized for multiply service.",service_field_iter.name());
-                    #endif
+                    break;
                 }
             }
             std::cout << "--- MULTIPLY SERVICE ---"     << std::endl;
@@ -113,6 +109,8 @@ class Multiply : public improc::StringKeyBaseService
         {
             context[this->outputs_[0]] = std::any_cast<int>(context.Get(this->inputs_[0])) * this->number_to_multiply_;
         }
+
+        std::string get_name() {return "MultiplyService"; }
 };
 
 #include <improc/infrastructure/file.h>
@@ -194,6 +192,32 @@ int main()
     }
 
     // Obtain list of services
+    std::unordered_map<std::string,std::variant<Increment,Subtract,Multiply>> factory {};
+    factory["increment"] = Increment();
+    factory["subtract"]  = Subtract();
+    factory["multiply"]  = Multiply();
+    std::cout << "Factory Size:" << factory.size() << std::endl;
+
+    Json::Value service_args {};
+    auto increment_lambda = [&service_args] (const Increment& obj) -> std::shared_ptr<improc::StringKeyBaseService>
+    { 
+        std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Increment>(Increment())};
+        service->Load(service_args);
+        return service;
+    };
+    auto subtract_lambda = [&service_args] (const Subtract& obj) -> std::shared_ptr<improc::StringKeyBaseService>
+    { 
+        std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Subtract>(Subtract())};
+        service->Load(service_args);
+        return service;
+    };
+    auto multiply_lambda = [&service_args] (const Multiply& obj) -> std::shared_ptr<improc::StringKeyBaseService>
+    { 
+        std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Multiply>(Multiply())};
+        service->Load(service_args);
+        return service;
+    };
+
     std::vector<std::shared_ptr<improc::StringKeyBaseService>> services_list {};
     for (Json::Value::const_iterator srvce_elem_iter = service_elements.begin(); srvce_elem_iter != service_elements.end(); ++srvce_elem_iter)
     {
@@ -201,7 +225,6 @@ int main()
         const std::string kServiceArgs = "args";
 
         std::string service_type {};
-        Json::Value service_args {};
         for (Json::Value::const_iterator srvce_elem_field_iter = srvce_elem_iter->begin(); srvce_elem_field_iter != srvce_elem_iter->end(); ++srvce_elem_field_iter)
         {
             #ifdef WITH_DEBUG
@@ -235,30 +258,8 @@ int main()
         spdlog::debug("Analyzing service element {}...",service_type);
         #endif
 
-        if (service_type == "increment")
-        {
-            std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Increment>(Increment())};
-            service->Load(service_args);
-            services_list.push_back(service);
-        }
-        else if (service_type == "subtract")
-        {
-            std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Subtract>(Subtract())};
-            service->Load(service_args);
-            services_list.push_back(service);
-        }
-        else if (service_type == "multiply")
-        {
-            std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Multiply>(Multiply())};
-            service->Load(service_args);
-            services_list.push_back(service);
-        }
-        else  {
-            #ifdef WITH_DEBUG
-            SPDLOG_WARN("");
-            spdlog::warn("WARN_07: Service {} not recognized.",service_type);
-            #endif
-        }
+        std::shared_ptr<improc::StringKeyBaseService> service = std::visit(overload{increment_lambda,subtract_lambda,multiply_lambda},factory[service_type]);
+        services_list.push_back(service);
     }
     std::cout << "Data number   : " << input_list.size()    << std::endl;
     std::cout << "Service number: " << services_list.size() << std::endl;
