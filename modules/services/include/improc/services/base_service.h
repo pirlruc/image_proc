@@ -38,7 +38,7 @@ namespace improc{
             StringKeyBaseService();
 
         private:
-            std::string ReadKeyFromJson (const Json::Value& field_json) override;
+            std::string         ReadKeyFromJson (const Json::Value& field_json);
     };
 }
 

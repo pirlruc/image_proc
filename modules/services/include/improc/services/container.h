@@ -13,27 +13,27 @@
 
 namespace improc
 {
-    template <typename key_type>
+    template <typename key_type,typename container_type>
     class Container
     {
         private:
-            std::unordered_map<key_type,std::any> hash_table_;
+            std::unordered_map<key_type,container_type> hash_table_;
 
         public:
             Container();
 
-            std::any&   operator[]  (const key_type& key);
+            container_type& operator[]  (const key_type& key);
 
-            void        Add         (const key_type& key, const std::any& item);
-            std::any    Get         (const key_type& key);
+            void            Add         (const key_type& key, const container_type& item);
+            container_type  Get         (const key_type& key);
 
-            void        Erase       (const key_type& key);
-            void        Clear();
+            void            Erase       (const key_type& key);
+            void            Clear();
 
-            size_t      Size() const;
+            size_t          Size() const;
     };
 
-    typedef Container<std::string>  StringKeyContainer;
+    typedef Container<std::string,std::any>  StringKeyHeterogeneousContainer;
 }
 
 #endif

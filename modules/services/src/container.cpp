@@ -1,10 +1,16 @@
 #include <improc/services/container.h>
 
-template <typename key_type>
-improc::Container<key_type>::Container() {}
+template <typename key_type,typename container_type>
+improc::Container<key_type,container_type>::Container() 
+{
+    #ifdef WITH_DEBUG
+    SPDLOG_TRACE("");
+    spdlog::trace("Creating container with {} key and {} container...",key_type,container_type);
+    #endif
+}
 
-template <typename key_type>
-void improc::Container<key_type>::Add(const key_type& key, const std::any& item)
+template <typename key_type,typename container_type>
+void improc::Container<key_type,container_type>::Add(const key_type& key, const container_type& item)
 {
     #ifdef WITH_DEBUG
     SPDLOG_TRACE("");
@@ -26,8 +32,8 @@ void improc::Container<key_type>::Add(const key_type& key, const std::any& item)
     }
 }
 
-template <typename key_type>
-std::any& improc::Container<key_type>::operator[](const key_type& key)
+template <typename key_type,typename container_type>
+container_type& improc::Container<key_type,container_type>::operator[](const key_type& key)
 {
     #ifdef WITH_DEBUG
     SPDLOG_TRACE("");
@@ -37,8 +43,8 @@ std::any& improc::Container<key_type>::operator[](const key_type& key)
     return this->hash_table_[key];
 }
 
-template <typename key_type>
-std::any improc::Container<key_type>::Get(const key_type& key)
+template <typename key_type,typename container_type>
+container_type improc::Container<key_type,container_type>::Get(const key_type& key)
 {
     #ifdef WITH_DEBUG
     SPDLOG_TRACE("");
@@ -60,8 +66,8 @@ std::any improc::Container<key_type>::Get(const key_type& key)
     }
 }
 
-template <typename key_type>
-void improc::Container<key_type>::Erase(const key_type& key)
+template <typename key_type,typename container_type>
+void improc::Container<key_type,container_type>::Erase(const key_type& key)
 {
     #ifdef WITH_DEBUG
     SPDLOG_TRACE("");
@@ -81,8 +87,8 @@ void improc::Container<key_type>::Erase(const key_type& key)
     }
 }
 
-template <typename key_type>
-void improc::Container<key_type>::Clear()
+template <typename key_type,typename container_type>
+void improc::Container<key_type,container_type>::Clear()
 {
     #ifdef WITH_DEBUG
     SPDLOG_TRACE("");
@@ -92,8 +98,8 @@ void improc::Container<key_type>::Clear()
     this->hash_table_.clear();
 }
 
-template <typename key_type>
-size_t improc::Container<key_type>::Size() const
+template <typename key_type,typename container_type>
+size_t improc::Container<key_type,container_type>::Size() const
 {
     #ifdef WITH_DEBUG
     SPDLOG_TRACE("");

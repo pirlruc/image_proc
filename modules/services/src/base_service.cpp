@@ -64,5 +64,10 @@ improc::StringKeyBaseService::StringKeyBaseService() {}
 
 std::string improc::StringKeyBaseService::ReadKeyFromJson(const Json::Value& field_json)
 {
+    #ifdef WITH_DEBUG
+    SPDLOG_TRACE("");
+    spdlog::trace("Reading key from json...");
+    #endif
+
     return field_json.asString();
 }

@@ -12,7 +12,7 @@
 namespace improc
 {
     template <typename key_type>
-    class IMPROC_EXPORTS Context : public Container<key_type>
+    class IMPROC_EXPORTS Context : public Container<key_type,std::any>
     {
         public:
             Context();

@@ -9,14 +9,21 @@
 #include <improc/improc_defs.h>
 #include <improc/services/base_service.h>
 
+#include <functional>
+
 namespace improc
 {
-    template <typename key_type = std::string>
-    class IMPROC_EXPORTS ServicesFactory : public Container<key_type>
+    template<typename service_type>
+    std::shared_ptr<improc::StringKeyBaseService> LoadFromJson(const Json::Value& service_json);
+
+    template <typename key_type>
+    class IMPROC_EXPORTS ServicesFactory : public Container<key_type,std::function<std::shared_ptr<improc::StringKeyBaseService>(const Json::Value&)>>
     {
         public:
             ServicesFactory();
     };
+
+    typedef ServicesFactory<std::string>  StringKeyServicesFactory;
 }
 
 #endif

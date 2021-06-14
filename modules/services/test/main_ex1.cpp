@@ -1,9 +1,11 @@
 #include <improc/services/context.h>
 #include <improc/services/base_service.h>
+#include <improc/services/factory.h>
 
 #include <container.cpp>
 #include <context.cpp>
 #include <base_service.cpp>
+#include <factory.cpp>
 
 #include <iostream>
 #include <variant>
@@ -29,14 +31,6 @@ class Increment : public improc::StringKeyBaseService
         void    Run    (improc::StringKeyContext&  context) override
         {
             context[this->outputs_[0]] = std::any_cast<int>(context.Get(this->inputs_[0])) + 1;
-        }
-
-        std::string get_name() {return "IncrementService"; }
-        static Increment LoadFromJson(const Json::Value& service_json) 
-        {
-            Increment service {};
-            service.Load(service_json);
-            return service;
         }
 };
 
@@ -76,15 +70,6 @@ class Subtract : public improc::StringKeyBaseService
         {
             context[this->outputs_[0]] = std::any_cast<int>(context.Get(this->inputs_[0])) - this->number_to_subtract_;
         }
-
-        std::string get_name() {return "SubtractService"; }
-
-        static Subtract LoadFromJson(const Json::Value& service_json) 
-        {
-            Subtract service {};
-            service.Load(service_json);
-            return service;
-        }
 };
 
 class Multiply : public improc::StringKeyBaseService
@@ -122,15 +107,6 @@ class Multiply : public improc::StringKeyBaseService
         void    Run    (improc::StringKeyContext&  context) override
         {
             context[this->outputs_[0]] = std::any_cast<int>(context.Get(this->inputs_[0])) * this->number_to_multiply_;
-        }
-
-        std::string get_name() {return "MultiplyService"; }
-
-        static Multiply LoadFromJson(const Json::Value& service_json) 
-        {
-            Multiply service {};
-            service.Load(service_json);
-            return service;
         }
 };
 
@@ -213,50 +189,11 @@ int main()
     }
 
     // Obtain list of services
-    std::unordered_map<std::string,std::variant< std::function<Increment(const Json::Value&)> 
-                                               , std::function<Subtract (const Json::Value&)>
-                                               , std::function<Multiply (const Json::Value&)> 
-                                               >> factory {};
-    factory["increment"] = std::function<Increment(const Json::Value&)> {&Increment::LoadFromJson};
-    factory["subtract"]  = std::function<Subtract (const Json::Value&)> {&Subtract ::LoadFromJson};
-    factory["multiply"]  = std::function<Multiply (const Json::Value&)> {&Multiply ::LoadFromJson};
-    std::cout << "Factory Size:" << factory.size() << std::endl;
-
-    Json::Value service_args {};
-    // auto increment_lambda = [&service_args] (const Increment& obj) -> std::shared_ptr<improc::StringKeyBaseService>
-    // { 
-    //     std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Increment>(Increment())};
-    //     service->Load(service_args);
-    //     return service;
-    // };
-    // auto subtract_lambda = [&service_args] (const Subtract& obj) -> std::shared_ptr<improc::StringKeyBaseService>
-    // { 
-    //     std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Subtract>(Subtract())};
-    //     service->Load(service_args);
-    //     return service;
-    // };
-    // auto multiply_lambda = [&service_args] (const Multiply& obj) -> std::shared_ptr<improc::StringKeyBaseService>
-    // { 
-    //     std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Multiply>(Multiply())};
-    //     service->Load(service_args);
-    //     return service;
-    // };
-
-    auto increment_lambda = [&service_args] (const std::function<Increment(const Json::Value&)>& obj) -> std::shared_ptr<improc::StringKeyBaseService>
-    { 
-        std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Increment>(obj(service_args))};
-        return service;
-    };
-    auto subtract_lambda = [&service_args] (const std::function<Subtract(const Json::Value&)>& obj) -> std::shared_ptr<improc::StringKeyBaseService>
-    { 
-        std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Subtract>(obj(service_args))};
-        return service;
-    };
-    auto multiply_lambda = [&service_args] (const std::function<Multiply(const Json::Value&)>& obj) -> std::shared_ptr<improc::StringKeyBaseService>
-    { 
-        std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Multiply>(obj(service_args))};
-        return service;
-    };
+    improc::StringKeyServicesFactory factory {};
+    factory.Add("increment",std::function<std::shared_ptr<improc::StringKeyBaseService>(const Json::Value&)> {&improc::LoadFromJson<Increment>});
+    factory.Add("subtract" ,std::function<std::shared_ptr<improc::StringKeyBaseService>(const Json::Value&)> {&improc::LoadFromJson<Subtract>} );
+    factory.Add("multiply" ,std::function<std::shared_ptr<improc::StringKeyBaseService>(const Json::Value&)> {&improc::LoadFromJson<Multiply>} );
+    std::cout << "Factory Size:" << factory.Size() << std::endl;
 
     std::vector<std::shared_ptr<improc::StringKeyBaseService>> services_list {};
     for (Json::Value::const_iterator srvce_elem_iter = service_elements.begin(); srvce_elem_iter != service_elements.end(); ++srvce_elem_iter)
@@ -264,6 +201,7 @@ int main()
         const std::string kServiceType = "type";
         const std::string kServiceArgs = "args";
 
+        Json::Value service_args {};
         std::string service_type {};
         for (Json::Value::const_iterator srvce_elem_field_iter = srvce_elem_iter->begin(); srvce_elem_field_iter != srvce_elem_iter->end(); ++srvce_elem_field_iter)
         {
@@ -298,7 +236,7 @@ int main()
         spdlog::debug("Analyzing service element {}...",service_type);
         #endif
 
-        std::shared_ptr<improc::StringKeyBaseService> service = std::visit(overload{increment_lambda,subtract_lambda,multiply_lambda},factory[service_type]);
+        std::shared_ptr<improc::StringKeyBaseService> service = factory.Get(service_type)(service_args);
         services_list.push_back(service);
     }
     std::cout << "Data number   : " << input_list.size()    << std::endl;
