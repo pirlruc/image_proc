@@ -23,6 +23,11 @@ class Test
         void load(int number);
         Test loadT(int number);
         void display();
+
+        static Test load_json(int number)
+        {
+            return Test(number);
+        }
 };
 
 Test::Test(int number)
@@ -46,21 +51,19 @@ void Test::display()
     std::cout << this->number_ + 1 << std::endl;
 }
 
-typedef improc::BaseService<std::string>    StringBaseService;
-typedef improc::Context<std::string>        StringContext;
-class Service : public StringBaseService
+class Service : public improc::StringKeyBaseService
 {
     private:
         int test_ = 0;
 
     public:
-        Service() : StringBaseService() {}
+        Service() : improc::StringKeyBaseService() {}
         void    Load   (const Json::Value&          service_json) 
         {
             this->test_ = 1;
         }
 
-        void    Run    (StringContext&  context)
+        void    Run    (improc::StringKeyContext&  context)
         {
             context.Add("teste_1",1);
         }
@@ -71,19 +74,19 @@ class Service : public StringBaseService
         }
 };
 
-class Service2 : public StringBaseService
+class Service2 : public improc::StringKeyBaseService
 {
     private:
         int test_ = 0;
 
     public:
-        Service2() : StringBaseService() {}
+        Service2() : improc::StringKeyBaseService() {}
         void    Load   (const Json::Value&          service_json) 
         {
             this->test_ = 2;
         }
 
-        void    Run    (StringContext&  context)
+        void    Run    (improc::StringKeyContext&  context)
         {
             context.Add("teste_2",2);
         }
@@ -126,7 +129,7 @@ int main()
     factory.Add("test_service_3",Service2());
     std::cout << "Default values..." << std::endl;
  
-    StringContext context;
+    improc::StringKeyContext context;
     Service service1 = std::any_cast<Service>(factory.Get("test_service_1"));
     Json::Value test_json;
     service1.Load(test_json);
@@ -161,5 +164,9 @@ int main()
     Test test_2 = test_const2(35);
     test_1.display();
     test_2.display();
+
+    std::function<Test(int)> handle = &Test::load_json;
+    Test test_3 = handle(40);
+    test_3.display();
     return 0;
 }

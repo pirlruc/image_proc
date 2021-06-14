@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <variant>
+#include <functional>
 
 template<class... Ts> struct overload : Ts... { using Ts::operator()...; };
 template<class... Ts> overload(Ts...) -> overload<Ts...>;
@@ -31,6 +32,12 @@ class Increment : public improc::StringKeyBaseService
         }
 
         std::string get_name() {return "IncrementService"; }
+        static Increment LoadFromJson(const Json::Value& service_json) 
+        {
+            Increment service {};
+            service.Load(service_json);
+            return service;
+        }
 };
 
 class Subtract : public improc::StringKeyBaseService
@@ -71,6 +78,13 @@ class Subtract : public improc::StringKeyBaseService
         }
 
         std::string get_name() {return "SubtractService"; }
+
+        static Subtract LoadFromJson(const Json::Value& service_json) 
+        {
+            Subtract service {};
+            service.Load(service_json);
+            return service;
+        }
 };
 
 class Multiply : public improc::StringKeyBaseService
@@ -111,6 +125,13 @@ class Multiply : public improc::StringKeyBaseService
         }
 
         std::string get_name() {return "MultiplyService"; }
+
+        static Multiply LoadFromJson(const Json::Value& service_json) 
+        {
+            Multiply service {};
+            service.Load(service_json);
+            return service;
+        }
 };
 
 #include <improc/infrastructure/file.h>
@@ -192,29 +213,48 @@ int main()
     }
 
     // Obtain list of services
-    std::unordered_map<std::string,std::variant<Increment,Subtract,Multiply>> factory {};
-    factory["increment"] = Increment();
-    factory["subtract"]  = Subtract();
-    factory["multiply"]  = Multiply();
+    std::unordered_map<std::string,std::variant< std::function<Increment(const Json::Value&)> 
+                                               , std::function<Subtract (const Json::Value&)>
+                                               , std::function<Multiply (const Json::Value&)> 
+                                               >> factory {};
+    factory["increment"] = std::function<Increment(const Json::Value&)> {&Increment::LoadFromJson};
+    factory["subtract"]  = std::function<Subtract (const Json::Value&)> {&Subtract ::LoadFromJson};
+    factory["multiply"]  = std::function<Multiply (const Json::Value&)> {&Multiply ::LoadFromJson};
     std::cout << "Factory Size:" << factory.size() << std::endl;
 
     Json::Value service_args {};
-    auto increment_lambda = [&service_args] (const Increment& obj) -> std::shared_ptr<improc::StringKeyBaseService>
+    // auto increment_lambda = [&service_args] (const Increment& obj) -> std::shared_ptr<improc::StringKeyBaseService>
+    // { 
+    //     std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Increment>(Increment())};
+    //     service->Load(service_args);
+    //     return service;
+    // };
+    // auto subtract_lambda = [&service_args] (const Subtract& obj) -> std::shared_ptr<improc::StringKeyBaseService>
+    // { 
+    //     std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Subtract>(Subtract())};
+    //     service->Load(service_args);
+    //     return service;
+    // };
+    // auto multiply_lambda = [&service_args] (const Multiply& obj) -> std::shared_ptr<improc::StringKeyBaseService>
+    // { 
+    //     std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Multiply>(Multiply())};
+    //     service->Load(service_args);
+    //     return service;
+    // };
+
+    auto increment_lambda = [&service_args] (const std::function<Increment(const Json::Value&)>& obj) -> std::shared_ptr<improc::StringKeyBaseService>
     { 
-        std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Increment>(Increment())};
-        service->Load(service_args);
+        std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Increment>(obj(service_args))};
         return service;
     };
-    auto subtract_lambda = [&service_args] (const Subtract& obj) -> std::shared_ptr<improc::StringKeyBaseService>
+    auto subtract_lambda = [&service_args] (const std::function<Subtract(const Json::Value&)>& obj) -> std::shared_ptr<improc::StringKeyBaseService>
     { 
-        std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Subtract>(Subtract())};
-        service->Load(service_args);
+        std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Subtract>(obj(service_args))};
         return service;
     };
-    auto multiply_lambda = [&service_args] (const Multiply& obj) -> std::shared_ptr<improc::StringKeyBaseService>
+    auto multiply_lambda = [&service_args] (const std::function<Multiply(const Json::Value&)>& obj) -> std::shared_ptr<improc::StringKeyBaseService>
     { 
-        std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Multiply>(Multiply())};
-        service->Load(service_args);
+        std::shared_ptr<improc::StringKeyBaseService> service {std::make_shared<Multiply>(obj(service_args))};
         return service;
     };
 

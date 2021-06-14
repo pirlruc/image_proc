@@ -52,6 +52,7 @@ if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
         ${SERVICES_LIB_OUTPUT_NAME}_test 
         
         ${PROJECT_SOURCE_DIR}/test/main_ex1.cpp
+        # ${PROJECT_SOURCE_DIR}/main.cpp
     )
 
     target_link_libraries(${SERVICES_LIB_OUTPUT_NAME}_test PRIVATE ${SERVICES_LIB_OUTPUT_NAME})

@@ -25,11 +25,21 @@ namespace improc{
         public:
             BaseService();
 
-            virtual void    Load    (const Json::Value& service_json);
-            virtual void    Run     (improc::Context<key_type>& context)    = 0;
+            virtual void        Load            (const Json::Value& service_json);
+            virtual void        Run             (improc::Context<key_type>& context)    = 0;
+
+        protected:
+            virtual key_type    ReadKeyFromJson (const Json::Value& field_json)         = 0;
     };
 
-    typedef BaseService<std::string>    StringKeyBaseService;
+    class IMPROC_EXPORTS StringKeyBaseService : public BaseService<std::string>
+    {
+        public:
+            StringKeyBaseService();
+
+        private:
+            std::string ReadKeyFromJson (const Json::Value& field_json) override;
+    };
 }
 
 #endif
