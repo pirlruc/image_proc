@@ -31,6 +31,13 @@ namespace improc {
             return "Error processing file";
         }
     };
+
+    class not_supported_data_type: public std::exception {
+    public:
+        virtual const char* what() const throw() {
+            return "Not supported data type";
+        }
+    };
 }
  
 #endif

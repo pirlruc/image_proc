@@ -1,4 +1,5 @@
 #include <improc/infrastructure/file.h>
+#include <file.cpp>
 
 #include <iostream>
 
@@ -32,5 +33,8 @@ int main()
     // improc::JsonFile not_json_file {"test.txt"};
     // json_file_exists.set_filepath("test.txt");
     // improc::JsonFile::Read("test.txt");
+
+    // improc::jsonfile::ReadElement<int>(json_file_exists.Read());
+    std::cout << "Json content       : " << improc::jsonfile::ReadElement<std::string>(json_file_exists.Read()["content"]) << std::endl;
      return 0;
 }

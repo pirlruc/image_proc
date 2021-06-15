@@ -61,6 +61,7 @@ add_library(
 
 target_include_directories  (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/include)
 target_include_directories  (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   INTERFACE ${PROJECT_SOURCE_DIR}/include)
+target_include_directories  (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   INTERFACE ${PROJECT_SOURCE_DIR}/src)
 
 # Link dependencies
 target_link_libraries       (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   PRIVATE   spdlog)

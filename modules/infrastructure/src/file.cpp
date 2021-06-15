@@ -152,7 +152,7 @@ Json::Value improc::JsonFile::Read(const std::string& filepath)
     if (is_parse_successful == false) {
         #ifdef WITH_DEBUG
         SPDLOG_ERROR("");
-        spdlog::error("ERROR_01: Error parsing json file {}: {}.",filepath,error);
+        spdlog::error("ERROR_03: Error parsing json file {}: {}.",filepath,error);
         #endif
 
         throw improc::file_processing_error();
@@ -167,5 +167,34 @@ inline bool improc::JsonFile::IsExtensionValid(const std::string& filepath)
     spdlog::trace("Checking if json file {} has valid extension...",filepath);
     #endif
     
-    return improc::File(filepath).get_extension() == ".json";
+    const std::string kJsonExtension = ".json";
+
+    return improc::File(filepath).get_extension() == kJsonExtension;
+}
+
+
+
+
+
+
+template<typename key_type>
+key_type improc::jsonfile::ReadElement(const Json::Value& json_elem)
+{
+    #ifdef WITH_DEBUG
+    SPDLOG_ERROR("");
+    spdlog::error("ERROR_04: Parsing not defined for element {}.",key_type);
+    #endif
+
+    throw improc::not_supported_data_type();
+}
+
+template <>
+std::string improc::jsonfile::ReadElement(const Json::Value& json_elem)
+{
+    #ifdef WITH_DEBUG
+    SPDLOG_TRACE("");
+    spdlog::trace("Reading string json element...");
+    #endif
+
+    return json_elem.asString();
 }
