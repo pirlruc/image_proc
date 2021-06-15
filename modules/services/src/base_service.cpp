@@ -17,8 +17,8 @@ void improc::BaseService<key_type>::Load(const Json::Value& service_json)
         const std::string kOutputKey = "outputs";
 
         #ifdef WITH_DEBUG
-        SPDLOG_DEBUG("");
-        spdlog::debug("Analyzing field {} for service...",service_field_iter.name());
+        SPDLOG_INFO("");
+        spdlog::info("Analyzing field {} for service...",service_field_iter.name());
         #endif
 
         std::vector<key_type> list_args;
@@ -28,12 +28,12 @@ void improc::BaseService<key_type>::Load(const Json::Value& service_json)
             {
                 for (Json::Value::const_iterator input_iter = service_field_iter->begin(); input_iter != service_field_iter->end(); ++input_iter)
                 {
-                    list_args.push_back(this->ReadKeyFromJson(*input_iter));
+                    list_args.push_back(improc::jsonfile::ReadElement<key_type>(*input_iter));
                 }
             }
             else
             {
-                list_args.push_back(this->ReadKeyFromJson(*service_field_iter));
+                list_args.push_back(improc::jsonfile::ReadElement<key_type>(*service_field_iter));
             }
 
             if (service_field_iter.name() == kInputKey)
@@ -59,15 +59,3 @@ void improc::BaseService<key_type>::Load(const Json::Value& service_json)
         throw improc::file_processing_error();
     }
 }    
-
-improc::StringKeyBaseService::StringKeyBaseService() {}
-
-std::string improc::StringKeyBaseService::ReadKeyFromJson(const Json::Value& field_json)
-{
-    #ifdef WITH_DEBUG
-    SPDLOG_TRACE("");
-    spdlog::trace("Reading key from json...");
-    #endif
-
-    return field_json.asString();
-}

@@ -35,8 +35,9 @@ add_library(
     
     ${PROJECT_SOURCE_DIR}/src/container.cpp
     ${PROJECT_SOURCE_DIR}/src/context.cpp
-    ${PROJECT_SOURCE_DIR}/src/factory.cpp
     ${PROJECT_SOURCE_DIR}/src/base_service.cpp
+    ${PROJECT_SOURCE_DIR}/src/factory.cpp
+    ${PROJECT_SOURCE_DIR}/src/batch_service.cpp
 )
 
 target_include_directories  (${SERVICES_LIB_OUTPUT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/include)
@@ -52,7 +53,7 @@ if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
         ${SERVICES_LIB_OUTPUT_NAME}_test 
         
         ${PROJECT_SOURCE_DIR}/test/main_ex1.cpp
-        # ${PROJECT_SOURCE_DIR}/main.cpp
+        # ${PROJECT_SOURCE_DIR}/test/main_container.cpp
     )
 
     target_link_libraries(${SERVICES_LIB_OUTPUT_NAME}_test PRIVATE ${SERVICES_LIB_OUTPUT_NAME})

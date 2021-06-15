@@ -22,10 +22,9 @@ namespace improc
         public:
             Container();
 
-            container_type& operator[]  (const key_type& key);
-
             void            Add         (const key_type& key, const container_type& item);
-            container_type  Get         (const key_type& key);
+            container_type  Get         (const key_type& key) const;
+            container_type& operator[]  (const key_type& key);
 
             void            Erase       (const key_type& key);
             void            Clear();
@@ -33,7 +32,7 @@ namespace improc
             size_t          Size() const;
     };
 
-    typedef Container<std::string,std::any>  StringKeyHeterogeneousContainer;
+    typedef Container<std::string,std::any> StringKeyHeterogeneousContainer;
 }
 
 #endif

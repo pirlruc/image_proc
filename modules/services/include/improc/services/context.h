@@ -18,7 +18,7 @@ namespace improc
             Context();
     };
 
-    typedef Context<std::string>  StringKeyContext;
+    typedef Context<std::string>    StringKeyContext;
 }
 
 #endif

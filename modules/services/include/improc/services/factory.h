@@ -14,12 +14,6 @@
 
 namespace improc
 {
-    template<typename key_type,typename service_type>
-    std::shared_ptr<BaseService<key_type>> LoadFromJson(const Json::Value& service_json);
-
-    template<typename service_type>
-    std::shared_ptr<StringKeyBaseService> LoadFromJson(const Json::Value& service_json);
-
     template <typename key_type>
     class IMPROC_EXPORTS ServicesFactory : public Container<key_type,std::function<std::shared_ptr<BaseService<key_type>>(const Json::Value&)>>
     {
@@ -27,7 +21,13 @@ namespace improc
             ServicesFactory();
     };
 
-    typedef Container<std::string,std::function<std::shared_ptr<StringKeyBaseService>(const Json::Value&)>> StringKeyServicesFactory;
+    typedef ServicesFactory<std::string>    StringKeyServicesFactory;
+
+    template<typename key_type,typename service_type>
+    IMPROC_EXPORTS std::shared_ptr<BaseService<key_type>>   LoadServiceFromJson(const Json::Value& service_json);
+
+    template<typename service_type>
+    IMPROC_EXPORTS std::shared_ptr<StringKeyBaseService>    LoadServiceFromJson(const Json::Value& service_json);
 }
 
 #endif

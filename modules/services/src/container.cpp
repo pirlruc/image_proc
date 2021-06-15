@@ -33,18 +33,7 @@ void improc::Container<key_type,container_type>::Add(const key_type& key, const 
 }
 
 template <typename key_type,typename container_type>
-container_type& improc::Container<key_type,container_type>::operator[](const key_type& key)
-{
-    #ifdef WITH_DEBUG
-    SPDLOG_TRACE("");
-    spdlog::trace("Obtaining key {} from container...",key);
-    #endif
-
-    return this->hash_table_[key];
-}
-
-template <typename key_type,typename container_type>
-container_type improc::Container<key_type,container_type>::Get(const key_type& key)
+container_type improc::Container<key_type,container_type>::Get(const key_type& key) const
 {
     #ifdef WITH_DEBUG
     SPDLOG_TRACE("");
@@ -53,7 +42,7 @@ container_type improc::Container<key_type,container_type>::Get(const key_type& k
 
     if (this->hash_table_.find(key) != this->hash_table_.end())
     {
-        return this->hash_table_[key];
+        return this->hash_table_.at(key);
     }
     else
     {
@@ -64,6 +53,17 @@ container_type improc::Container<key_type,container_type>::Get(const key_type& k
 
         throw improc::not_found_key();
     }
+}
+
+template <typename key_type,typename container_type>
+container_type& improc::Container<key_type,container_type>::operator[](const key_type& key)
+{
+    #ifdef WITH_DEBUG
+    SPDLOG_TRACE("");
+    spdlog::trace("Obtaining key {} from container...",key);
+    #endif
+
+    return this->hash_table_[key];
 }
 
 template <typename key_type,typename container_type>

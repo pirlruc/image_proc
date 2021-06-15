@@ -1,18 +1,17 @@
+#include <improc/infrastructure/file.h>
 #include <improc/services/context.h>
 #include <improc/services/base_service.h>
 #include <improc/services/factory.h>
+#include <improc/services/batch_service.h>
 
 #include <container.cpp>
 #include <context.cpp>
 #include <base_service.cpp>
 #include <factory.cpp>
+#include <batch_service.cpp>
 
 #include <iostream>
-#include <variant>
 #include <functional>
-
-template<class... Ts> struct overload : Ts... { using Ts::operator()...; };
-template<class... Ts> overload(Ts...) -> overload<Ts...>;
 
 class Increment : public improc::StringKeyBaseService
 {
@@ -28,9 +27,10 @@ class Increment : public improc::StringKeyBaseService
             std::cout << "Output:" << this->outputs_[0] << std::endl;
         }
 
-        void    Run    (improc::StringKeyContext&  context) override
+        void    Run    (improc::StringKeyContext&  context) const override
         {
             context[this->outputs_[0]] = std::any_cast<int>(context.Get(this->inputs_[0])) + 1;
+            std::cout << "Increment Service: ori = " << std::any_cast<int>(context[this->outputs_[0]]) << std::endl;
         }
 };
 
@@ -66,9 +66,10 @@ class Subtract : public improc::StringKeyBaseService
             std::cout << "Number:" << this->number_to_subtract_ << std::endl;
         }
 
-        void    Run    (improc::StringKeyContext&  context) override
+        void    Run    (improc::StringKeyContext&  context) const override
         {
             context[this->outputs_[0]] = std::any_cast<int>(context.Get(this->inputs_[0])) - this->number_to_subtract_;
+            std::cout << "Subtract Service: ori = " << std::any_cast<int>(context[this->outputs_[0]]) << std::endl;
         }
 };
 
@@ -104,13 +105,12 @@ class Multiply : public improc::StringKeyBaseService
             std::cout << "Number:" << this->number_to_multiply_ << std::endl;
         }
 
-        void    Run    (improc::StringKeyContext&  context) override
+        void    Run    (improc::StringKeyContext&  context) const override
         {
             context[this->outputs_[0]] = std::any_cast<int>(context.Get(this->inputs_[0])) * this->number_to_multiply_;
+            std::cout << "Multiply Service: ori = " << std::any_cast<int>(context[this->outputs_[0]]) << std::endl;
         }
 };
-
-#include <improc/infrastructure/file.h>
 
 struct DataElem
 {
@@ -123,7 +123,6 @@ int main()
     std::cout << "--- PROTOTYPE EX1 BEGINNING ---" << std::endl;
 
     const std::string kDataKey      = "data";
-    const std::string kServicesKey  = "services";
 
     improc::JsonFile json_file {"../../test/test_ex1.json"};
     Json::Value json_content = json_file.Read();
@@ -138,20 +137,10 @@ int main()
         throw improc::file_processing_error();
     }
 
-    if (json_content.isMember(kServicesKey) == false) 
-    {
-        #ifdef WITH_DEBUG
-        SPDLOG_ERROR("");
-        spdlog::error("ERROR_02: Member {} missing on json file.",kServicesKey);
-        #endif
-
-        throw improc::file_processing_error();
-    }
-    Json::Value data_elements    = json_content[kDataKey];
-    Json::Value service_elements = json_content[kServicesKey];
 
     // Obtain list of variables not coming from services
-    std::vector<DataElem> input_list {};
+    Json::Value             data_elements = json_content[kDataKey];
+    std::vector<DataElem>   input_list {};
     for (Json::Value::const_iterator data_elem_iter = data_elements.begin(); data_elem_iter != data_elements.end(); ++data_elem_iter)
     {
         const std::string kDataName = "name";
@@ -188,68 +177,21 @@ int main()
         input_list.push_back(data);
     }
 
-    // Obtain list of services
+    // Define services in factory and load services
     improc::StringKeyServicesFactory factory {};
-    factory.Add("increment",std::function<std::shared_ptr<improc::StringKeyBaseService>(const Json::Value&)> {&improc::LoadFromJson<Increment>});
-    factory.Add("subtract" ,std::function<std::shared_ptr<improc::StringKeyBaseService>(const Json::Value&)> {&improc::LoadFromJson<Subtract>} );
-    factory.Add("multiply" ,std::function<std::shared_ptr<improc::StringKeyBaseService>(const Json::Value&)> {&improc::LoadFromJson<Multiply>} );
+    factory.Add("increment",std::function<std::shared_ptr<improc::StringKeyBaseService>(const Json::Value&)> {&improc::LoadServiceFromJson<Increment>});
+    factory.Add("subtract" ,std::function<std::shared_ptr<improc::StringKeyBaseService>(const Json::Value&)> {&improc::LoadServiceFromJson<Subtract>} );
+    factory.Add("multiply" ,std::function<std::shared_ptr<improc::StringKeyBaseService>(const Json::Value&)> {&improc::LoadServiceFromJson<Multiply>} );
     std::cout << "Factory Size:" << factory.Size() << std::endl;
 
-    std::vector<std::shared_ptr<improc::StringKeyBaseService>> services_list {};
-    for (Json::Value::const_iterator srvce_elem_iter = service_elements.begin(); srvce_elem_iter != service_elements.end(); ++srvce_elem_iter)
-    {
-        const std::string kServiceType = "type";
-        const std::string kServiceArgs = "args";
-
-        Json::Value service_args {};
-        std::string service_type {};
-        for (Json::Value::const_iterator srvce_elem_field_iter = srvce_elem_iter->begin(); srvce_elem_field_iter != srvce_elem_iter->end(); ++srvce_elem_field_iter)
-        {
-            #ifdef WITH_DEBUG
-            SPDLOG_DEBUG("");
-            spdlog::debug("Analyzing field {} for service element...",srvce_elem_field_iter.name());
-            #endif
-
-            if      (srvce_elem_field_iter.name() == kServiceType)   service_type = srvce_elem_field_iter->asString();
-            else if (srvce_elem_field_iter.name() == kServiceArgs)   service_args = *srvce_elem_field_iter;
-            else 
-            {
-                #ifdef WITH_DEBUG
-                SPDLOG_WARN("");
-                spdlog::warn("WARN_05: Member {} not recognized for service element.",srvce_elem_field_iter.name());
-                #endif
-            }
-        }
-        
-        if (service_type.empty() == true)
-        {
-            #ifdef WITH_DEBUG
-            SPDLOG_ERROR("");
-            spdlog::error("ERROR_06: Member missing for service element.");
-            #endif
-
-            throw improc::file_processing_error();
-        }
-
-        #ifdef WITH_DEBUG
-        SPDLOG_DEBUG("");
-        spdlog::debug("Analyzing service element {}...",service_type);
-        #endif
-
-        std::shared_ptr<improc::StringKeyBaseService> service = factory.Get(service_type)(service_args);
-        services_list.push_back(service);
-    }
+    improc::StringKeyBatchService batch {};
+    batch.Load(factory,json_content);
     std::cout << "Data number   : " << input_list.size()    << std::endl;
-    std::cout << "Service number: " << services_list.size() << std::endl;
+    std::cout << "Service number: " << batch.Size()         << std::endl;
 
     improc::StringKeyContext cntxt {};
     cntxt.Add("ori",2);
     std::cout << "Start, ori = " << std::any_cast<int>(cntxt.Get("ori")) << std::endl;
-
-    for (size_t service_idx = 0; service_idx < services_list.size(); service_idx++)
-    {
-        services_list[service_idx]->Run(cntxt);
-        std::cout << "Service ID: " << service_idx << ", ori = " << std::any_cast<int>(cntxt.Get("ori")) << std::endl;
-    }
+    batch.Run(cntxt);
     return 0;
 }
