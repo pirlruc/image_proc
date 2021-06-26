@@ -5,7 +5,7 @@ improc::Container<key_type,container_type>::Container()
 {
     #ifdef WITH_DEBUG
     SPDLOG_TRACE("");
-    spdlog::trace("Creating container with {} key and {} container...",key_type,container_type);
+    spdlog::trace("Creating container with {} key and {} container...",typeid(key_type).name(),typeid(container_type).name());
     #endif
 }
 

@@ -4,17 +4,6 @@ template <typename key_type>
 improc::BatchService<key_type>::BatchService() {}
 
 template <typename key_type>
-std::shared_ptr<improc::BaseService<key_type>>& improc::BatchService<key_type>::operator[](const size_t& index)
-{
-    #ifdef WITH_DEBUG
-    SPDLOG_TRACE("");
-    spdlog::trace("Obtaining index {} from services vector...",index);
-    #endif
-
-    return this->data_[index];
-}
-
-template <typename key_type>
 void improc::BatchService<key_type>::Load( const improc::ServicesFactory<key_type>& factory
                                          , const Json::Value& batch_service_json )
 {
@@ -46,7 +35,7 @@ void improc::BatchService<key_type>::Load( const improc::ServicesFactory<key_typ
         const std::string kServiceArgs = "args";
 
         Json::Value service_args {};
-        std::string service_type {};
+        key_type    service_type {};
         for (Json::Value::const_iterator srvce_elem_field_iter = srvce_elem_iter->begin(); srvce_elem_field_iter != srvce_elem_iter->end(); ++srvce_elem_field_iter)
         {
             #ifdef WITH_DEBUG
@@ -79,8 +68,11 @@ void improc::BatchService<key_type>::Load( const improc::ServicesFactory<key_typ
         SPDLOG_INFO("");
         spdlog::info("Adding service element {}...",service_type);
         #endif
-        
-        this->data_.push_back(factory.Get(service_type)(service_args));
+
+        improc::BatchService<key_type>::Service service {};
+        service.type = service_type;
+        service.data = factory.Get(service_type)(service_args);
+        this->data_.push_back(service);
     }
     #ifdef WITH_DEBUG
     SPDLOG_INFO("");
@@ -96,16 +88,25 @@ void improc::BatchService<key_type>::Run(improc::Context<key_type>& context) con
     spdlog::trace("Running service batch...");
     #endif
 
-    size_t service_idx = 0;
     for (auto service_iter = this->data_.begin(); service_iter != this->data_.end(); service_iter++)
     {
         #ifdef WITH_DEBUG
         SPDLOG_DEBUG("");
-        spdlog::debug("Running service index {}...",service_idx);
-        service_idx += 1;
+        spdlog::debug("Running service {}...",(*service_iter).type);
         #endif
 
-        (*service_iter)->Run(context);
+        #ifdef WITH_DEBUG
+        std::chrono::time_point<std::chrono::high_resolution_clock> service_start_time = std::chrono::high_resolution_clock::now();
+        #endif
+
+        (*service_iter).data->Run(context);
+        
+        #ifdef WITH_DEBUG
+        std::chrono::time_point<std::chrono::high_resolution_clock> service_stop_time  = std::chrono::high_resolution_clock::now();
+        auto exec_time = std::chrono::duration_cast<std::chrono::microseconds>(service_stop_time - service_start_time);
+        SPDLOG_INFO("");
+        spdlog::info("Service {} executed in {} ms",(*service_iter).type,exec_time.count() / 1000.0);
+        #endif
     }
 }
 

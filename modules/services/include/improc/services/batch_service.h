@@ -21,12 +21,16 @@ namespace improc
     class IMPROC_EXPORTS BatchService
     {
         private:
-            std::vector<std::shared_ptr<BaseService<key_type>>> data_;
+            struct Service
+            {
+                key_type                                type;
+                std::shared_ptr<BaseService<key_type>>  data;
+            };
+
+            std::vector<Service>                        data_;
 
         public:
             BatchService();
-
-            std::shared_ptr<BaseService<key_type>>& operator[]  (const size_t& index);
 
             void    Load   ( const ServicesFactory<key_type>& factory
                            , const Json::Value& batch_service_json );
