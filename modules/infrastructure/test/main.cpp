@@ -1,10 +1,17 @@
+#define WITH_DEBUG
+
 #include <improc/infrastructure/file.h>
 #include <file.cpp>
 
+#include <spdlog/sinks/stdout_sinks.h>
 #include <iostream>
 
 int main()
 {
+    spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%-5l] [%@ >> %!] %v");
+    spdlog::set_default_logger(spdlog::stdout_logger_mt("console"));
+    spdlog::set_level(spdlog::level::level_enum::trace);
+    
     improc::File file_empty {};
     improc::File file_not_exists {"test.txt"};
     improc::File file_exists {};
