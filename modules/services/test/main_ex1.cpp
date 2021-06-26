@@ -1,3 +1,5 @@
+#define WITH_DEBUG
+
 #include <improc/infrastructure/file.h>
 #include <improc/services/context.h>
 #include <improc/services/base_service.h>
@@ -160,7 +162,7 @@ int main()
             {
                 #ifdef WITH_DEBUG
                 SPDLOG_WARN("");
-                spdlog::warn("WARN_03: Member {} not recognized for data element.",elem_field_iter.name());
+                spdlog::warn("WARN_03: Member {} not recognized for data element.",data_elem_field_iter.name());
                 #endif
             }
         }

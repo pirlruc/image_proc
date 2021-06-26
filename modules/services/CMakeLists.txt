@@ -53,6 +53,7 @@ if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
         ${SERVICES_LIB_OUTPUT_NAME}_test 
         
         ${PROJECT_SOURCE_DIR}/test/main_ex1.cpp
+        # ${PROJECT_SOURCE_DIR}/test/main_ex2.cpp
         # ${PROJECT_SOURCE_DIR}/test/main_container.cpp
     )
 

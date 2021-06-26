@@ -1,3 +1,5 @@
+#define WITH_DEBUG
+
 #include <improc/services/container.h>
 #include <container.cpp>
 
