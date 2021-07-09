@@ -70,5 +70,5 @@ target_link_libraries       (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   INTERFACE spdlo
 target_link_libraries       (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   INTERFACE jsoncpp_lib)
 
 if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
-  add_subdirectory(test)
+  add_subdirectory(${PROJECT_SOURCE_DIR}/test ${CMAKE_BINARY_DIR}/test)
 endif()
