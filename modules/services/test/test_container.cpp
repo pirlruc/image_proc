@@ -65,3 +65,23 @@ TEST(Container,TestClear) {
     container.Clear();
     EXPECT_EQ(container.Size(),0);
 }
+
+TEST(Container,TestChangeExistingItemFromContainer) {
+    improc::Container<int,std::any> container {};
+    container.Add(1,"Test 1");
+    container.Add(2,45);
+    container[2] = 0.15;
+    EXPECT_EQ(container.Size(),2);
+    EXPECT_EQ(container.Get(2).type(),typeid(double));
+    EXPECT_EQ(std::any_cast<double>(container.Get(2)),0.15);
+}
+
+TEST(Container,TestChangeNonExistingItemFromContainer) {
+    improc::Container<int,std::any> container {};
+    container.Add(1,"Test 1");
+    container.Add(2,45);
+    container[3] = 0.15;
+    EXPECT_EQ(container.Size(),3);
+    EXPECT_EQ(container.Get(3).type(),typeid(double));
+    EXPECT_EQ(std::any_cast<double>(container.Get(3)),0.15);
+}

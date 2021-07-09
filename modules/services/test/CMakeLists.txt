@@ -33,6 +33,8 @@ add_executable(
     ${SERVICES_LIB_OUTPUT_NAME}_test
     
     ${PROJECT_SOURCE_DIR}/test/test_container.cpp
+    ${PROJECT_SOURCE_DIR}/test/test_duplicated_service.cpp
+    ${PROJECT_SOURCE_DIR}/test/test_several_outputs.cpp
 )
 target_link_libraries(${SERVICES_LIB_OUTPUT_NAME}_test  PRIVATE ${SERVICES_LIB_OUTPUT_NAME})
 target_link_libraries(${SERVICES_LIB_OUTPUT_NAME}_test  PRIVATE gtest gtest_main)
