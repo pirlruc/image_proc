@@ -49,17 +49,5 @@ target_link_libraries       (${SERVICES_LIB_OUTPUT_NAME}   PRIVATE   ${INFRASTRU
 target_link_libraries       (${SERVICES_LIB_OUTPUT_NAME}   INTERFACE ${INFRASTRUCTURE_LIB_OUTPUT_NAME})
 
 if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
-    add_executable(
-        ${SERVICES_LIB_OUTPUT_NAME}_test 
-        
-        ${PROJECT_SOURCE_DIR}/test/main_ex1.cpp
-        # ${PROJECT_SOURCE_DIR}/test/main_ex2.cpp
-        # ${PROJECT_SOURCE_DIR}/test/main_container.cpp
-    )
-
-    target_link_libraries(${SERVICES_LIB_OUTPUT_NAME}_test PRIVATE ${SERVICES_LIB_OUTPUT_NAME})
+    add_subdirectory(${PROJECT_SOURCE_DIR}/test ${CMAKE_BINARY_DIR}/test)
 endif()
-
-# if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
-#     add_subdirectory(test)
-# endif()

@@ -21,7 +21,6 @@ FetchContent_Declare(
   SOURCE_DIR      ${PROJECT_SOURCE_DIR}/test/external/googletest
 )
 FetchContent_MakeAvailable(googletest)
-# target_include_directories(googletest INTERFACE ${PROJECT_SOURCE_DIR}/external/googletest/include)
 
 mark_as_advanced(
     gtest_disable_pthreads gtest_force_shared_crt gtest_hide_internal_symbols
