@@ -182,7 +182,7 @@ key_type improc::jsonfile::ReadElement(const Json::Value& json_elem)
 {
     #ifdef WITH_DEBUG
     SPDLOG_ERROR("");
-    spdlog::error("ERROR_04: Parsing not defined for element {}.",key_type);
+    spdlog::error("ERROR_04: Parsing not defined for element {}.",typeid(key_type).name());
     #endif
 
     throw improc::not_supported_data_type();
