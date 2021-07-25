@@ -10,6 +10,7 @@
 
 #include <unordered_map>
 #include <any>
+#include <string>
 
 namespace improc
 {

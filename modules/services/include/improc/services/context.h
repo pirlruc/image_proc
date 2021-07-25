@@ -9,6 +9,7 @@
 #include <improc/improc_defs.h>
 #include <improc/services/container.h>
 
+#include <string>
 namespace improc
 {
     template <typename key_type>
