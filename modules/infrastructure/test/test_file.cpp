@@ -6,17 +6,20 @@
 
 TEST(File,TestEmptyFileConstructor) {
     improc::File file_empty {};
+    EXPECT_TRUE(file_empty.get_filename().empty());
     EXPECT_TRUE(file_empty.get_extension().empty());
 }
 
 TEST(File,TestFileConstructor) {
-    improc::File file_str {"test.txt"};
+    improc::File file_str {"/opt/test.txt"};
+    EXPECT_STREQ(file_str.get_filename().c_str() ,"test.txt");
     EXPECT_STREQ(file_str.get_extension().c_str(),".txt");
 }
 
 TEST(File,TestSetFilepath) {
     improc::File file_empty {};
     file_empty.set_filepath("test.txt");
+    EXPECT_STREQ(file_empty.get_filename().c_str() ,"test.txt");
     EXPECT_STREQ(file_empty.get_extension().c_str(),".txt");
 }
 
@@ -27,6 +30,7 @@ TEST(File,TestNonExistingFile) {
 
 TEST(File,TestExistingFile) {
     improc::File file_exists {"../../test/test.json"};
+    EXPECT_STREQ(file_exists.get_filename().c_str() ,"test.json");
     EXPECT_STREQ(file_exists.get_extension().c_str(),".json");
     EXPECT_TRUE (file_exists.Exists());
 }
@@ -43,11 +47,13 @@ TEST(File,TestReadingExistingFile) {
 
 TEST(JsonFile,TestEmptyFileConstructor) {
     improc::JsonFile file_empty {};
+    EXPECT_TRUE(file_empty.get_filename().empty());
     EXPECT_TRUE(file_empty.get_extension().empty());
 }
 
 TEST(JsonFile,TestFileConstructor) {
-    improc::JsonFile file_str {"test.json"};
+    improc::JsonFile file_str {"/opt/test.json"};
+    EXPECT_STREQ(file_str.get_filename().c_str() ,"test.json");
     EXPECT_STREQ(file_str.get_extension().c_str(),".json");
 }
 
@@ -58,6 +64,7 @@ TEST(JsonFile,TestNonJsonFileConstructor) {
 TEST(JsonFile,TestSetFilepath) {
     improc::JsonFile file_empty {};
     file_empty.set_filepath("test.json");
+    EXPECT_STREQ(file_empty.get_filename().c_str() ,"test.json");
     EXPECT_STREQ(file_empty.get_extension().c_str(),".json");
 }
 
@@ -73,6 +80,7 @@ TEST(JsonFile,TestNonExistingFile) {
 
 TEST(JsonFile,TestExistingFile) {
     improc::JsonFile file_exists {"../../test/test.json"};
+    EXPECT_STREQ(file_exists.get_filename().c_str() ,"test.json");
     EXPECT_STREQ(file_exists.get_extension().c_str(),".json");
     EXPECT_TRUE (file_exists.Exists());
 }
