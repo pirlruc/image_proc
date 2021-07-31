@@ -33,6 +33,7 @@ add_executable(
     ${INFRASTRUCTURE_LIB_OUTPUT_NAME}_test
     
     ${PROJECT_SOURCE_DIR}/test/test_file.cpp
+    ${PROJECT_SOURCE_DIR}/test/test_benchmark.cpp
     ${PROJECT_SOURCE_DIR}/test/test_logger.cpp
 )
 target_link_libraries(${INFRASTRUCTURE_LIB_OUTPUT_NAME}_test  PRIVATE ${INFRASTRUCTURE_LIB_OUTPUT_NAME})

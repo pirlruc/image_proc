@@ -16,7 +16,7 @@
 #include <sys/stat.h>
 #include <filesystem>
 
-namespace improc{
+namespace improc {
     class IMPROC_EXPORTS File
     {
         protected:
