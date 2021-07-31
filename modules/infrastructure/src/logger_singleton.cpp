@@ -37,7 +37,9 @@ std::shared_ptr<type> improc::LoggerSingleton<type>::get(const std::string& logg
             logger = spdlog::get(logger_name);
             if (logger == nullptr)
             {
-                logger = spdlog::stdout_logger_mt(std::move(logger_name));
+                logger = spdlog::stdout_color_mt(std::move(logger_name));
+                logger->set_level(spdlog::level::debug);
+                logger->set_pattern("[%Y-%m-%d %H:%M:%S.%f] [%n] [%^%-8l%$] [%!:%@] %v");
             }
         }
         singleton = std::shared_ptr<type>(new type(std::move(logger)));

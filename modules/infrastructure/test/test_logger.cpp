@@ -31,10 +31,17 @@ class TestDoubleLogger : public improc::LoggerSingleton<TestDoubleLogger>
         TestDoubleLogger(std::shared_ptr<spdlog::logger>&& logger) : LoggerSingleton(std::move(logger)) {}
 };
 
+class TestLogging : public improc::LoggerSingleton<TestLogging>
+{
+    friend std::shared_ptr<TestLogging> LoggerSingleton::get(const std::string& logger_name);
+    private:
+        TestLogging(std::shared_ptr<spdlog::logger>&& logger) : LoggerSingleton(std::move(logger)) {}
+};
+
 TEST(Logger,TestLogging) {
     EXPECT_NO_THROW(
         spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%-5l] [%@ >> %!] %v");
-        spdlog::set_default_logger(spdlog::stdout_logger_mt("console"));
+        spdlog::set_default_logger(spdlog::stdout_color_mt("console"));
         spdlog::set_level(spdlog::level::level_enum::trace);
     );
 }
@@ -50,7 +57,7 @@ TEST(Logger,TestLoggerNonExistingConstructor) {
 }
 
 TEST(Logger,TestLoggerExistingConstructor) {
-    spdlog::stdout_logger_st("console_logger");
+    spdlog::stdout_color_st("console_logger");
     TestExistingLogger::get("console_logger");
     EXPECT_STREQ(TestExistingLogger::get()->data()->name().c_str(),"console_logger");
 }
@@ -62,4 +69,15 @@ TEST(Logger,TestLoggerDoubleConstructor) {
     EXPECT_STREQ(TestDoubleLogger::get()->data()->name().c_str(),"logger_console_1");
     EXPECT_TRUE(spdlog::get("logger_console_1") != nullptr);
     EXPECT_TRUE(spdlog::get("logger_console_2") == nullptr);
+}
+
+TEST(Logger,TestLoggerLogging) {
+    TestLogging::get("log_console");
+    EXPECT_STREQ(TestLogging::get()->data()->name().c_str(),"log_console");
+    SPDLOG_LOGGER_CALL(TestLogging::get()->data(),spdlog::level::trace   ,"Test {} {}",1,2);
+    SPDLOG_LOGGER_CALL(TestLogging::get()->data(),spdlog::level::debug   ,"Test {} {}",2,3);
+    SPDLOG_LOGGER_CALL(TestLogging::get()->data(),spdlog::level::info    ,"Test {} {}",3,4);
+    SPDLOG_LOGGER_CALL(TestLogging::get()->data(),spdlog::level::err     ,"Test {} {}",4,5);
+    SPDLOG_LOGGER_CALL(TestLogging::get()->data(),spdlog::level::warn    ,"Test {} {}",5,6);
+    SPDLOG_LOGGER_CALL(TestLogging::get()->data(),spdlog::level::critical,"Test {} {}",6,7);
 }
