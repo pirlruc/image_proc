@@ -3,6 +3,7 @@
 #define WITH_DEBUG
 #include <improc/infrastructure/file.h>
 #include <improc/infrastructure/benchmark.h>
+#include <logger_singleton.cpp>
 #include <benchmark.cpp>
 
 // TEST(Benchmark,TestBenchmarkDefaultConstructor) {
@@ -35,24 +36,24 @@
 // }
 
 TEST(Benchmark,TestBenchmarkWriteSameTypeFields) {
-    improc::Benchmark::get_benchmark("benchmark_console_logger");
-    EXPECT_NO_THROW(improc::Benchmark::get_benchmark()->WriteFields(1));
-    EXPECT_NO_THROW(improc::Benchmark::get_benchmark()->WriteFields(1,2,3));
+    improc::Benchmark::get("benchmark_console_logger");
+    EXPECT_NO_THROW(improc::Benchmark::get()->WriteFields(1));
+    EXPECT_NO_THROW(improc::Benchmark::get()->WriteFields(1,2,3));
 }
 
 TEST(Benchmark,TestBenchmarkWriteDiffTypeFields) {
-    EXPECT_NO_THROW(improc::Benchmark::get_benchmark()->WriteFields(false));
-    EXPECT_NO_THROW(improc::Benchmark::get_benchmark()->WriteFields("test1",2,3.14));
+    EXPECT_NO_THROW(improc::Benchmark::get()->WriteFields(false));
+    EXPECT_NO_THROW(improc::Benchmark::get()->WriteFields("test1",2,3.14));
 }
 
 TEST(Benchmark,TestBenchmarkAddSameTypeFields) {
-    EXPECT_NO_THROW(improc::Benchmark::get_benchmark()->AddFieldsToLine(1));
-    EXPECT_NO_THROW(improc::Benchmark::get_benchmark()->AddFieldsToLine(2,3,4));
-    improc::Benchmark::get_benchmark()->WriteLine();
+    EXPECT_NO_THROW(improc::Benchmark::get()->AddFieldsToLine(1));
+    EXPECT_NO_THROW(improc::Benchmark::get()->AddFieldsToLine(2,3,4));
+    improc::Benchmark::get()->WriteLine();
 }
 
 TEST(Benchmark,TestBenchmarkAddDiffTypeFields) {
-    EXPECT_NO_THROW(improc::Benchmark::get_benchmark()->AddFieldsToLine(false));
-    EXPECT_NO_THROW(improc::Benchmark::get_benchmark()->AddFieldsToLine("test1",2,3.14));
-    improc::Benchmark::get_benchmark()->WriteLine();
+    EXPECT_NO_THROW(improc::Benchmark::get()->AddFieldsToLine(false));
+    EXPECT_NO_THROW(improc::Benchmark::get()->AddFieldsToLine("test1",2,3.14));
+    improc::Benchmark::get()->WriteLine();
 }

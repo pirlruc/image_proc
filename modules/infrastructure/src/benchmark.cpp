@@ -1,51 +1,50 @@
 #include <improc/infrastructure/benchmark.h>
 
-improc::Benchmark::Benchmark(std::shared_ptr<spdlog::logger>&& benchmark_logger) : data_(benchmark_logger)
-                                                                                 , line_msg_("")
-{}
+improc::Benchmark::Benchmark(std::shared_ptr<spdlog::logger>&& benchmark_logger) 
+: LoggerSingleton(std::move(benchmark_logger)) {}
 
-std::shared_ptr<improc::Benchmark> improc::Benchmark::get_benchmark( std::string        benchmark_name
-                                                                   , const std::string& benchmark_csv_filepath )
-{
-    #ifdef WITH_DEBUG
-    spdlog::trace( "[{}:{}:{}] Obtaining benchmark {}..."
-                 , SPDLOG_FUNCTION,File(__FILE__).get_filename(),__LINE__
-                 , benchmark_name );
-    #endif    
+// std::shared_ptr<improc::Benchmark> improc::Benchmark::get_benchmark( std::string        benchmark_name
+//                                                                    , const std::string& benchmark_csv_filepath )
+// {
+//     #ifdef WITH_DEBUG
+//     spdlog::trace( "[{}:{}:{}] Obtaining benchmark {}..."
+//                  , SPDLOG_FUNCTION,File(__FILE__).get_filename(),__LINE__
+//                  , benchmark_name );
+//     #endif    
 
-    const std::string kBenchmarkName   {"benchmark_logger"};
-    const std::string kTextOnlyPattern {"%v"};
-    if (benchmark_ == nullptr)
-    {
-        std::shared_ptr<spdlog::logger> benchmark_logger {};
-        if (benchmark_name.empty() == true)
-        {
-            benchmark_name = std::move(kBenchmarkName);
-        }
+//     const std::string kBenchmarkName   {"benchmark_logger"};
+//     const std::string kTextOnlyPattern {"%v"};
+//     if (benchmark_ == nullptr)
+//     {
+//         std::shared_ptr<spdlog::logger> benchmark_logger {};
+//         if (benchmark_name.empty() == true)
+//         {
+//             benchmark_name = std::move(kBenchmarkName);
+//         }
 
-        if (benchmark_csv_filepath.empty() == true)
-        {
-            #ifdef WITH_DEBUG
-            spdlog::debug( "[{}:{}:{}] Defining benchmark on console..."
-                        , SPDLOG_FUNCTION,File(__FILE__).get_filename(),__LINE__ );
-            #endif
-            benchmark_logger = spdlog::stdout_logger_mt(std::move(benchmark_name));    
-        }
-        else
-        {
-            #ifdef WITH_DEBUG
-            spdlog::debug( "[{}:{}:{}] Defining benchmark on file {}..."
-                        , SPDLOG_FUNCTION,File(__FILE__).get_filename(),__LINE__
-                        , benchmark_csv_filepath );
-            #endif
-            benchmark_logger = spdlog::basic_logger_mt(std::move(benchmark_name), std::move(benchmark_csv_filepath));
-        }
-        benchmark_logger->set_level(spdlog::level::level_enum::critical);
-        benchmark_logger->set_pattern(std::move(kTextOnlyPattern));
-        benchmark_ = std::shared_ptr<Benchmark>(new Benchmark(std::move(benchmark_logger)));
-    }
-    return benchmark_;
-}
+//         if (benchmark_csv_filepath.empty() == true)
+//         {
+//             #ifdef WITH_DEBUG
+//             spdlog::debug( "[{}:{}:{}] Defining benchmark on console..."
+//                         , SPDLOG_FUNCTION,File(__FILE__).get_filename(),__LINE__ );
+//             #endif
+//             benchmark_logger = spdlog::stdout_logger_mt(std::move(benchmark_name));    
+//         }
+//         else
+//         {
+//             #ifdef WITH_DEBUG
+//             spdlog::debug( "[{}:{}:{}] Defining benchmark on file {}..."
+//                         , SPDLOG_FUNCTION,File(__FILE__).get_filename(),__LINE__
+//                         , benchmark_csv_filepath );
+//             #endif
+//             benchmark_logger = spdlog::basic_logger_mt(std::move(benchmark_name), std::move(benchmark_csv_filepath));
+//         }
+//         benchmark_logger->set_level(spdlog::level::level_enum::critical);
+//         benchmark_logger->set_pattern(std::move(kTextOnlyPattern));
+//         benchmark_ = std::shared_ptr<Benchmark>(new Benchmark(std::move(benchmark_logger)));
+//     }
+//     return benchmark_;
+// }
 
 void improc::Benchmark::AddFieldsToLine() {}
 
@@ -90,11 +89,11 @@ void improc::Benchmark::WriteLine()
     if (this->line_msg_.size() > 0)
     {
         // Remove first character since there is an additional ";" at the beginning
-        this->data_->critical(this->line_msg_.substr(1,std::string::npos));
+        this->data()->critical(this->line_msg_.substr(1,std::string::npos));
     }
     else
     {
-        this->data_->critical(this->line_msg_);
+        this->data()->critical(this->line_msg_);
     }
     this->line_msg_.clear();
 }
