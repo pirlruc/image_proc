@@ -1,3 +1,6 @@
+#ifndef IMPROC_INFRASTRUCTURE_DEFINITIONS_H
+#define IMPROC_INFRASTRUCTURE_DEFINITIONS_H
+
 #ifndef IMPROC_EXPORTS
     #if defined _WIN32 || defined WINCE
         #define IMPROC_EXPORTS __declspec(dllexport)
@@ -6,4 +9,6 @@
     #else
         #define IMPROC_EXPORTS
     #endif
+#endif
+
 #endif
