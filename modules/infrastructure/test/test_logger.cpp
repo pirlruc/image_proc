@@ -5,25 +5,29 @@
 
 class TestLoggerReference : public improc::LoggerSingleton<TestLoggerReference>
 {
-    public:
+    friend std::shared_ptr<TestLoggerReference> LoggerSingleton::get(const std::string& logger_name);
+    private:
         TestLoggerReference(std::shared_ptr<spdlog::logger>&& logger) : LoggerSingleton(logger) {}
 };
 
 class TestLoggerMove : public improc::LoggerSingleton<TestLoggerMove>
 {
-    public:
+    friend std::shared_ptr<TestLoggerMove> LoggerSingleton::get(const std::string& logger_name);
+    private:
         TestLoggerMove(std::shared_ptr<spdlog::logger>&& logger) : LoggerSingleton(std::move(logger)) {}
 };
 
 class TestExistingLogger : public improc::LoggerSingleton<TestExistingLogger>
 {
-    public:
+    friend std::shared_ptr<TestExistingLogger> LoggerSingleton::get(const std::string& logger_name);
+    private:
         TestExistingLogger(std::shared_ptr<spdlog::logger>&& logger) : LoggerSingleton(std::move(logger)) {}
 };
 
 class TestDoubleLogger : public improc::LoggerSingleton<TestDoubleLogger>
 {
-    public:
+    friend std::shared_ptr<TestDoubleLogger> LoggerSingleton::get(const std::string& logger_name);
+    private:
         TestDoubleLogger(std::shared_ptr<spdlog::logger>&& logger) : LoggerSingleton(std::move(logger)) {}
 };
 
