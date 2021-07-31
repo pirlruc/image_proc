@@ -1,11 +1,8 @@
-#ifndef IMPROC_INFRASTRUCTURE_SINGLETON_H
-#define IMPROC_INFRASTRUCTURE_SINGLETON_H
+#ifndef IMPROC_INFRASTRUCTURE_LOGGER_SINGLETON_H
+#define IMPROC_INFRASTRUCTURE_LOGGER_SINGLETON_H
 
 #include <improc/improc_defs.h>
 
-#ifdef WITH_DEBUG
-#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
-#endif
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 

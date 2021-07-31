@@ -9,21 +9,14 @@ improc::LoggerSingleton<type>::LoggerSingleton(const std::shared_ptr<spdlog::log
 template<typename type>
 std::shared_ptr<spdlog::logger> improc::LoggerSingleton<type>::data()
 {
-    #ifdef WITH_DEBUG
-    spdlog::trace( "[{}:{}:{}] Obtaining spdlog logger..."
-                 , SPDLOG_FUNCTION,File(__FILE__).get_filename(),__LINE__ );
-    #endif    
+    SPDLOG_LOGGER_CALL(spdlog::default_logger(),spdlog::level::trace,"Obtaining spdlog logger...");
     return this->data_;
 }
 
 template<typename type> 
 std::shared_ptr<type> improc::LoggerSingleton<type>::get(const std::string& logger_name)
 {
-    #ifdef WITH_DEBUG
-    spdlog::trace( "[{}:{}:{}] Creating logger..."
-                 , SPDLOG_FUNCTION,File(__FILE__).get_filename(),__LINE__ );
-    #endif    
-
+    SPDLOG_LOGGER_CALL(spdlog::default_logger(),spdlog::level::trace,"Creating logger...");
     static std::shared_ptr<type> singleton = nullptr;
     if (singleton == nullptr)
     {

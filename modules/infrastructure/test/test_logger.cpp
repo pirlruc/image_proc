@@ -39,7 +39,7 @@ class TestLogging : public improc::LoggerSingleton<TestLogging>
 };
 
 TEST(Logger,TestLogging) {
-    EXPECT_NO_THROW(
+    EXPECT_NO_THROW (
         spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%n] [%-5l] [%@ >> %!] %v");
         spdlog::set_default_logger(spdlog::stdout_color_mt("console"));
         spdlog::set_level(spdlog::level::level_enum::trace);

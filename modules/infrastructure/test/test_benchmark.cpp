@@ -1,59 +1,98 @@
 #include <gtest/gtest.h>
 
-#define WITH_DEBUG
 #include <improc/infrastructure/file.h>
-#include <improc/infrastructure/benchmark.h>
+#include <improc/infrastructure/benchmark_singleton.h>
 #include <logger_singleton.cpp>
-#include <benchmark.cpp>
+#include <benchmark_singleton.cpp>
 
-// TEST(Benchmark,TestBenchmarkDefaultConstructor) {
-//     improc::Benchmark::get_benchmark();
-//     EXPECT_TRUE(spdlog::get("benchmark_logger") != nullptr);
-// }
+#include <spdlog/sinks/basic_file_sink.h>
 
-// TEST(Benchmark,TestBenchmarkConsoleConstructor) {
-//     improc::Benchmark::get_benchmark("benchmark_console_logger");
-//     EXPECT_TRUE(spdlog::get("benchmark_console_logger") != nullptr);
-// }
+class TestBenchmarkReference : public improc::BenchmarkSingleton<TestBenchmarkReference>
+{
+    friend std::shared_ptr<TestBenchmarkReference> LoggerSingleton::get(const std::string& logger_name);
+    private:
+        TestBenchmarkReference(std::shared_ptr<spdlog::logger>&& logger) : BenchmarkSingleton(logger) {}
+};
 
-// TEST(Benchmark,TestBenchmarkFileConstructor) {
-//     improc::Benchmark::get_benchmark("benchmark_file_logger","./benchmark_file.csv");
-//     EXPECT_TRUE(spdlog::get("benchmark_file_logger") != nullptr);
-//     EXPECT_TRUE(improc::File("./benchmark_file.csv").Exists());
-// }
+class TestBenchmarkMove : public improc::BenchmarkSingleton<TestBenchmarkMove>
+{
+    friend std::shared_ptr<TestBenchmarkMove> LoggerSingleton::get(const std::string& logger_name);
+    private:
+        TestBenchmarkMove(std::shared_ptr<spdlog::logger>&& logger) : BenchmarkSingleton(std::move(logger)) {}
+};
 
-// TEST(Benchmark,TestBenchmarkDoubleConstructor) {
-//     improc::Benchmark::get_benchmark("benchmark_console_1");
-//     improc::Benchmark::get_benchmark("benchmark_console_2");
-//     EXPECT_TRUE(spdlog::get("benchmark_console_1") != nullptr);
-//     EXPECT_TRUE(spdlog::get("benchmark_console_2") == nullptr);
-// }
+class TestBenchmarkDiff : public improc::BenchmarkSingleton<TestBenchmarkDiff>
+{
+    friend std::shared_ptr<TestBenchmarkDiff> LoggerSingleton::get(const std::string& logger_name);
+    private:
+        TestBenchmarkDiff(std::shared_ptr<spdlog::logger>&& logger) : BenchmarkSingleton(std::move(logger)) {}
+};
 
-// TEST(Benchmark,TestBenchmarkWriteEmptyLine) {
-//     improc::Benchmark::get_benchmark("benchmark_file_logger","./benchmark_file.csv");
-//     improc::Benchmark::get_benchmark()->WriteLine();
-//     EXPECT_STREQ(improc::File::Read("./benchmark_file.csv").c_str(),"");
-// }
+class TestBenchmarkAddSame : public improc::BenchmarkSingleton<TestBenchmarkAddSame>
+{
+    friend std::shared_ptr<TestBenchmarkAddSame> LoggerSingleton::get(const std::string& logger_name);
+    private:
+        TestBenchmarkAddSame(std::shared_ptr<spdlog::logger>&& logger) : BenchmarkSingleton(std::move(logger)) {}
+};
+
+class TestBenchmarkAddDiff : public improc::BenchmarkSingleton<TestBenchmarkAddDiff>
+{
+    friend std::shared_ptr<TestBenchmarkAddDiff> LoggerSingleton::get(const std::string& logger_name);
+    private:
+        TestBenchmarkAddDiff(std::shared_ptr<spdlog::logger>&& logger) : BenchmarkSingleton(std::move(logger)) {}
+};
+
+TEST(Benchmark,TestBenchmarkLevelAndPattern) {
+    improc::File::Remove("./benchmark_1.csv");
+    spdlog::basic_logger_st("benchmark1","./benchmark_1.csv");
+    TestBenchmarkReference::get("benchmark1")->WriteLine();
+    TestBenchmarkReference::get()->data()->flush();
+    EXPECT_EQ(TestBenchmarkReference::get()->data()->level(),spdlog::level::critical);
+    EXPECT_STREQ(improc::File::Read("./benchmark_1.csv").c_str(),"benchmark1;\n");
+}
 
 TEST(Benchmark,TestBenchmarkWriteSameTypeFields) {
-    improc::Benchmark::get("benchmark_console_logger");
-    EXPECT_NO_THROW(improc::Benchmark::get()->WriteFields(1));
-    EXPECT_NO_THROW(improc::Benchmark::get()->WriteFields(1,2,3));
+    improc::File::Remove("./benchmark_1.csv");
+    spdlog::basic_logger_st("benchmark2","./benchmark_1.csv");
+    EXPECT_NO_THROW (
+        TestBenchmarkMove::get("benchmark2")->WriteFields(1);
+        TestBenchmarkMove::get()->WriteFields(1,2,3);
+    );
+    TestBenchmarkMove::get()->data()->flush();
+    EXPECT_STREQ(improc::File::Read("./benchmark_1.csv").c_str(),"benchmark2;1\nbenchmark2;1;2;3\n");
 }
 
 TEST(Benchmark,TestBenchmarkWriteDiffTypeFields) {
-    EXPECT_NO_THROW(improc::Benchmark::get()->WriteFields(false));
-    EXPECT_NO_THROW(improc::Benchmark::get()->WriteFields("test1",2,3.14));
+    improc::File::Remove("./benchmark_1.csv");
+    spdlog::basic_logger_st("benchmark3","./benchmark_1.csv");
+    EXPECT_NO_THROW (
+        TestBenchmarkDiff::get("benchmark3")->WriteFields(false);
+        TestBenchmarkDiff::get()->WriteFields("test1",2,3.14);
+    );
+    TestBenchmarkDiff::get()->data()->flush();
+    EXPECT_STREQ(improc::File::Read("./benchmark_1.csv").c_str(),"benchmark3;false\nbenchmark3;test1;2;3.14\n");
 }
 
 TEST(Benchmark,TestBenchmarkAddSameTypeFields) {
-    EXPECT_NO_THROW(improc::Benchmark::get()->AddFieldsToLine(1));
-    EXPECT_NO_THROW(improc::Benchmark::get()->AddFieldsToLine(2,3,4));
-    improc::Benchmark::get()->WriteLine();
+    improc::File::Remove("./benchmark_1.csv");
+    spdlog::basic_logger_st("benchmark4","./benchmark_1.csv");
+    EXPECT_NO_THROW (
+        TestBenchmarkAddSame::get("benchmark4")->AddFieldsToLine(1);
+        TestBenchmarkAddSame::get()->AddFieldsToLine(2,3,4);
+        TestBenchmarkAddSame::get()->WriteLine();
+    );
+    TestBenchmarkAddSame::get()->data()->flush();
+    EXPECT_STREQ(improc::File::Read("./benchmark_1.csv").c_str(),"benchmark4;1;2;3;4\n");
 }
 
 TEST(Benchmark,TestBenchmarkAddDiffTypeFields) {
-    EXPECT_NO_THROW(improc::Benchmark::get()->AddFieldsToLine(false));
-    EXPECT_NO_THROW(improc::Benchmark::get()->AddFieldsToLine("test1",2,3.14));
-    improc::Benchmark::get()->WriteLine();
+    improc::File::Remove("./benchmark_1.csv");
+    spdlog::basic_logger_st("benchmark5","./benchmark_1.csv");
+    EXPECT_NO_THROW (
+        TestBenchmarkAddDiff::get("benchmark5")->AddFieldsToLine(false);
+        TestBenchmarkAddDiff::get()->AddFieldsToLine("test1",2,3.14);
+        TestBenchmarkAddDiff::get()->WriteLine();
+    );
+    TestBenchmarkAddDiff::get()->data()->flush();
+    EXPECT_STREQ(improc::File::Read("./benchmark_1.csv").c_str(),"benchmark5;false;test1;2;3.14\n");
 }

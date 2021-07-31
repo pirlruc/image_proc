@@ -35,6 +35,7 @@ namespace improc {
             bool                Exists() const;
 
             static std::string  Read    (const std::string& filepath);
+            static void         Remove  (const std::string& filepath);
             static inline bool  Exists  (const std::string& filepath);
     };
 

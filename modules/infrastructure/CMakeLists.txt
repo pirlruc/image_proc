@@ -55,10 +55,11 @@ add_library(
     
     ${PROJECT_SOURCE_DIR}/include/improc/exception.h
     ${PROJECT_SOURCE_DIR}/include/improc/improc_defs.h
+    ${PROJECT_SOURCE_DIR}/include/improc/infrastructure/logger_infrastructure.h
 
     ${PROJECT_SOURCE_DIR}/src/file.cpp
     ${PROJECT_SOURCE_DIR}/src/logger_singleton.cpp
-    ${PROJECT_SOURCE_DIR}/src/benchmark.cpp
+    ${PROJECT_SOURCE_DIR}/src/benchmark_singleton.cpp
 )
 
 target_include_directories  (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/include)
