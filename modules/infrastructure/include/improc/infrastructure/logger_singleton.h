@@ -7,6 +7,11 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 
 namespace improc {
+    /**
+     * @brief Singleton template for loggers
+     * 
+     * @tparam type 
+     */
     template <typename type>
     class IMPROC_EXPORTS LoggerSingleton
     {

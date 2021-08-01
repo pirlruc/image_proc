@@ -6,6 +6,13 @@
 #include <improc/infrastructure/logger_infrastructure.h>
 
 namespace improc {
+    /**
+     * @brief Singleton template for benchmarks
+     * It considers a specific pattern to create the information to write on the
+     * benchmark: logger_name and message. 
+     * 
+     * @tparam type 
+     */
     template <typename type>
     class IMPROC_EXPORTS BenchmarkSingleton : public LoggerSingleton<type>
     {

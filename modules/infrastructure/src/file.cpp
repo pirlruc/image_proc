@@ -1,13 +1,13 @@
 #include <improc/infrastructure/file.h>
 
 /**
- * @brief Construct a new improc::File::File object
+ * @brief Construct a new improc::File object
  * 
  */
 improc::File::File() {}
 
 /**
- * @brief Construct a new improc::File::File object
+ * @brief Construct a new improc::File object
  * 
  * @param filepath 
  */
@@ -20,7 +20,9 @@ improc::File::File(const std::string& filepath) : filepath_(filepath) {}
  */
 void improc::File::set_filepath(const std::string& filepath)
 {
-    SPDLOG_LOGGER_CALL(improc::InfrastructureLogger::get()->data(),spdlog::level::trace,"Setting filepath {}...",filepath);
+    SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
+                      , spdlog::level::trace
+                      , "Setting filepath {}...",filepath );
     this->filepath_ = filepath;
 }
 
@@ -31,7 +33,9 @@ void improc::File::set_filepath(const std::string& filepath)
  */
 std::string improc::File::get_filename() const
 {
-    SPDLOG_LOGGER_CALL(improc::InfrastructureLogger::get()->data(),spdlog::level::trace,"Obtaining filename...");
+    SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
+                      , spdlog::level::trace
+                      , "Obtaining filename..." );
     return std::filesystem::path(this->filepath_).filename().string();
 }
 
@@ -42,7 +46,9 @@ std::string improc::File::get_filename() const
  */
 std::string improc::File::get_extension() const
 {
-    SPDLOG_LOGGER_CALL(improc::InfrastructureLogger::get()->data(),spdlog::level::trace,"Obtaining extension...");
+    SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
+                      , spdlog::level::trace
+                      , "Obtaining extension..." );
     return std::filesystem::path(this->filepath_).extension().string();
 }
 
@@ -84,15 +90,21 @@ bool improc::File::Exists() const
  */
 std::string improc::File::Read(const std::string& filepath)
 {
-    SPDLOG_LOGGER_CALL(improc::InfrastructureLogger::get()->data(),spdlog::level::trace,"Reading content from filepath {}...",filepath);
+    SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
+                      , spdlog::level::trace
+                      , "Reading content from filepath {}...",filepath );
     if (improc::File::Exists(filepath) == false) {
-        SPDLOG_LOGGER_CALL(improc::InfrastructureLogger::get()->data(),spdlog::level::err,"ERROR_01: Filepath {} does not exist.",filepath);
+        SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
+                          , spdlog::level::err
+                          , "ERROR_01: Filepath {} does not exist.",filepath );
         throw improc::invalid_filepath();
     }
  
     std::ifstream file_stream(filepath,std::ifstream::binary);
     if (file_stream.is_open() == false) {
-        SPDLOG_LOGGER_CALL(improc::InfrastructureLogger::get()->data(),spdlog::level::err,"ERROR_02: Error opening filepath {}.",filepath);
+        SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
+                          , spdlog::level::err
+                          , "ERROR_02: Error opening filepath {}.",filepath );
         throw improc::invalid_filepath();
     }
 
@@ -109,7 +121,9 @@ std::string improc::File::Read(const std::string& filepath)
  */
 void improc::File::Remove(const std::string& filepath)
 {
-    SPDLOG_LOGGER_CALL(improc::InfrastructureLogger::get()->data(),spdlog::level::trace,"Removing filepath {}...",filepath);
+    SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
+                      , spdlog::level::trace
+                      , "Removing filepath {}...",filepath );
     std::filesystem::remove(filepath);
 }
 
@@ -122,25 +136,29 @@ void improc::File::Remove(const std::string& filepath)
  */
 inline bool improc::File::Exists(const std::string& filepath)
 {
-    SPDLOG_LOGGER_CALL(improc::InfrastructureLogger::get()->data(),spdlog::level::trace,"Checking if filepath {} exists...",filepath);
+    SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
+                      , spdlog::level::trace
+                      , "Checking if filepath {} exists...",filepath );
     struct stat buffer;
     return (stat (filepath.c_str(), &buffer) == 0);
 }
 
 /**
- * @brief Construct a new improc::Json File::Json File object
+ * @brief Construct a new improc::JsonFile object
  * 
  */
 improc::JsonFile::JsonFile() : improc::File() {}
 
 /**
- * @brief Construct a new improc::Json File::Json File object
+ * @brief Construct a new improc::JsonFile object
  * 
  * @param filepath 
  */
 improc::JsonFile::JsonFile(const std::string& filepath)
 {
-    SPDLOG_LOGGER_CALL(improc::InfrastructureLogger::get()->data(),spdlog::level::trace,"Creating JsonFile object...");
+    SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
+                      , spdlog::level::trace
+                      , "Creating JsonFile object..." );
     this->set_filepath(filepath);
 }
 
@@ -151,10 +169,14 @@ improc::JsonFile::JsonFile(const std::string& filepath)
  */
 void improc::JsonFile::set_filepath(const std::string& filepath)
 {
-    SPDLOG_LOGGER_CALL(improc::InfrastructureLogger::get()->data(),spdlog::level::trace,"Setting json filepath {}...",filepath);
+    SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
+                      , spdlog::level::trace
+                      , "Setting json filepath {}...",filepath );
     if (improc::JsonFile::IsExtensionValid(filepath) == false)
     {
-        SPDLOG_LOGGER_CALL(improc::InfrastructureLogger::get()->data(),spdlog::level::err,"ERROR_01: Invalid json extension {}.",improc::File(filepath).get_extension());
+        SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
+                          , spdlog::level::err
+                          , "ERROR_01: Invalid json extension {}.",improc::File(filepath).get_extension() );
         throw improc::invalid_filepath();
     }
     this->File::set_filepath(filepath);
@@ -178,10 +200,14 @@ Json::Value improc::JsonFile::Read()
  */
 Json::Value improc::JsonFile::Read(const std::string& filepath)
 {
-    SPDLOG_LOGGER_CALL(improc::InfrastructureLogger::get()->data(),spdlog::level::trace,"Reading content from json filepath {}...",filepath);
+    SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
+                      , spdlog::level::trace
+                      , "Reading content from json filepath {}...",filepath );
     if (improc::JsonFile::IsExtensionValid(filepath) == false)
     {
-        SPDLOG_LOGGER_CALL(improc::InfrastructureLogger::get()->data(),spdlog::level::err,"ERROR_02: Invalid json extension {}.",improc::File(filepath).get_extension());
+        SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
+                          , spdlog::level::err
+                          , "ERROR_02: Invalid json extension {}.",improc::File(filepath).get_extension() );
         throw improc::invalid_filepath();
     }
 
@@ -198,7 +224,9 @@ Json::Value improc::JsonFile::Read(const std::string& filepath)
                                                  , &error );
  
     if (is_parse_successful == false) {
-        SPDLOG_LOGGER_CALL(improc::InfrastructureLogger::get()->data(),spdlog::level::err,"ERROR_03: Error parsing json file {}: {}.",filepath,error);
+        SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
+                          , spdlog::level::err
+                          , "ERROR_03: Error parsing json file {}: {}.",filepath,error );
         throw improc::file_processing_error();
     }
     return json_root;
@@ -213,7 +241,9 @@ Json::Value improc::JsonFile::Read(const std::string& filepath)
  */
 inline bool improc::JsonFile::IsExtensionValid(const std::string& filepath)
 {
-    SPDLOG_LOGGER_CALL(improc::InfrastructureLogger::get()->data(),spdlog::level::trace,"Checking if json file {} has valid extension...",filepath);
+    SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
+                      , spdlog::level::trace
+                      , "Checking if json file {} has valid extension...",filepath );
     const std::string kJsonExtension = ".json";
     return improc::File(filepath).get_extension() == kJsonExtension;
 }
@@ -229,7 +259,9 @@ inline bool improc::JsonFile::IsExtensionValid(const std::string& filepath)
 template<typename key_type>
 key_type improc::jsonfile::ReadElement(const Json::Value& json_elem)
 {
-    SPDLOG_LOGGER_CALL(improc::InfrastructureLogger::get()->data(),spdlog::level::critical,"ERROR_04: Parsing not defined for element {}.",typeid(key_type).name());
+    SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
+                      , spdlog::level::critical
+                      , "ERROR_04: Parsing not defined for element {}.",typeid(key_type).name() );
     throw improc::not_supported_data_type();
 }
 
@@ -243,6 +275,8 @@ key_type improc::jsonfile::ReadElement(const Json::Value& json_elem)
 template <>
 std::string improc::jsonfile::ReadElement(const Json::Value& json_elem)
 {
-    SPDLOG_LOGGER_CALL(improc::InfrastructureLogger::get()->data(),spdlog::level::trace,"Reading string json element...");
+    SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
+                      , spdlog::level::trace
+                      , "Reading string json element..." );
     return json_elem.asString();
 }

@@ -13,6 +13,10 @@
 #include <filesystem>
 
 namespace improc {
+    /**
+     * @brief File object and utilities
+     * 
+     */
     class IMPROC_EXPORTS File
     {
         protected:
@@ -36,6 +40,10 @@ namespace improc {
             static inline bool  Exists  (const std::string& filepath);
     };
 
+    /**
+     * @brief Json file object and utilities
+     * 
+     */
     class IMPROC_EXPORTS JsonFile : public File
     {
         public:

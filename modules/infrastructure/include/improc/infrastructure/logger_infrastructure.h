@@ -4,6 +4,10 @@
 #include <improc/infrastructure/logger_singleton.h>
 
 namespace improc {
+    /**
+     * @brief Logger used for infrastructure library
+     * 
+     */
     class InfrastructureLogger : public LoggerSingleton<InfrastructureLogger>
     {
         friend std::shared_ptr<InfrastructureLogger> LoggerSingleton::get(const std::string& logger_name);

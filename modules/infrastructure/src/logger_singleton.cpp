@@ -1,11 +1,29 @@
 #include <improc/infrastructure/logger_singleton.h>
 
+/**
+ * @brief Construct a new improc::LoggerSingleton<type> object
+ * 
+ * @tparam type 
+ * @param logger 
+ */
 template<typename type>
 improc::LoggerSingleton<type>::LoggerSingleton(std::shared_ptr<spdlog::logger>&&        logger) : data_(logger) {}
 
+/**
+ * @brief Construct a new improc::LoggerSingleton<type> object
+ * 
+ * @tparam type 
+ * @param logger 
+ */
 template<typename type>
 improc::LoggerSingleton<type>::LoggerSingleton(const std::shared_ptr<spdlog::logger>&   logger) : data_(logger) {}
 
+/**
+ * @brief Obtain spdlog::logger object associated with improc::LoggerSingleton<type> object
+ * 
+ * @tparam type 
+ * @return std::shared_ptr<spdlog::logger> 
+ */
 template<typename type>
 std::shared_ptr<spdlog::logger> improc::LoggerSingleton<type>::data()
 {
@@ -13,6 +31,16 @@ std::shared_ptr<spdlog::logger> improc::LoggerSingleton<type>::data()
     return this->data_;
 }
 
+/**
+ * @brief Create or get the improc::LoggerSingleton<type> object
+ * The spdlog::logger associated with the improc::LoggerSingleton<type> object corresponds to 
+ * the logger logger_name. If the logger_name is not provided, the default logger of spdlog is 
+ * used. If the logger_name is provided and the logger is not defined, the console is used. 
+ * 
+ * @tparam type 
+ * @param logger_name 
+ * @return std::shared_ptr<type> 
+ */
 template<typename type> 
 std::shared_ptr<type> improc::LoggerSingleton<type>::get(const std::string& logger_name)
 {
