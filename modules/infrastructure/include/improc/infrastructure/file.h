@@ -1,13 +1,9 @@
 #ifndef IMPROC_INFRASTRUCTURE_FILE_H
 #define IMPROC_INFRASTRUCTURE_FILE_H
 
-#ifdef WITH_DEBUG
-#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
-#include <spdlog/spdlog.h>
-#endif
-
 #include <improc/improc_defs.h>
 #include <improc/exception.h>
+#include <improc/infrastructure/logger_infrastructure.h>
 
 #include <json/json.h>
 
@@ -32,6 +28,7 @@ namespace improc {
             std::string         get_extension() const;
 
             std::string         Read();
+            void                Remove();
             bool                Exists() const;
 
             static std::string  Read    (const std::string& filepath);

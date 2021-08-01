@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-#define WITH_DEBUG
 #include <improc/infrastructure/file.h>
 #include <file.cpp>
 
@@ -43,6 +42,20 @@ TEST(File,TestReadingNonExistingFile) {
 TEST(File,TestReadingExistingFile) {
     improc::File file_exists {"../../test/test.json"};
     EXPECT_FALSE(file_exists.Read().empty());
+}
+
+TEST(File,TestRemovingNonExistingFile) {
+    improc::File file_not_exists {"test.txt"};
+    EXPECT_NO_THROW(file_not_exists.Remove());
+    EXPECT_FALSE(file_not_exists.Exists());
+}
+
+TEST(File,TestRemovingExistingFile) {
+    std::filesystem::copy("../../test/test.json","./toremove.json");
+    improc::File file_exists {"./toremove.json"};
+    EXPECT_TRUE(file_exists.Exists());
+    EXPECT_NO_THROW(file_exists.Remove());
+    EXPECT_FALSE(file_exists.Exists());
 }
 
 TEST(JsonFile,TestEmptyFileConstructor) {
