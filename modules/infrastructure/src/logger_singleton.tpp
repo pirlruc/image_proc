@@ -1,5 +1,3 @@
-#include <improc/infrastructure/logger_singleton.h>
-
 /**
  * @brief Construct a new improc::LoggerSingleton<type> object
  * 

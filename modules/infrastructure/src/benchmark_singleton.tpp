@@ -1,5 +1,3 @@
-#include <improc/infrastructure/benchmark_singleton.h>
-
 /**
  * @brief Construct a new improc::BenchmarkSingleton<type> object
  * 

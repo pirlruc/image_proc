@@ -33,4 +33,6 @@ namespace improc {
     };
 }
 
+#include <logger_singleton.tpp>
+
 #endif

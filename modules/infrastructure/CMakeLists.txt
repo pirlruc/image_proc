@@ -55,14 +55,16 @@ add_library(
     
     ${PROJECT_SOURCE_DIR}/include/improc/exception.h
     ${PROJECT_SOURCE_DIR}/include/improc/improc_defs.h
+    ${PROJECT_SOURCE_DIR}/include/improc/infrastructure/logger_singleton.h
+    ${PROJECT_SOURCE_DIR}/include/improc/infrastructure/benchmark_singleton.h
     ${PROJECT_SOURCE_DIR}/include/improc/infrastructure/logger_infrastructure.h
+    ${PROJECT_SOURCE_DIR}/include/improc/infrastructure/jsonfile_parser.h
 
     ${PROJECT_SOURCE_DIR}/src/file.cpp
-    ${PROJECT_SOURCE_DIR}/src/logger_singleton.cpp
-    ${PROJECT_SOURCE_DIR}/src/benchmark_singleton.cpp
 )
 
 target_include_directories  (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/include)
+target_include_directories  (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/src)
 target_include_directories  (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   INTERFACE ${PROJECT_SOURCE_DIR}/include)
 target_include_directories  (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   INTERFACE ${PROJECT_SOURCE_DIR}/src)
 

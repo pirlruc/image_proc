@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <improc/infrastructure/file.h>
-#include <file.cpp>
+#include <improc/infrastructure/jsonfile_parser.h>
 
 TEST(File,TestEmptyFileConstructor) {
     improc::File file_empty {};

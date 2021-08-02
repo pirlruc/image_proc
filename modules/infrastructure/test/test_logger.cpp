@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 
 #include <improc/infrastructure/logger_singleton.h>
-#include <logger_singleton.cpp>
 
 class TestLoggerReference : public improc::LoggerSingleton<TestLoggerReference>
 {

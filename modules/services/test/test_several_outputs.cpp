@@ -7,12 +7,6 @@
 #include <improc/services/factory.h>
 #include <improc/services/batch_service.h>
 
-#include <container.cpp>
-#include <context.cpp>
-#include <base_service.cpp>
-#include <factory.cpp>
-#include <batch_service.cpp>
-
 class IncrementTestSO : public improc::StringKeyBaseService
 {
     public:

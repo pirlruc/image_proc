@@ -1,5 +1,3 @@
-#include <improc/services/container.h>
-
 template <typename key_type,typename container_type>
 improc::Container<key_type,container_type>::Container() 
 {

@@ -1,6 +1,7 @@
 #ifndef IMPROC_INFRASTRUCTURE_LOGGER_INFRASTRUCTURE_H
 #define IMPROC_INFRASTRUCTURE_LOGGER_INFRASTRUCTURE_H
 
+#include <improc/improc_defs.h>
 #include <improc/infrastructure/logger_singleton.h>
 
 namespace improc {
@@ -8,7 +9,7 @@ namespace improc {
      * @brief Logger used for infrastructure library
      * 
      */
-    class InfrastructureLogger : public LoggerSingleton<InfrastructureLogger>
+    class IMPROC_EXPORTS InfrastructureLogger : public LoggerSingleton<InfrastructureLogger>
     {
         friend std::shared_ptr<InfrastructureLogger> LoggerSingleton::get(const std::string& logger_name);
         private:

@@ -2,7 +2,6 @@
 #define IMPROC_SERVICES_BATCH_SERVICE_H
 
 #ifdef WITH_DEBUG
-#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
 #include <spdlog/spdlog.h>
 #endif
 
@@ -11,6 +10,7 @@
 #include <improc/services/base_service.h>
 #include <improc/services/factory.h>
 #include <improc/infrastructure/file.h>
+#include <improc/infrastructure/jsonfile_parser.h>
 
 #include <json/json.h>
 #include <vector>
@@ -41,5 +41,7 @@ namespace improc
 
     typedef BatchService<std::string>   StringKeyBatchService;
 }
+
+#include <batch_service.tpp>
 
 #endif

@@ -1,5 +1,3 @@
-#include <improc/services/factory.h>
-
 template <typename key_type>
 improc::ServicesFactory<key_type>::ServicesFactory() : improc::Container<key_type,std::function<std::shared_ptr<improc::BaseService<key_type>>(const Json::Value&)>>() {}
 

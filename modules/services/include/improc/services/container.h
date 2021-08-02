@@ -2,7 +2,6 @@
 #define IMPROC_SERVICES_CONTAINER_H
 
 #ifdef WITH_DEBUG
-#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
 #include <spdlog/spdlog.h>
 #endif
 
@@ -35,5 +34,7 @@ namespace improc
 
     typedef Container<std::string,std::any> StringKeyHeterogeneousContainer;
 }
+
+#include <container.tpp>
 
 #endif

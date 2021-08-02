@@ -1,5 +1,3 @@
-#include <improc/services/batch_service.h>
-
 template <typename key_type>
 improc::BatchService<key_type>::BatchService() {}
 

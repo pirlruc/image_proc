@@ -2,7 +2,6 @@
 #define IMPROC_SERVICES_FACTORY_H
 
 #ifdef WITH_DEBUG
-#define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
 #include <spdlog/spdlog.h>
 #endif
 
@@ -29,5 +28,7 @@ namespace improc
     template<typename service_type>
     IMPROC_EXPORTS std::shared_ptr<StringKeyBaseService>    LoadServiceFromJson(const Json::Value& service_json);
 }
+
+#include <factory.tpp>
 
 #endif

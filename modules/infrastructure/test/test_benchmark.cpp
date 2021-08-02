@@ -2,8 +2,6 @@
 
 #include <improc/infrastructure/file.h>
 #include <improc/infrastructure/benchmark_singleton.h>
-#include <logger_singleton.cpp>
-#include <benchmark_singleton.cpp>
 
 #include <spdlog/sinks/basic_file_sink.h>
 

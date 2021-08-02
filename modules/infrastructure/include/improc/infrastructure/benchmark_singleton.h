@@ -41,4 +41,6 @@ namespace improc {
     };
 }
 
+#include <benchmark_singleton.tpp>
+
 #endif

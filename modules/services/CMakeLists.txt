@@ -33,14 +33,20 @@ message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 add_library(
     ${SERVICES_LIB_OUTPUT_NAME} SHARED
     
-    ${PROJECT_SOURCE_DIR}/src/container.cpp
-    ${PROJECT_SOURCE_DIR}/src/context.cpp
-    ${PROJECT_SOURCE_DIR}/src/base_service.cpp
-    ${PROJECT_SOURCE_DIR}/src/factory.cpp
-    ${PROJECT_SOURCE_DIR}/src/batch_service.cpp
+    ${PROJECT_SOURCE_DIR}/include/improc/services/logger_services.h
+    ${PROJECT_SOURCE_DIR}/include/improc/services/container.h
+    ${PROJECT_SOURCE_DIR}/include/improc/services/context.h
+    ${PROJECT_SOURCE_DIR}/include/improc/services/base_service.h
+    ${PROJECT_SOURCE_DIR}/include/improc/services/factory.h
+    ${PROJECT_SOURCE_DIR}/include/improc/services/batch_service.h
+)
+
+set_target_properties(
+    ${SERVICES_LIB_OUTPUT_NAME} PROPERTIES LINKER_LANGUAGE CXX
 )
 
 target_include_directories  (${SERVICES_LIB_OUTPUT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/include)
+target_include_directories  (${SERVICES_LIB_OUTPUT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/src)
 target_include_directories  (${SERVICES_LIB_OUTPUT_NAME}   INTERFACE ${PROJECT_SOURCE_DIR}/include)
 target_include_directories  (${SERVICES_LIB_OUTPUT_NAME}   INTERFACE ${PROJECT_SOURCE_DIR}/src)
 

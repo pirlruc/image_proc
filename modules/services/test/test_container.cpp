@@ -2,7 +2,6 @@
 
 #define WITH_DEBUG
 #include <improc/services/container.h>
-#include <container.cpp>
 
 TEST(Container,TestEmptyContainerConstructor) {
     improc::Container<int,std::any> container_empty {};
