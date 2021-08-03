@@ -1,11 +1,8 @@
 #ifndef IMPROC_SERVICES_FACTORY_H
 #define IMPROC_SERVICES_FACTORY_H
 
-#ifdef WITH_DEBUG
-#include <spdlog/spdlog.h>
-#endif
-
 #include <improc/improc_defs.h>
+#include <improc/services/logger_services.h>
 #include <improc/services/base_service.h>
 #include <improc/services/container.h>
 

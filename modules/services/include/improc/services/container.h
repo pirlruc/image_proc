@@ -1,11 +1,8 @@
 #ifndef IMPROC_SERVICES_CONTAINER_H
 #define IMPROC_SERVICES_CONTAINER_H
 
-#ifdef WITH_DEBUG
-#include <spdlog/spdlog.h>
-#endif
-
 #include <improc/exception.h>
+#include <improc/services/logger_services.h>
 
 #include <unordered_map>
 #include <any>

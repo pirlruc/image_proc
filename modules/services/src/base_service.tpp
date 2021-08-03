@@ -4,21 +4,17 @@ improc::BaseService<key_type>::BaseService() {}
 template <typename key_type>
 void improc::BaseService<key_type>::Load(const Json::Value& service_json)
 {
-    #ifdef WITH_DEBUG
-    SPDLOG_TRACE("");
-    spdlog::trace("Loading service inputs and outputs...");
-    #endif
-
+    SPDLOG_LOGGER_CALL( improc::ServicesLogger::get()->data()
+                      , spdlog::level::trace
+                      , "Loading service inputs and outputs..." );
     for (Json::Value::const_iterator service_field_iter = service_json.begin(); service_field_iter != service_json.end(); ++service_field_iter)
     {
         const std::string kInputKey  = "inputs";
         const std::string kOutputKey = "outputs";
 
-        #ifdef WITH_DEBUG
-        SPDLOG_INFO("");
-        spdlog::info("Analyzing field {} for service...",service_field_iter.name());
-        #endif
-
+        SPDLOG_LOGGER_CALL( improc::ServicesLogger::get()->data()
+                          , spdlog::level::info
+                          , "Analyzing field {} for service...",service_field_iter.name() );
         std::vector<key_type> list_args;
         if (service_field_iter.name() == kInputKey || service_field_iter.name() == kOutputKey)
         {
@@ -49,11 +45,9 @@ void improc::BaseService<key_type>::Load(const Json::Value& service_json)
 
     if (this->inputs_.empty() == true || this->outputs_.empty() == true)
     {
-        #ifdef WITH_DEBUG
-        SPDLOG_ERROR("");
-        spdlog::error("ERROR_01: Input or output members missing.");
-        #endif
-
+        SPDLOG_LOGGER_CALL( improc::ServicesLogger::get()->data()
+                          , spdlog::level::err
+                          , "ERROR_01: Input or output members missing." );
         throw improc::file_processing_error();
     }
 }    

@@ -1,12 +1,9 @@
 #ifndef IMPROC_SERVICES_BATCH_SERVICE_H
 #define IMPROC_SERVICES_BATCH_SERVICE_H
 
-#ifdef WITH_DEBUG
-#include <spdlog/spdlog.h>
-#endif
-
 #include <improc/improc_defs.h>
 #include <improc/exception.h>
+#include <improc/services/logger_services.h>
 #include <improc/services/base_service.h>
 #include <improc/services/factory.h>
 #include <improc/infrastructure/file.h>
