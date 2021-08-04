@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14-3.18)
 
 project(
   improc_infrastructure
-  VERSION 1.0
+  VERSION 1.0.0
 )
 
 include(FetchContent)
@@ -62,6 +62,7 @@ add_library(
 
 set_target_properties(${INFRASTRUCTURE_LIB_OUTPUT_NAME} PROPERTIES CXX_STANDARD           17)
 set_target_properties(${INFRASTRUCTURE_LIB_OUTPUT_NAME} PROPERTIES CXX_STANDARD_REQUIRED  TRUE)
+set_target_properties(${INFRASTRUCTURE_LIB_OUTPUT_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 
 target_include_directories  (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/include)
 target_include_directories  (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/src)

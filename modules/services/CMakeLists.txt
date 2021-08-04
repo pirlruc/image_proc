@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14-3.18)
 
 project(
     improc_services
-    VERSION     1.0
+    VERSION     1.0.0
 )
 
 # Add dependencies
@@ -42,6 +42,7 @@ add_library(
 set_target_properties(${SERVICES_LIB_OUTPUT_NAME} PROPERTIES CXX_STANDARD           17)
 set_target_properties(${SERVICES_LIB_OUTPUT_NAME} PROPERTIES CXX_STANDARD_REQUIRED  TRUE)
 set_target_properties(${SERVICES_LIB_OUTPUT_NAME} PROPERTIES LINKER_LANGUAGE        CXX)
+set_target_properties(${SERVICES_LIB_OUTPUT_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 
 target_include_directories  (${SERVICES_LIB_OUTPUT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/include)
 target_include_directories  (${SERVICES_LIB_OUTPUT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/src)
