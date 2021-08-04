@@ -53,7 +53,7 @@ void improc::BenchmarkSingleton<type>::AddFieldsToLine(arg field_1, args ... fie
     SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
                       , spdlog::level::trace
                       , "Adding field to line..." );
-    this->line_msg_ += fmt::format(";{}",field_1);
+    this->line_msg_ += fmt::format(";{}",std::move(field_1));
     this->AddFieldsToLine(field_n ...);
 }
 
@@ -82,7 +82,7 @@ void improc::BenchmarkSingleton<type>::WriteFields(arg field_1, args ... field_n
     SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
                       , spdlog::level::trace
                       , "Formatting fields to write on benchmark..." );
-    this->line_msg_ += fmt::format(";{}",field_1);
+    this->line_msg_ += fmt::format(";{}",std::move(field_1));
     this->WriteFields(field_n ...);
 }
 

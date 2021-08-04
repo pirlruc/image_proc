@@ -11,7 +11,7 @@ improc::File::File() {}
  * 
  * @param filepath 
  */
-improc::File::File(const std::string& filepath) : filepath_(filepath) {}
+improc::File::File(const std::string& filepath) : filepath_(std::move(filepath)) {}
 
 /**
  * @brief Set the filepath object
@@ -23,7 +23,7 @@ void improc::File::set_filepath(const std::string& filepath)
     SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
                       , spdlog::level::trace
                       , "Setting filepath {}...",filepath );
-    this->filepath_ = filepath;
+    this->filepath_ = std::move(filepath);
 }
 
 /**
@@ -124,7 +124,7 @@ void improc::File::Remove(const std::string& filepath)
     SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
                       , spdlog::level::trace
                       , "Removing filepath {}...",filepath );
-    std::filesystem::remove(filepath);
+    std::filesystem::remove(std::move(filepath));
 }
 
 /**
@@ -159,7 +159,7 @@ improc::JsonFile::JsonFile(const std::string& filepath)
     SPDLOG_LOGGER_CALL( improc::InfrastructureLogger::get()->data()
                       , spdlog::level::trace
                       , "Creating JsonFile object..." );
-    this->set_filepath(filepath);
+    this->set_filepath(std::move(filepath));
 }
 
 /**
@@ -179,7 +179,7 @@ void improc::JsonFile::set_filepath(const std::string& filepath)
                           , "ERROR_01: Invalid json extension {}.",improc::File(filepath).get_extension() );
         throw improc::invalid_filepath();
     }
-    this->File::set_filepath(filepath);
+    this->File::set_filepath(std::move(filepath));
 }
 
 /**
@@ -245,5 +245,5 @@ inline bool improc::JsonFile::IsExtensionValid(const std::string& filepath)
                       , spdlog::level::trace
                       , "Checking if json file {} has valid extension...",filepath );
     const std::string kJsonExtension = ".json";
-    return improc::File(filepath).get_extension() == kJsonExtension;
+    return improc::File(std::move(filepath)).get_extension() == kJsonExtension;
 }
