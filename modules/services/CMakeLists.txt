@@ -16,8 +16,6 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib" CACHE PATH "Library
 set(CMAKE_PDB_OUTPUT_DIRECTORY     "${CMAKE_BINARY_DIR}/bin" CACHE PATH "PDB (MSVC debug symbol)output dir.")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin" CACHE PATH "Executable/dll output dir.")
 set(BUILD_SHARED_LIBS                   ON)
-set(CMAKE_CXX_STANDARD                  17)
-set(CMAKE_CXX_STANDARD_REQUIRED         True)
 
 if (CMAKE_BUILD_TYPE STREQUAL Release)
     set(SERVICES_LIB_OUTPUT_NAME        ${PROJECT_NAME})
@@ -27,7 +25,7 @@ else()
     set(INFRASTRUCTURE_LIB_OUTPUT_NAME  improc_infrastructured)
 endif()
 
-message(STATUS "${PROJECT_NAME} Version: ${PROJECT_VERSION}")
+message(STATUS "Build ${PROJECT_NAME} Version: ${PROJECT_VERSION}")
 message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 
 add_library(
@@ -38,12 +36,12 @@ add_library(
     ${PROJECT_SOURCE_DIR}/include/improc/services/context.h
     ${PROJECT_SOURCE_DIR}/include/improc/services/base_service.h
     ${PROJECT_SOURCE_DIR}/include/improc/services/factory.h
-    ${PROJECT_SOURCE_DIR}/include/improc/services/batch_service.h
+    ${PROJECT_SOURCE_DIR}/include/improc/services/sequence_service.h
 )
 
-set_target_properties(
-    ${SERVICES_LIB_OUTPUT_NAME} PROPERTIES LINKER_LANGUAGE CXX
-)
+set_target_properties(${SERVICES_LIB_OUTPUT_NAME} PROPERTIES CXX_STANDARD           17)
+set_target_properties(${SERVICES_LIB_OUTPUT_NAME} PROPERTIES CXX_STANDARD_REQUIRED  TRUE)
+set_target_properties(${SERVICES_LIB_OUTPUT_NAME} PROPERTIES LINKER_LANGUAGE        CXX)
 
 target_include_directories  (${SERVICES_LIB_OUTPUT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/include)
 target_include_directories  (${SERVICES_LIB_OUTPUT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/src)

@@ -36,6 +36,11 @@ add_executable(
     ${PROJECT_SOURCE_DIR}/test/test_duplicated_service.cpp
     ${PROJECT_SOURCE_DIR}/test/test_several_outputs.cpp
 )
+
+set_target_properties(${SERVICES_LIB_OUTPUT_NAME}_test PROPERTIES CXX_STANDARD           17)
+set_target_properties(${SERVICES_LIB_OUTPUT_NAME}_test PROPERTIES CXX_STANDARD_REQUIRED  TRUE)
+set_target_properties(${SERVICES_LIB_OUTPUT_NAME}_test PROPERTIES FOLDER ${PROJECT_SOURCE_DIR}/test)
+
 target_link_libraries(${SERVICES_LIB_OUTPUT_NAME}_test  PRIVATE ${SERVICES_LIB_OUTPUT_NAME})
 target_link_libraries(${SERVICES_LIB_OUTPUT_NAME}_test  PRIVATE gtest gtest_main)
 
@@ -44,4 +49,3 @@ gtest_discover_tests(
     WORKING_DIRECTORY                           ${PROJECT_SOURCE_DIR}/test
     PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY    "${PROJECT_SOURCE_DIR}/test"
 )
-set_target_properties(${SERVICES_LIB_OUTPUT_NAME}_test PROPERTIES FOLDER ${PROJECT_SOURCE_DIR}/test)
