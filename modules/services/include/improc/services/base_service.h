@@ -12,6 +12,11 @@
 #include <vector>
 
 namespace improc{
+    /**
+     * @brief Skeleton for base service with key_type inputs and output names.
+     * 
+     * @tparam key_type 
+     */
     template <typename key_type>
     class IMPROC_EXPORTS BaseService
     {

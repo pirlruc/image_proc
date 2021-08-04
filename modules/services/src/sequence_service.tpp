@@ -1,22 +1,34 @@
+/**
+ * @brief Construct a new improc::SequenceService<key type> object
+ * 
+ * @tparam key_type 
+ */
 template <typename key_type>
-improc::BatchService<key_type>::BatchService() {}
+improc::SequenceService<key_type>::SequenceService() {}
 
+/**
+ * @brief Load services sequence from json structure and corresponding service factory
+ * 
+ * @tparam key_type 
+ * @param factory 
+ * @param sequence_service_json 
+ */
 template <typename key_type>
-void improc::BatchService<key_type>::Load( const improc::ServicesFactory<key_type>& factory
-                                         , const Json::Value& batch_service_json )
+void improc::SequenceService<key_type>::Load( const improc::ServicesFactory<key_type>& factory
+                                            , const Json::Value& sequence_service_json )
 {
     SPDLOG_LOGGER_CALL( improc::ServicesLogger::get()->data()
                       , spdlog::level::trace
-                      , "Loading services for batch..." );
+                      , "Loading sequence of services..." );
     const std::string kServicesKey = "services";
-    if (batch_service_json.isMember(kServicesKey) == false) 
+    if (sequence_service_json.isMember(kServicesKey) == false) 
     {
         SPDLOG_LOGGER_CALL( improc::ServicesLogger::get()->data()
                           , spdlog::level::err
                           , "ERROR_01: Member {} missing on json.",kServicesKey );
         throw improc::file_processing_error();
     }
-    Json::Value service_elements = batch_service_json[kServicesKey];
+    Json::Value service_elements = std::move(sequence_service_json[kServicesKey]);
 
     SPDLOG_LOGGER_CALL( improc::ServicesLogger::get()->data()
                       , spdlog::level::debug
@@ -56,28 +68,35 @@ void improc::BatchService<key_type>::Load( const improc::ServicesFactory<key_typ
         SPDLOG_LOGGER_CALL( improc::ServicesLogger::get()->data()
                           , spdlog::level::info
                           , "Adding service element {}...",service_type );
-        improc::BatchService<key_type>::Service service {};
+        improc::SequenceService<key_type>::Service service {};
         service.type = service_type;
-        service.data = factory.Get(service_type)(service_args);
-        this->data_.push_back(service);
+        service.data = factory.Get(std::move(service_type))(std::move(service_args));
+        this->data_.push_back(std::move(service));
     }
     SPDLOG_LOGGER_CALL( improc::ServicesLogger::get()->data()
                       , spdlog::level::info
-                      , "{} services added to batch.",this->data_.size() );
+                      , "{} services added to sequence.",this->data_.size() );
 }
 
+/**
+ * @brief Run service sequence
+ * The inputs and outputs for the service sequence should be provided in the 
+ * context.
+ * 
+ * @tparam key_type 
+ * @param context 
+ */
 template <typename key_type>
-void improc::BatchService<key_type>::Run(improc::Context<key_type>& context) const
+void improc::SequenceService<key_type>::Run(improc::Context<key_type>& context) const
 {
     SPDLOG_LOGGER_CALL( improc::ServicesLogger::get()->data()
                       , spdlog::level::trace
-                      , "Running service batch..." );
+                      , "Running service sequence..." );
     for (auto service_iter = this->data_.begin(); service_iter != this->data_.end(); service_iter++)
     {
         SPDLOG_LOGGER_CALL( improc::ServicesLogger::get()->data()
                           , spdlog::level::debug
                           , "Running service {}...",(*service_iter).type );
-
         std::chrono::time_point<std::chrono::high_resolution_clock> service_start_time = std::chrono::high_resolution_clock::now();
 
         (*service_iter).data->Run(context);
@@ -91,11 +110,17 @@ void improc::BatchService<key_type>::Run(improc::Context<key_type>& context) con
     }
 }
 
+/**
+ * @brief Number of services in the service sequence.
+ * 
+ * @tparam key_type 
+ * @return size_t 
+ */
 template <typename key_type>
-size_t improc::BatchService<key_type>::Size() const
+size_t improc::SequenceService<key_type>::Size() const
 {
     SPDLOG_LOGGER_CALL( improc::ServicesLogger::get()->data()
                       , spdlog::level::trace
-                      , "Obtaining number of services in batch..." );
+                      , "Obtaining number of services in sequence..." );
     return this->data_.size();
 }

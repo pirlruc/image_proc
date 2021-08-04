@@ -5,7 +5,7 @@
 #include <improc/services/context.h>
 #include <improc/services/base_service.h>
 #include <improc/services/factory.h>
-#include <improc/services/batch_service.h>
+#include <improc/services/sequence_service.h>
 
 class IncrementTestSO : public improc::StringKeyBaseService
 {
@@ -81,7 +81,7 @@ class MultiplyTestSO : public improc::StringKeyBaseService
         }
 };
 
-TEST(BatchService,TestBatchServiceRunWithSeveralOutputs) {
+TEST(SequenceService,TestSequenceServiceRunWithSeveralOutputs) {
     improc::JsonFile json_file {"../../test/test_ex2.json"};
     Json::Value json_content = json_file.Read();
 
@@ -90,14 +90,14 @@ TEST(BatchService,TestBatchServiceRunWithSeveralOutputs) {
     factory.Add("subtract" ,std::function<std::shared_ptr<improc::StringKeyBaseService>(const Json::Value&)> {&improc::LoadServiceFromJson<SubtractTestSO>} );
     factory.Add("multiply" ,std::function<std::shared_ptr<improc::StringKeyBaseService>(const Json::Value&)> {&improc::LoadServiceFromJson<MultiplyTestSO>} );
 
-    improc::StringKeyBatchService batch {};
-    batch.Load(factory,json_content);
-    EXPECT_EQ(batch.Size(),3);
+    improc::StringKeySequenceService sequence {};
+    sequence.Load(factory,json_content);
+    EXPECT_EQ(sequence.Size(),3);
 
     improc::StringKeyContext cntxt {};
     cntxt.Add("ori",2);
     spdlog::info("Start, ori = {}",std::any_cast<int>(cntxt.Get("ori")));
-    batch.Run(cntxt);    
+    sequence.Run(cntxt);    
     EXPECT_EQ(std::any_cast<int>(cntxt.Get("ori-1")),3);
     EXPECT_EQ(std::any_cast<int>(cntxt.Get("ori-2")),6);
     EXPECT_EQ(std::any_cast<int>(cntxt.Get("ori"  )),3);

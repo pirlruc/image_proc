@@ -1,6 +1,19 @@
+/**
+ * @brief Construct a new improc::BaseService<key type> object
+ * 
+ * @tparam key_type 
+ */
 template <typename key_type>
 improc::BaseService<key_type>::BaseService() {}
 
+/**
+ * @brief Load base service according with json structure for service
+ * This part of the service is responsible for reading the input and output
+ * names of the service.
+ * 
+ * @tparam key_type 
+ * @param service_json 
+ */
 template <typename key_type>
 void improc::BaseService<key_type>::Load(const Json::Value& service_json)
 {
@@ -15,9 +28,9 @@ void improc::BaseService<key_type>::Load(const Json::Value& service_json)
         SPDLOG_LOGGER_CALL( improc::ServicesLogger::get()->data()
                           , spdlog::level::info
                           , "Analyzing field {} for service...",service_field_iter.name() );
-        std::vector<key_type> list_args;
         if (service_field_iter.name() == kInputKey || service_field_iter.name() == kOutputKey)
         {
+            std::vector<key_type> list_args;
             if (service_field_iter->isArray() == true)
             {
                 for (Json::Value::const_iterator input_iter = service_field_iter->begin(); input_iter != service_field_iter->end(); ++input_iter)
@@ -32,11 +45,11 @@ void improc::BaseService<key_type>::Load(const Json::Value& service_json)
 
             if (service_field_iter.name() == kInputKey)
             {
-                this->inputs_  = list_args;
+                this->inputs_  = std::move(list_args);
             }
             else // (service_field_iter.name() == kOutputKey)
             {
-                this->outputs_ = list_args;
+                this->outputs_ = std::move(list_args);
             }
         }
 

@@ -10,6 +10,14 @@
 
 namespace improc
 {
+    /**
+     * @brief The container can be used to define homogeneous or heterogeneous
+     * containers with different types of keys. The container does not allow
+     * duplicate keys.
+     * 
+     * @tparam key_type 
+     * @tparam container_type 
+     */
     template <typename key_type,typename container_type>
     class Container
     {

@@ -5,7 +5,7 @@
 #include <improc/services/context.h>
 #include <improc/services/base_service.h>
 #include <improc/services/factory.h>
-#include <improc/services/batch_service.h>
+#include <improc/services/sequence_service.h>
 
 class IncrementTestDS : public improc::StringKeyBaseService
 {
@@ -121,12 +121,12 @@ TEST(Context,TestAddItemToContext) {
     EXPECT_EQ(std::any_cast<int>(cntxt.Get("ori")),2);
 }
 
-TEST(BatchService,TestBatchServiceEmptyConstructor) {
-    improc::StringKeyBatchService batch {};
-    EXPECT_EQ(batch.Size(),0);    
+TEST(SequenceService,TestSequenceServiceEmptyConstructor) {
+    improc::StringKeySequenceService sequence {};
+    EXPECT_EQ(sequence.Size(),0);    
 }
 
-TEST(BatchService,TestBatchServiceLoad) {
+TEST(SequenceService,TestSequenceServiceLoad) {
     improc::JsonFile json_file {"../../test/test_ex1.json"};
     Json::Value json_content = json_file.Read();
 
@@ -135,12 +135,12 @@ TEST(BatchService,TestBatchServiceLoad) {
     factory.Add("subtract" ,std::function<std::shared_ptr<improc::StringKeyBaseService>(const Json::Value&)> {&improc::LoadServiceFromJson<SubtractTestDS>} );
     factory.Add("multiply" ,std::function<std::shared_ptr<improc::StringKeyBaseService>(const Json::Value&)> {&improc::LoadServiceFromJson<MultiplyTestDS>} );
 
-    improc::StringKeyBatchService batch {};
-    batch.Load(factory,json_content);
-    EXPECT_EQ(batch.Size(),4);
+    improc::StringKeySequenceService sequence {};
+    sequence.Load(factory,json_content);
+    EXPECT_EQ(sequence.Size(),4);
 }
 
-TEST(BatchService,TestBatchServiceRunWithDuplicateService) {
+TEST(SequenceService,TestSequenceServiceRunWithDuplicateService) {
     improc::JsonFile json_file {"../../test/test_ex1.json"};
     Json::Value json_content = json_file.Read();
 
@@ -149,13 +149,13 @@ TEST(BatchService,TestBatchServiceRunWithDuplicateService) {
     factory.Add("subtract" ,std::function<std::shared_ptr<improc::StringKeyBaseService>(const Json::Value&)> {&improc::LoadServiceFromJson<SubtractTestDS>} );
     factory.Add("multiply" ,std::function<std::shared_ptr<improc::StringKeyBaseService>(const Json::Value&)> {&improc::LoadServiceFromJson<MultiplyTestDS>} );
 
-    improc::StringKeyBatchService batch {};
-    batch.Load(factory,json_content);
-    EXPECT_EQ(batch.Size(),4);
+    improc::StringKeySequenceService sequence {};
+    sequence.Load(factory,json_content);
+    EXPECT_EQ(sequence.Size(),4);
 
     improc::StringKeyContext cntxt {};
     cntxt.Add("ori",2);
     spdlog::info("Start, ori = {}",std::any_cast<int>(cntxt.Get("ori")));
-    batch.Run(cntxt);    
+    sequence.Run(cntxt);    
     EXPECT_EQ(std::any_cast<int>(cntxt.Get("ori")),4);
 }

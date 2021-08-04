@@ -7,6 +7,11 @@
 #include <string>
 namespace improc
 {
+    /**
+     * @brief Heterogeneous context with elements identified by key_type  
+     * 
+     * @tparam key_type 
+     */
     template <typename key_type>
     class IMPROC_EXPORTS Context : public Container<key_type,std::any>
     {

@@ -10,6 +10,12 @@
 
 namespace improc
 {
+    /**
+     * @brief Factory to create services from json structures
+     * This factory is based on the BaseService object.
+     * 
+     * @tparam key_type 
+     */
     template <typename key_type>
     class IMPROC_EXPORTS ServicesFactory : public Container<key_type,std::function<std::shared_ptr<BaseService<key_type>>(const Json::Value&)>>
     {

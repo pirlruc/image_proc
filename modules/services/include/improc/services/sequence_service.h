@@ -1,5 +1,5 @@
-#ifndef IMPROC_SERVICES_BATCH_SERVICE_H
-#define IMPROC_SERVICES_BATCH_SERVICE_H
+#ifndef IMPROC_SERVICES_SEQUENCE_SERVICE_H
+#define IMPROC_SERVICES_SEQUENCE_SERVICE_H
 
 #include <improc/improc_defs.h>
 #include <improc/exception.h>
@@ -14,8 +14,13 @@
 
 namespace improc
 {
+    /**
+     * @brief Define an orderered sequence of services that should be executed together
+     * 
+     * @tparam key_type 
+     */
     template <typename key_type>
-    class IMPROC_EXPORTS BatchService
+    class IMPROC_EXPORTS SequenceService
     {
         private:
             struct Service
@@ -27,18 +32,18 @@ namespace improc
             std::vector<Service>                        data_;
 
         public:
-            BatchService();
+            SequenceService();
 
             void    Load   ( const ServicesFactory<key_type>& factory
-                           , const Json::Value& batch_service_json );
+                           , const Json::Value& sequence_service_json );
             void    Run    ( improc::Context<key_type>& context ) const;
 
             size_t  Size() const;
     };
 
-    typedef BatchService<std::string>   StringKeyBatchService;
+    typedef SequenceService<std::string>   StringKeySequenceService;
 }
 
-#include <batch_service.tpp>
+#include <sequence_service.tpp>
 
 #endif
