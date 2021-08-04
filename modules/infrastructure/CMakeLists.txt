@@ -38,16 +38,13 @@ FetchContent_MakeAvailable(jsoncpp)
 # Already added in jsoncpp CMakeLists
 # target_include_directories(jsoncpp_lib INTERFACE ${PROJECT_SOURCE_DIR}/external/jsoncpp/include)
 
-set(CMAKE_CXX_STANDARD          17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-
 if (CMAKE_BUILD_TYPE STREQUAL Release)
     set(INFRASTRUCTURE_LIB_OUTPUT_NAME ${PROJECT_NAME})
 else()
     set(INFRASTRUCTURE_LIB_OUTPUT_NAME ${PROJECT_NAME}d)
 endif()
 
-message(STATUS "${PROJECT_NAME} Version: ${PROJECT_VERSION}")
+message(STATUS "Build ${PROJECT_NAME} Version: ${PROJECT_VERSION}")
 message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 
 add_library(
@@ -62,6 +59,9 @@ add_library(
 
     ${PROJECT_SOURCE_DIR}/src/file.cpp
 )
+
+set_target_properties(${INFRASTRUCTURE_LIB_OUTPUT_NAME} PROPERTIES CXX_STANDARD           17)
+set_target_properties(${INFRASTRUCTURE_LIB_OUTPUT_NAME} PROPERTIES CXX_STANDARD_REQUIRED  TRUE)
 
 target_include_directories  (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/include)
 target_include_directories  (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/src)

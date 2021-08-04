@@ -36,6 +36,10 @@ add_executable(
     ${PROJECT_SOURCE_DIR}/test/test_benchmark.cpp
     ${PROJECT_SOURCE_DIR}/test/test_logger.cpp
 )
+set_target_properties(${INFRASTRUCTURE_LIB_OUTPUT_NAME}_test PROPERTIES CXX_STANDARD           17)
+set_target_properties(${INFRASTRUCTURE_LIB_OUTPUT_NAME}_test PROPERTIES CXX_STANDARD_REQUIRED  TRUE)
+set_target_properties(${INFRASTRUCTURE_LIB_OUTPUT_NAME}_test PROPERTIES FOLDER ${PROJECT_SOURCE_DIR}/test)
+
 target_link_libraries(${INFRASTRUCTURE_LIB_OUTPUT_NAME}_test  PRIVATE ${INFRASTRUCTURE_LIB_OUTPUT_NAME})
 target_link_libraries(${INFRASTRUCTURE_LIB_OUTPUT_NAME}_test  PRIVATE gtest gtest_main)
 
@@ -44,4 +48,3 @@ gtest_discover_tests(
     WORKING_DIRECTORY                           ${PROJECT_SOURCE_DIR}/test
     PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY    "${PROJECT_SOURCE_DIR}/test"
 )
-set_target_properties(${INFRASTRUCTURE_LIB_OUTPUT_NAME}_test PROPERTIES FOLDER ${PROJECT_SOURCE_DIR}/test)
