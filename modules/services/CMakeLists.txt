@@ -56,3 +56,16 @@ target_link_libraries       (${SERVICES_LIB_OUTPUT_NAME}   INTERFACE ${INFRASTRU
 if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
     add_subdirectory(${PROJECT_SOURCE_DIR}/test ${CMAKE_BINARY_DIR}/test)
 endif()
+
+# Create executable file to get version of library
+configure_file(
+  ${PROJECT_SOURCE_DIR}/version/version_config.h.in 
+  ${CMAKE_BINARY_DIR}/improc_services_config.h
+)
+
+add_executable(
+  improc_services_version
+
+  ${PROJECT_SOURCE_DIR}/version/main.cpp
+)
+target_include_directories  (improc_services_version    PRIVATE     ${CMAKE_BINARY_DIR})

@@ -78,3 +78,16 @@ target_link_libraries       (${INFRASTRUCTURE_LIB_OUTPUT_NAME}   INTERFACE jsonc
 if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
   add_subdirectory(${PROJECT_SOURCE_DIR}/test ${CMAKE_BINARY_DIR}/test)
 endif()
+
+# Create executable file to get version of library
+configure_file(
+  ${PROJECT_SOURCE_DIR}/version/version_config.h.in 
+  ${CMAKE_BINARY_DIR}/improc_infrastructure_config.h
+)
+
+add_executable(
+  improc_infrastructure_version
+
+  ${PROJECT_SOURCE_DIR}/version/main.cpp
+)
+target_include_directories  (improc_infrastructure_version  PRIVATE   ${CMAKE_BINARY_DIR})
