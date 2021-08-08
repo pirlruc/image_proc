@@ -8,6 +8,8 @@ int main()
                 << IMPROC_INFRASTRUCTURE_VERSION_MAJOR 
                 << "."
                 << IMPROC_INFRASTRUCTURE_VERSION_MINOR
+                << "."
+                << IMPROC_INFRASTRUCTURE_VERSION_PATCH
                 << std::endl;
     return 0;
 }
