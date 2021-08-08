@@ -100,7 +100,7 @@ set_target_properties     (${PROJECT_NAME}_version PROPERTIES DEBUG_POSTFIX     
 target_include_directories(${PROJECT_NAME}_version PRIVATE    ${CMAKE_BINARY_DIR})
 
 # Install configuration
-set(${PROJECT_NAME}_libs ${PROJECT_NAME} spdlog)
+set(${PROJECT_NAME}_libs ${PROJECT_NAME} spdlog jsoncpp_lib)
 install(
   TARGETS     ${${PROJECT_NAME}_libs}
   DESTINATION lib

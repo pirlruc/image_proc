@@ -1,0 +1,4 @@
+@PACKAGE_INIT@
+
+include ( "${CMAKE_CURRENT_LIST_DIR}/improc_infrastructure_target.cmake"    )
+include ( "${CMAKE_CURRENT_LIST_DIR}/improc_services_target.cmake"          )
