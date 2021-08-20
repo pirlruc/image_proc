@@ -19,7 +19,7 @@ if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
 endif()
 
 # Add external dependencies
-#SPDLOG
+# SPDLOG
 FetchContent_Declare(
   spdlog
   GIT_REPOSITORY  https://github.com/gabime/spdlog
