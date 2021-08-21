@@ -23,7 +23,7 @@ endif()
 FetchContent_Declare(
   spdlog
   GIT_REPOSITORY  https://github.com/gabime/spdlog
-  GIT_TAG         v1.9.1
+  GIT_TAG         v1.9.2
   SOURCE_DIR      ${PROJECT_SOURCE_DIR}/external/spdlog
 )
 FetchContent_MakeAvailable(spdlog)
