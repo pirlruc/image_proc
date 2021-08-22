@@ -11,16 +11,16 @@ namespace improc {
     class IMPROC_EXPORTS Image
     {
         private:
-            cv::UMat                    data_;
+            cv::Mat                     data_;
 
         public:
             Image();
-            Image(const cv::UMat& image_data);
+            Image(const cv::Mat& image_data);
 
-            void                        set_data(const cv::UMat& image_data);
-            cv::UMat                    get_data();
+            void                        set_data(const cv::Mat& image_data);
+            cv::Mat                     get_data();
             Image                       clone();
-    }
+    };
 }
 
 #endif
