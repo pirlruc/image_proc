@@ -5,7 +5,6 @@
 #include <improc/corecv/logger_improc.hpp>
 #include <servproc/infrastructure/string.hpp>
 
-#include <string>
 #include <opencv2/core.hpp>
 
 namespace improc {

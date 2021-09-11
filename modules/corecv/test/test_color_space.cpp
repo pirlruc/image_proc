@@ -51,6 +51,14 @@ TEST(ColorSpace,TestConstructorFromClass) {
 }
 
 TEST(ColorSpace,TestToString) {
-    improc::ColorSpace color_space_rgba {improc::ColorSpace::Value::kRGBA};
+    improc::ColorSpace color_space_bgr {"bgr"};
+    improc::ColorSpace color_space_rgb {"rgb"};
+    improc::ColorSpace color_space_bgra{"bgra"};
+    improc::ColorSpace color_space_rgba{"rgba"};
+    improc::ColorSpace color_space_gray{"gray"};
+    EXPECT_EQ(color_space_bgr.ToString(),"BGR");
+    EXPECT_EQ(color_space_rgb.ToString(),"RGB");
+    EXPECT_EQ(color_space_bgra.ToString(),"BGRA");
     EXPECT_EQ(color_space_rgba.ToString(),"RGBA");
+    EXPECT_EQ(color_space_gray.ToString(),"Gray");
 }
