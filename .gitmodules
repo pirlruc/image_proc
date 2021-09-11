@@ -1,0 +1,3 @@
+[submodule "modules/servproc"]
+	path = modules/servproc
+	url = git@github.com:pirlruc/servproc.git

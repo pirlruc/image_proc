@@ -1,15 +1,15 @@
-#ifndef IMPROC_CORECV_LOGGER_IMPROC_H
-#define IMPROC_CORECV_LOGGER_IMPROC_H
+#ifndef IMPROC_CORECV_LOGGER_IMPROC_HPP
+#define IMPROC_CORECV_LOGGER_IMPROC_HPP
 
-#include <improc/improc_defs.h>
-#include <improc/infrastructure/logger_singleton.h>
+#include <improc/improc_defs.hpp>
+#include <servproc/infrastructure/logger_singleton.hpp>
 
 namespace improc {
     /**
      * @brief Logger used for image processing library
      * 
      */
-    class IMPROC_EXPORTS ImageProcLogger : public LoggerSingleton<ImageProcLogger>
+    class IMPROC_EXPORTS ImageProcLogger : public servproc::LoggerSingleton<ImageProcLogger>
     {
         friend std::shared_ptr<ImageProcLogger> LoggerSingleton::get(const std::string& logger_name);
         private:
