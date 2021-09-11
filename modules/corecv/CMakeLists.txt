@@ -16,12 +16,10 @@ if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"      CACHE PATH "Library output dir.")
   set(CMAKE_PDB_OUTPUT_DIRECTORY     "${CMAKE_BINARY_DIR}/bin"      CACHE PATH "PDB (MSVC debug symbol)output dir.")
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"      CACHE PATH "Executable/dll output dir.")
-  set(DESTDIR                        "${CMAKE_BINARY_DIR}/install"  CACHE PATH "Installation dir.")
   option(BUILD_SHARED_LIBS           "Build using shared libraries" ON)
   set(CMAKE_DEBUG_POSTFIX d)
 
-  add_subdirectory(${PROJECT_SOURCE_DIR}/../infrastructure  ${CMAKE_BINARY_DIR}/infrastructure)
-  add_subdirectory(${PROJECT_SOURCE_DIR}/../services        ${CMAKE_BINARY_DIR}/services)
+  add_subdirectory(${PROJECT_SOURCE_DIR}/../servproc        ${CMAKE_BINARY_DIR}/servproc)
 endif()
 
 # Add external dependencies
@@ -47,7 +45,7 @@ set(OPENCV_EXTRA_MODULES_PATH ${CMAKE_CURRENT_BINARY_DIR}/../external/opencv_con
 set(WITH_TBB              ON )
 set(WITH_V4L              ON )
 set(WITH_OPENGL           ON )
-FetchContent_MakeAvailable(opencv)
+# FetchContent_MakeAvailable(opencv)
 
 message(STATUS "Build ${PROJECT_NAME} Version: ${PROJECT_VERSION}")
 message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
@@ -55,14 +53,23 @@ message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 add_library(
   ${PROJECT_NAME}
     
-  ${PROJECT_SOURCE_DIR}/include/improc/corecv/logger_improc.h
-  ${PROJECT_SOURCE_DIR}/src/image.cpp
+  ${PROJECT_SOURCE_DIR}/include/improc/corecv/logger_improc.hpp
+  
+  ${PROJECT_SOURCE_DIR}/src/color_space.cpp
+  # ${PROJECT_SOURCE_DIR}/src/kernel_shape.cpp
+  # ${PROJECT_SOURCE_DIR}/src/threshold_type.cpp
+  # ${PROJECT_SOURCE_DIR}/src/morphological_oper.cpp
+  # ${PROJECT_SOURCE_DIR}/src/image_format.cpp
+  # ${PROJECT_SOURCE_DIR}/src/interpolation_type.cpp
+  # ${PROJECT_SOURCE_DIR}/src/image.cpp
 )
 
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD           11)
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD           17)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD_REQUIRED  TRUE)
+set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE        CXX)
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION                ${PROJECT_VERSION})
 set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX          ${CMAKE_DEBUG_POSTFIX})
+
 target_include_directories  (${PROJECT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/include)
 target_include_directories  (${PROJECT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/src)
 target_include_directories  (${PROJECT_NAME}   INTERFACE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
@@ -70,17 +77,16 @@ target_include_directories  (${PROJECT_NAME}   INTERFACE $<BUILD_INTERFACE:${PRO
 target_include_directories  (${PROJECT_NAME}   INTERFACE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
                                                $<INSTALL_INTERFACE:include> )
 
+SET(OpenCV_DIR ${CMAKE_INSTALL_PREFIX})
 find_package(OpenCV REQUIRED)
 target_include_directories(${PROJECT_NAME} PRIVATE    ${OpenCV_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} INTERFACE  $<BUILD_INTERFACE:${OpenCV_INCLUDE_DIRS}>
                                                       $<INSTALL_INTERFACE:include> )
-
+                                               
 # Link dependencies
-target_link_libraries       (${PROJECT_NAME}   PRIVATE   improc_infrastructure)
-target_link_libraries       (${PROJECT_NAME}   PRIVATE   improc_services)
+target_link_libraries       (${PROJECT_NAME}   PRIVATE   servproc_services)
 target_link_libraries       (${PROJECT_NAME}   PRIVATE   ${OpenCV_LIBS})
-target_link_libraries       (${PROJECT_NAME}   INTERFACE improc_infrastructure)
-target_link_libraries       (${PROJECT_NAME}   INTERFACE improc_services)
+target_link_libraries       (${PROJECT_NAME}   INTERFACE servproc_services)
 target_link_libraries       (${PROJECT_NAME}   INTERFACE ${OpenCV_LIBS})
 
 if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
@@ -89,8 +95,8 @@ endif()
 
 # Create executable file to get version of library
 configure_file(
-  ${PROJECT_SOURCE_DIR}/version/version_config.h.in 
-  ${CMAKE_BINARY_DIR}/${PROJECT_NAME}_config.h
+  ${PROJECT_SOURCE_DIR}/version/version_config.hpp.in 
+  ${CMAKE_BINARY_DIR}/${PROJECT_NAME}_config.hpp
 )
 
 add_executable(
@@ -103,17 +109,16 @@ set_target_properties     (${PROJECT_NAME}_version PROPERTIES CXX_STANDARD_REQUI
 set_target_properties     (${PROJECT_NAME}_version PROPERTIES DEBUG_POSTFIX          ${CMAKE_DEBUG_POSTFIX})
 target_include_directories(${PROJECT_NAME}_version PRIVATE    ${CMAKE_BINARY_DIR})
 
-# Install configuration
+# # Install configuration
+# set(${PROJECT_NAME}_libs ${PROJECT_NAME} opencv)
 # install(
-#   TARGETS     ${PROJECT_NAME}
+#   TARGETS     ${${PROJECT_NAME}_libs}
 #   DESTINATION lib
 #   EXPORT      ${PROJECT_NAME}_target 
 # )
-# install(FILES   ${PROJECT_SOURCE_DIR}/include/improc/services/logger_services.h     DESTINATION include/improc/services)
-# install(FILES   ${PROJECT_SOURCE_DIR}/include/improc/services/context.h             DESTINATION include/improc/services)
-# install(FILES   ${PROJECT_SOURCE_DIR}/include/improc/services/base_service.h        DESTINATION include/improc/services)
-# install(FILES   ${PROJECT_SOURCE_DIR}/include/improc/services/factory.h             DESTINATION include/improc/services)
-# install(FILES   ${PROJECT_SOURCE_DIR}/include/improc/services/sequence_service.h    DESTINATION include/improc/services)
+# # install(FILES   ${PROJECT_SOURCE_DIR}/external/opencv/LICENSE                     DESTINATION share/licenses/improc/opencv)
 
-install(TARGETS ${PROJECT_NAME}_version                         DESTINATION bin)
-install(FILES   ${CMAKE_BINARY_DIR}/${PROJECT_NAME}_config.h    DESTINATION include)
+# install(FILES   ${PROJECT_SOURCE_DIR}/include/improc/corecv/logger_improc.h     DESTINATION include/improc/corecv)
+
+# install(TARGETS ${PROJECT_NAME}_version                         DESTINATION bin)
+# install(FILES   ${CMAKE_BINARY_DIR}/${PROJECT_NAME}_config.hpp  DESTINATION include)

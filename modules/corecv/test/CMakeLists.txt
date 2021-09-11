@@ -23,9 +23,10 @@ set_target_properties(gtest_main PROPERTIES FOLDER extern)
 add_executable(
   ${PROJECT_NAME}_test
     
-  ${PROJECT_SOURCE_DIR}/test/test_image.cpp
+  ${PROJECT_SOURCE_DIR}/test/test_color_space.cpp
+  # ${PROJECT_SOURCE_DIR}/test/test_image.cpp
 )
-set_target_properties(${PROJECT_NAME}_test PROPERTIES CXX_STANDARD           11)
+set_target_properties(${PROJECT_NAME}_test PROPERTIES CXX_STANDARD           17)
 set_target_properties(${PROJECT_NAME}_test PROPERTIES CXX_STANDARD_REQUIRED  TRUE)
 set_target_properties(${PROJECT_NAME}_test PROPERTIES FOLDER                 ${PROJECT_SOURCE_DIR}/test)
 set_target_properties(${PROJECT_NAME}_test PROPERTIES DEBUG_POSTFIX          ${CMAKE_DEBUG_POSTFIX})

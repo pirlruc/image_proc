@@ -1,4 +1,4 @@
-#include <improc_corecv_config.h>
+#include <improc_corecv_config.hpp>
 
 #include <iostream>
 
