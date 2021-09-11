@@ -58,9 +58,9 @@ add_library(
   ${PROJECT_SOURCE_DIR}/src/color_space.cpp
   ${PROJECT_SOURCE_DIR}/src/threshold_type.cpp
   ${PROJECT_SOURCE_DIR}/src/kernel_shape.cpp
-  # ${PROJECT_SOURCE_DIR}/src/morphological_oper.cpp
+  ${PROJECT_SOURCE_DIR}/src/interpolation_type.cpp
+  ${PROJECT_SOURCE_DIR}/src/morphological_oper.cpp
   # ${PROJECT_SOURCE_DIR}/src/image_format.cpp
-  # ${PROJECT_SOURCE_DIR}/src/interpolation_type.cpp
   # ${PROJECT_SOURCE_DIR}/src/image.cpp
 )
 

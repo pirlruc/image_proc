@@ -26,6 +26,8 @@ add_executable(
   ${PROJECT_SOURCE_DIR}/test/test_color_space.cpp
   ${PROJECT_SOURCE_DIR}/test/test_threshold_type.cpp
   ${PROJECT_SOURCE_DIR}/test/test_kernel_shape.cpp
+  ${PROJECT_SOURCE_DIR}/test/test_interpolation_type.cpp
+  ${PROJECT_SOURCE_DIR}/test/test_morphological_oper.cpp
   # ${PROJECT_SOURCE_DIR}/test/test_image.cpp
 )
 set_target_properties(${PROJECT_NAME}_test PROPERTIES CXX_STANDARD           17)
