@@ -53,7 +53,9 @@ message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 add_library(
   ${PROJECT_NAME}
     
+  ${PROJECT_SOURCE_DIR}/include/improc/exceptions.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/corecv/logger_improc.hpp
+  # ${PROJECT_SOURCE_DIR}/include/improc/services/convert_color_space.hpp
   
   ${PROJECT_SOURCE_DIR}/src/color_space.cpp
   ${PROJECT_SOURCE_DIR}/src/threshold_type.cpp
@@ -61,7 +63,7 @@ add_library(
   ${PROJECT_SOURCE_DIR}/src/interpolation_type.cpp
   ${PROJECT_SOURCE_DIR}/src/morphological_oper.cpp
   ${PROJECT_SOURCE_DIR}/src/image_format.cpp
-  # ${PROJECT_SOURCE_DIR}/src/image.cpp
+  ${PROJECT_SOURCE_DIR}/src/image.cpp
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD           17)

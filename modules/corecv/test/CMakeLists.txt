@@ -29,7 +29,7 @@ add_executable(
   ${PROJECT_SOURCE_DIR}/test/test_interpolation_type.cpp
   ${PROJECT_SOURCE_DIR}/test/test_morphological_oper.cpp
   ${PROJECT_SOURCE_DIR}/test/test_image_format.cpp
-  # ${PROJECT_SOURCE_DIR}/test/test_image.cpp
+  ${PROJECT_SOURCE_DIR}/test/test_image.cpp
 )
 set_target_properties(${PROJECT_NAME}_test PROPERTIES CXX_STANDARD           17)
 set_target_properties(${PROJECT_NAME}_test PROPERTIES CXX_STANDARD_REQUIRED  TRUE)

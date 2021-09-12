@@ -1,4 +1,4 @@
-#include <improc/corecv/image.h>
+#include <improc/corecv/image.hpp>
 
 improc::Image::Image() : data_(cv::Mat()) {}
 
@@ -26,7 +26,7 @@ void improc::Image::set_data(const cv::Mat& image_data)
     this->data_ = image_data;
 }
 
-cv::Mat improc::Image::get_data()
+cv::Mat improc::Image::get_data() const
 {
     SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
                       , spdlog::level::trace
@@ -34,10 +34,71 @@ cv::Mat improc::Image::get_data()
     return this->data_;
 }
 
-improc::Image improc::Image::clone()
+improc::Image improc::Image::Clone() const
 {
     SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
                       , spdlog::level::trace
                       , "Cloning image object..." );    
-    return Image(this->get_data().clone());
+    return improc::Image(this->get_data().clone());
+}
+
+improc::ColorSpaceImage::ColorSpaceImage() : improc::Image()
+                                           , color_space_(improc::ColorSpace::kRGB) {}
+
+improc::ColorSpaceImage::ColorSpaceImage(const cv::Mat& image_data , const improc::ColorSpace& color_space) : Image(image_data)
+{
+    SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
+                      , spdlog::level::trace
+                      , "Creating color space image object..." );    
+    this->set_color_space(color_space);
+}
+
+void improc::ColorSpaceImage::set_color_space(const improc::ColorSpace& color_space)
+{
+    SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
+                      , spdlog::level::trace
+                      , "Setting color space..." );
+    if (this->data_.channels() != color_space.GetNumberChannels())
+    {
+        SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
+                          , spdlog::level::err
+                          , "ERROR_01: Invalid color space for image. Expected {} channels but image has {}."
+                          , color_space.GetNumberChannels(), this->data_.channels() );
+        throw improc::invalid_color_space();
+    }
+    this->color_space_ = color_space;
+}
+
+improc::ColorSpace improc::ColorSpaceImage::get_color_space() const
+{
+    SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
+                      , spdlog::level::trace
+                      , "Obtaining color space..." );    
+    return this->color_space_;
+}
+
+improc::ColorSpaceImage improc::ColorSpaceImage::Clone() const
+{
+    SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
+                      , spdlog::level::trace
+                      , "Cloning color space image object..." );    
+    return improc::ColorSpaceImage(this->Image::Clone().get_data(),this->color_space_);
+}
+
+void improc::ColorSpaceImage::ConvertToColorSpace(const improc::ColorSpace& to_color_space)
+{
+    SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
+                      , spdlog::level::trace
+                      , "Converting color space image from {} to {}..."
+                      , this->color_space_.ToString(), to_color_space.ToString() );
+    if (this->color_space_ == to_color_space)
+    {
+        SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
+                          , spdlog::level::debug
+                          , "Color conversion not performed. Image is already in target color space." );
+    }
+    else
+    {
+        cv::cvtColor(this->data_,this->data_,this->color_space_.GetColorConversionCode(to_color_space));
+    }
 }
