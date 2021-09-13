@@ -1,7 +1,0 @@
-{
-    "convert_color_space":
-    {
-        "from_color_space": "rgb", ?
-        "to_color_space": ["bgr","gray"]
-    }
-}

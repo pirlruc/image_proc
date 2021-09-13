@@ -101,6 +101,7 @@ TEST(ColorSpaceImage,TestConvertToSameColorSpace) {
     EXPECT_EQ(image.get_data().channels(),3);
     image.ConvertToColorSpace(improc::ColorSpace::kBGR);
     EXPECT_EQ(image.get_data().channels(),3);
+    EXPECT_EQ(image.get_color_space(),improc::ColorSpace::kBGR);
 }
 
 TEST(ColorSpaceImage,TestConvertToDifferentColorSpace) {
@@ -109,4 +110,5 @@ TEST(ColorSpaceImage,TestConvertToDifferentColorSpace) {
     EXPECT_EQ(image.get_data().channels(),3);
     image.ConvertToColorSpace(improc::ColorSpace::kGray);
     EXPECT_EQ(image.get_data().channels(),1);
+    EXPECT_EQ(image.get_color_space(),improc::ColorSpace::kGray);
 }

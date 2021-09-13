@@ -100,5 +100,6 @@ void improc::ColorSpaceImage::ConvertToColorSpace(const improc::ColorSpace& to_c
     else
     {
         cv::cvtColor(this->data_,this->data_,this->color_space_.GetColorConversionCode(to_color_space));
+        this->color_space_ = to_color_space;
     }
 }
