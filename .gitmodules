@@ -1,3 +1,9 @@
 [submodule "modules/servproc"]
 	path = modules/servproc
 	url = git@github.com:pirlruc/servproc.git
+[submodule "modules/infrastructure"]
+	path = modules/infrastructure
+	url = git@github.com:pirlruc/infrastructure.git
+[submodule "modules/services"]
+	path = modules/services
+	url = git@github.com:pirlruc/services.git
