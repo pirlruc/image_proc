@@ -51,12 +51,28 @@ namespace improc
                                     >   ColumnVector;
 
             typedef Eigen::Matrix   <   Scalar
+                                    ,   NumberComponents
+                                    ,   Eigen::Dynamic
+                                    ,   StorageOrder
+                                    ,   MaxNumberComponents
+                                    ,   MaxNumberVectors
+                                    >   MultipleVectors;
+
+            typedef Eigen::Matrix   <   Scalar
                                     ,   1
                                     ,   NumberVectors
                                     ,   Eigen::RowMajor
                                     ,   1
                                     ,   MaxNumberVectors
                                     >   RowVector;
+
+            typedef Eigen::Matrix   <   Scalar
+                                    ,   Eigen::Dynamic
+                                    ,   NumberVectors
+                                    ,   StorageOrder
+                                    ,   MaxNumberComponents
+                                    ,   MaxNumberVectors
+                                    >   MultipleComponents;
 
         private:
             VectorMatrixData        data_;
@@ -94,7 +110,7 @@ namespace improc
                 return this->data_.col(vector_idx);
             }
 
-            ColumnVectorXpr         GetVectors     (std::vector<size_t> vector_idxs)
+            MultipleVectors        GetVectors     (std::vector<size_t> vector_idxs)    const
             {
                 return this->data_(Eigen::all,vector_idxs);
             }
@@ -104,12 +120,12 @@ namespace improc
                 return this->data_.row(component_idx);
             }
 
-            RowVectorXpr            GetComponents (std::vector<size_t> component_idxs)
+            MultipleComponents      GetComponents (std::vector<size_t> component_idxs)  const
             {
                 return this->data_(component_idxs,Eigen::all);
             }
 
-            RowVector               GetVectorNorms()
+            RowVector               GetVectorNorms()    const
             {
                 return this->data_.colwise().squaredNorm();
             }

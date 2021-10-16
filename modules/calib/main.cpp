@@ -17,10 +17,11 @@ int main()
     std::cout << m1.get_number_components() << std::endl;
     std::cout << m1.get_number_vectors() << std::endl;
 
-    std::cout << "-- Set Components --" << std::endl;
-    std::vector<size_t> indices {0,2};
-    m1.GetComponents(indices) = Eigen::Matrix<int,2,2>::Zero();
-    std::cout << m1.get_data() << std::endl;
+    std::cout << "-- Get Components --" << std::endl;
+    std::cout << m1.GetComponents({0,2}) << std::endl;
+
+    std::cout << "-- Get Vectors --" << std::endl;
+    std::cout << m1.GetVectors({0,1}) << std::endl;
 
     improc::VectorMatrix<int,3,2> m2 {matrix};
     std::cout << "-- Accessors --" << std::endl;
