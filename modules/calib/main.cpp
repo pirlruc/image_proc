@@ -10,6 +10,14 @@ int main()
     matrix(1,1) = 4;
     matrix(2,0) = 5;
     matrix(2,1) = 6;
+    std::cout << typeid(matrix).name() << std::endl;
+    std::cout << typeid(matrix.colwise().homogeneous()).name() << std::endl;
+    std::cout << typeid(matrix.colwise().homogeneous().colwise().hnormalized()).name() << std::endl;
+    std::cout << matrix << std::endl;
+    std::cout << matrix.colwise().homogeneous() << std::endl;
+    std::cout << matrix.colwise().homogeneous().colwise().hnormalized() << std::endl;
+    Eigen::Homogeneous<Eigen::Matrix<int,3,2>,0> mh = matrix.colwise().homogeneous();
+    matrix = mh.colwise().hnormalized();
 
     improc::VectorMatrix<int,3,2> m1 {};
     m1.set_data(matrix);
@@ -22,6 +30,10 @@ int main()
 
     std::cout << "-- Get Vectors --" << std::endl;
     std::cout << m1.GetVectors({0,1}) << std::endl;
+
+    std::cout << "-- Get Homogeneous --" << std::endl;
+    std::cout << m1.Homogeneous() << std::endl;
+    // std::cout << m1.HomogeneousNormalized() << std::endl;
 
     improc::VectorMatrix<int,3,2> m2 {matrix};
     std::cout << "-- Accessors --" << std::endl;

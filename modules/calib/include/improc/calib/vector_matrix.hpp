@@ -42,6 +42,16 @@ namespace improc
                                                                     >
                                                 >::RowXpr RowVectorXpr;
 
+            typedef typename Eigen::Homogeneous <   Eigen::Matrix   <   Scalar
+                                                                    ,   NumberComponents
+                                                                    ,   NumberVectors
+                                                                    ,   StorageOrder
+                                                                    ,   MaxNumberComponents
+                                                                    ,   MaxNumberVectors
+                                                                    >
+                                                , Eigen::DirectionType::Vertical
+                                                > VectorMatrixHomogeneous;
+
             typedef Eigen::Matrix   <   Scalar
                                     ,   NumberComponents
                                     ,   1
@@ -76,11 +86,13 @@ namespace improc
 
         private:
             VectorMatrixData        data_;
-            bool                    homogeneous_;
+            VectorMatrixHomogeneous data_homogeneous_;
 
         public:
-            VectorMatrix();
-            VectorMatrix(const VectorMatrixData& vector_matrix_data);
+            VectorMatrix()                                              : data_(VectorMatrixData()) 
+                                                                        , data_homogeneous_(VectorMatrixHomogeneous()) {}
+            VectorMatrix(const VectorMatrixData& vector_matrix_data)    : data_(vector_matrix_data) 
+                                                                        , data_homogeneous_(VectorMatrixHomogeneous()) {}
 
             void                    set_data(const VectorMatrixData& vector_matrix_data)
             {
@@ -89,10 +101,7 @@ namespace improc
 
             inline size_t           get_number_components()  const
             {
-                size_t number_components = this->data_.rows();
-                if (this->homogeneous_ == true)
-                    number_components -= 1;
-                return number_components;
+                return this->data_.rows();
             }
 
             inline size_t           get_number_vectors()     const
@@ -130,15 +139,20 @@ namespace improc
                 return this->data_.colwise().squaredNorm();
             }
 
-            // void SetHomogeneousCoordinates();
-            // void RemoveHomogeneousCoordinates();
+            VectorMatrixHomogeneous Homogeneous()
+            {
+                return this->data_.colwise().homogeneous();
+            }
+
+            VectorMatrixData HomogeneousNormalized()
+            {
+                return this->data_.colwise().hnormalized();
+            }
     };
 
     typedef VectorMatrix<double,Eigen::Dynamic,Eigen::Dynamic> VectorMatrixXd;
     typedef VectorMatrix<float ,Eigen::Dynamic,Eigen::Dynamic> VectorMatrixXf;
     typedef VectorMatrix<int   ,Eigen::Dynamic,Eigen::Dynamic> VectorMatrixXi;
 }
-
-#include <vector_matrix.tpp>
 
 #endif

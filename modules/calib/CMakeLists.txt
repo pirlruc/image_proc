@@ -32,6 +32,17 @@ FetchContent_Declare(
 # target_include_directories(eigen INTERFACE  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/external/eigen>
 #                                             $<INSTALL_INTERFACE:include> )
 
+# VISP
+# FetchContent_Declare(
+#   visp
+#   GIT_REPOSITORY  https://github.com/lagadic/visp
+#   GIT_TAG         v3.4.0
+#   SOURCE_DIR      ${CMAKE_CURRENT_BINARY_DIR}/../external/visp
+# )
+# FetchContent_MakeAvailable(visp)
+# target_include_directories(visp INTERFACE  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/external/visp>
+#                                             $<INSTALL_INTERFACE:include> )
+
 message(STATUS "Build ${PROJECT_NAME} Version: ${PROJECT_VERSION}")
 message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 
