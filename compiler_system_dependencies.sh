@@ -4,7 +4,12 @@ CMAKE_BUILD=4
 
 HOME_DIRECTORY=$(pwd)
 
-# LLVM - Clang
+# GCC COMPILER
+sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+sudo apt -y update
+sudo apt -y install gcc-11 g++-11
+
+# LLVM - CLANG
 mkdir llvm_dir
 cd llvm_dir
 
@@ -15,7 +20,7 @@ sudo ./llvm.sh $LLVM_VERSION
 cd "$HOME_DIRECTORY"
 rm -r llvm_dir
 
-# CMake
+# CMAKE
 sudo apt -y update
 sudo apt -y install build-essential libtool autoconf unzip wget
 
