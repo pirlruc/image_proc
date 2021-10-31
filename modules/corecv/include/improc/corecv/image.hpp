@@ -22,6 +22,9 @@ namespace improc {
             cv::Mat                     get_data()  const;
 
             Image                       Clone()     const;
+
+            void                        Resize(const cv::Size&   to_image_size, const InterpolationType& interpolation);
+            void                        Resize(const cv::Size2d& scaling,       const InterpolationType& interpolation);
     };
 
 

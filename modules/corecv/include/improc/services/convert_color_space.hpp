@@ -21,8 +21,8 @@ namespace improc {
         public:
             ConvertColorSpace();
 
-            void                            Load(const Json::Value& convert_color_space_json)   override;
-            void                            Run (servproc::Context<key_type>& context) const    override;
+            void                            Load(const Json::Value& service_json)            override;
+            void                            Run (servproc::Context<key_type>& context) const override;
     };
 
     typedef ConvertColorSpace<std::string>    StringKeyConvertColorSpace;

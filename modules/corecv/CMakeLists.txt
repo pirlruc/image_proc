@@ -56,6 +56,7 @@ add_library(
   ${PROJECT_SOURCE_DIR}/include/improc/exceptions.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/corecv/logger_improc.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/services/convert_color_space.hpp
+  ${PROJECT_SOURCE_DIR}/include/improc/services/resize_image.hpp
   
   ${PROJECT_SOURCE_DIR}/src/color_space.cpp
   ${PROJECT_SOURCE_DIR}/src/threshold_type.cpp
