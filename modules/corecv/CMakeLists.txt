@@ -27,7 +27,7 @@ endif()
 FetchContent_Declare(
   opencv_contrib
   GIT_REPOSITORY  https://github.com/opencv/opencv_contrib.git
-  GIT_TAG         4.5.3
+  GIT_TAG         4.5.4
   SOURCE_DIR      ${CMAKE_CURRENT_BINARY_DIR}/../external/opencv_contrib
 )
 FetchContent_GetProperties(opencv_contrib)
@@ -38,7 +38,7 @@ endif()
 FetchContent_Declare(
   opencv
   GIT_REPOSITORY  https://github.com/opencv/opencv
-  GIT_TAG         4.5.3
+  GIT_TAG         4.5.4
   SOURCE_DIR      ${CMAKE_CURRENT_BINARY_DIR}/../external/opencv
 )
 set(OPENCV_EXTRA_MODULES_PATH ${CMAKE_CURRENT_BINARY_DIR}/../external/opencv_contrib/modules)
@@ -47,8 +47,18 @@ set(WITH_V4L              ON )
 set(WITH_OPENGL           ON )
 # FetchContent_MakeAvailable(opencv)
 
+# DLIB
+FetchContent_Declare(
+  dlib
+  GIT_REPOSITORY  https://github.com/davisking/dlib
+  GIT_TAG         v19.22
+  SOURCE_DIR      ${CMAKE_CURRENT_BINARY_DIR}/../external/dlib
+)
+FetchContent_MakeAvailable(dlib)
+
 message(STATUS "Build ${PROJECT_NAME} Version: ${PROJECT_VERSION}")
 message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "Install Dir: ${CMAKE_INSTALL_PREFIX}")
 
 add_library(
   ${PROJECT_NAME}
