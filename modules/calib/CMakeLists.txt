@@ -49,14 +49,17 @@ message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 add_library(
   ${PROJECT_NAME}
     
-  ${PROJECT_SOURCE_DIR}/include/improc/calib/vector_matrix.hpp
+  # ${PROJECT_SOURCE_DIR}/include/improc/calib/vector_matrix.hpp
+  # ${PROJECT_SOURCE_DIR}/include/improc/calib/vector_matrix2.hpp
+  ${PROJECT_SOURCE_DIR}/include/improc/calib/homography.hpp
+  ${PROJECT_SOURCE_DIR}/include/improc/calib/point_matrix.hpp
+  ${PROJECT_SOURCE_DIR}/include/improc/calib/pixel_matrix.hpp
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD           11)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD_REQUIRED  TRUE)
 set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE        CXX)
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION                ${PROJECT_VERSION})
-set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX          ${CMAKE_DEBUG_POSTFIX})
 
 target_include_directories  (${PROJECT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/external/eigen)
 target_include_directories  (${PROJECT_NAME}   PRIVATE   ${PROJECT_SOURCE_DIR}/include)
@@ -83,11 +86,11 @@ target_include_directories  (${PROJECT_NAME}   INTERFACE $<BUILD_INTERFACE:${PRO
 add_executable(
   ${PROJECT_NAME}_version
 
-  ${PROJECT_SOURCE_DIR}/main.cpp
+  # ${PROJECT_SOURCE_DIR}/main_point.cpp
+  ${PROJECT_SOURCE_DIR}/main_pixel.cpp
 )
 set_target_properties     (${PROJECT_NAME}_version PROPERTIES CXX_STANDARD           11)
 set_target_properties     (${PROJECT_NAME}_version PROPERTIES CXX_STANDARD_REQUIRED  TRUE)
-set_target_properties     (${PROJECT_NAME}_version PROPERTIES DEBUG_POSTFIX          ${CMAKE_DEBUG_POSTFIX})
 target_include_directories(${PROJECT_NAME}_version PRIVATE    ${CMAKE_BINARY_DIR})
 target_link_libraries     (${PROJECT_NAME}_version PRIVATE    ${PROJECT_NAME})
 
