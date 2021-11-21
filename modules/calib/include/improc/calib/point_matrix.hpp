@@ -5,7 +5,6 @@
 
 namespace improc
 {
-
     template    < typename Scalar
                 , int NumberVectors
                 , int StorageOrder      = Eigen::ColMajor
@@ -40,66 +39,28 @@ namespace improc
             typedef typename Eigen::DenseBase<EigenMatrixType>::ConstRowXpr ConstRowVectorXpr;
 
         public:
-            PointMatrix() : EigenMatrixType() {}
+            PointMatrix();
 
             template<typename OtherDerived>
-            PointMatrix(const Eigen::MatrixBase<OtherDerived>& other) : EigenMatrixType(other) {}
+            PointMatrix(const Eigen::MatrixBase<OtherDerived>& other);
  
             template<typename OtherDerived>
-            PointMatrix& operator=(const Eigen::MatrixBase<OtherDerived>& other)
-            {
-                this->EigenMatrixType::operator=(other);
-                return (*this);
-            }
+            PointMatrix& operator=(const Eigen::MatrixBase<OtherDerived>& other);
 
-            ConstRowVectorXpr       x() const
-            {
-                return this->row(PointMatrixType::kComponentXIndex);
-            }
+            ConstRowVectorXpr       x() const;
+            ConstRowVectorXpr       y() const;
+            ConstRowVectorXpr       z() const;
+            RowVectorXpr            x();
+            RowVectorXpr            y();
+            RowVectorXpr            z();
 
-            RowVectorXpr            x()
-            {
-                return this->row(PointMatrixType::kComponentXIndex);
-            }
-
-            ConstRowVectorXpr       y() const
-            {
-                return this->row(PointMatrixType::kComponentYIndex);
-            }
-
-            RowVectorXpr            y()
-            {
-                return this->row(PointMatrixType::kComponentYIndex);
-            }
-
-            ConstRowVectorXpr       z() const
-            {
-                return this->row(PointMatrixType::kComponentZIndex);
-            }
-
-            RowVectorXpr            z()
-            {
-                return this->row(PointMatrixType::kComponentZIndex);
-            }
-
-            PointMatrix&            Normalize()
-            {
-                this->operator=((this->GetNormalizationMatrix() * this->colwise().homogeneous()).colwise().hnormalized());
-                return (*this);
-            }
+            PointMatrix&            Normalize();
 
         private:
-            NormalizationMatrixType GetNormalizationMatrix()
-            {
-                Scalar scale    = std::sqrt(3.0) 
-                                / std::sqrt((this->colwise() - this->rowwise().mean()).array().pow(2).colwise().sum().mean());
-
-                NormalizationMatrixType normalization_matrix {NormalizationMatrixType::Zero()};
-                normalization_matrix.diagonal() << scale, scale, scale, 1;
-                normalization_matrix(Eigen::seq(0,2),Eigen::last) = -scale * this->rowwise().mean();
-                return normalization_matrix;
-            }
+            NormalizationMatrixType GetNormalizationMatrix();
     };
+
+    #include <point_matrix.tpp>
 } 
 
 #endif

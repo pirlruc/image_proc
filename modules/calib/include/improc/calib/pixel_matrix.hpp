@@ -39,56 +39,26 @@ namespace improc
             typedef typename Eigen::DenseBase<EigenMatrixType>::ConstRowXpr ConstRowVectorXpr;
 
         public:
-            PixelMatrix() : EigenMatrixType() {}
+            PixelMatrix();
 
             template<typename OtherDerived>
-            PixelMatrix(const Eigen::MatrixBase<OtherDerived>& other) : EigenMatrixType(other) {}
+            PixelMatrix(const Eigen::MatrixBase<OtherDerived>& other);
  
             template<typename OtherDerived>
-            PixelMatrix& operator=(const Eigen::MatrixBase<OtherDerived>& other)
-            {
-                this->EigenMatrixType::operator=(other);
-                return (*this);
-            }
+            PixelMatrix& operator=(const Eigen::MatrixBase<OtherDerived>& other);
 
-            ConstRowVectorXpr       u() const
-            {
-                return this->row(PixelMatrixType::kComponentUIndex);
-            }
+            ConstRowVectorXpr       u() const;
+            ConstRowVectorXpr       v() const;
+            RowVectorXpr            u();
+            RowVectorXpr            v();
 
-            RowVectorXpr            u()
-            {
-                return this->row(PixelMatrixType::kComponentUIndex);
-            }
-
-            ConstRowVectorXpr       v() const
-            {
-                return this->row(PixelMatrixType::kComponentVIndex);
-            }
-
-            RowVectorXpr            v()
-            {
-                return this->row(PixelMatrixType::kComponentVIndex);
-            }
-
-            PixelMatrix&            Normalize()
-            {
-                this->operator=((this->GetNormalizationMatrix() * this->colwise().homogeneous()).colwise().hnormalized());
-                return (*this);
-            }
+            PixelMatrix&            Normalize();
 
         private:
-            NormalizationMatrixType GetNormalizationMatrix()
-            {
-                Scalar scale    = std::sqrt(2.0) 
-                                / std::sqrt((this->colwise() - this->rowwise().mean()).array().pow(2).colwise().sum().mean());
-
-                NormalizationMatrixType normalization_matrix {NormalizationMatrixType::Zero()};
-                normalization_matrix.diagonal() << scale, scale, 1;
-                normalization_matrix(Eigen::seq(0,1),Eigen::last) = -scale * this->rowwise().mean();
-                return normalization_matrix;
-            }
+            NormalizationMatrixType GetNormalizationMatrix();
     };
+
+    #include <pixel_matrix.tpp>
 } 
 
 #endif
