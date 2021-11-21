@@ -83,20 +83,9 @@ target_include_directories  (${PROJECT_NAME}   INTERFACE $<BUILD_INTERFACE:${PRO
 # target_link_libraries       (${PROJECT_NAME}   INTERFACE servproc_services)
 # target_link_libraries       (${PROJECT_NAME}   INTERFACE ${OpenCV_LIBS})
 
-add_executable(
-  ${PROJECT_NAME}_version
-
-  # ${PROJECT_SOURCE_DIR}/main_point.cpp
-  ${PROJECT_SOURCE_DIR}/main_pixel.cpp
-)
-set_target_properties     (${PROJECT_NAME}_version PROPERTIES CXX_STANDARD           11)
-set_target_properties     (${PROJECT_NAME}_version PROPERTIES CXX_STANDARD_REQUIRED  TRUE)
-target_include_directories(${PROJECT_NAME}_version PRIVATE    ${CMAKE_BINARY_DIR})
-target_link_libraries     (${PROJECT_NAME}_version PRIVATE    ${PROJECT_NAME})
-
-# if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
-#   add_subdirectory(${PROJECT_SOURCE_DIR}/test ${CMAKE_BINARY_DIR}/test)
-# endif()
+if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
+  add_subdirectory(${PROJECT_SOURCE_DIR}/test ${CMAKE_BINARY_DIR}/test)
+endif()
 
 # # Create executable file to get version of library
 # configure_file(
