@@ -5,11 +5,9 @@ on:
   push:
     branches: 
     - main
-    - developer 
   pull_request:
     branches: 
     - main
-    - developer
 
   # Runs this workflow manually from the Actions tab
   workflow_dispatch:
@@ -33,7 +31,9 @@ jobs:
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@main
+        with:
+          submodules: recursive
 
       - name: Print Event
         run: |
