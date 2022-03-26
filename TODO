@@ -1,1 +1,2 @@
 Add universal references on templates (typename T -> T&& instead of const T&)
+Define more clearly the variable template parameters (class for user-defined types, typename if one can also use primitive types)
