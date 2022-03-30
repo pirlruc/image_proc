@@ -4,3 +4,6 @@
 [submodule "modules/services"]
 	path = modules/services
 	url = git@github.com:pirlruc/services.git
+[submodule "modules/drawer"]
+	path = modules/drawer
+	url = git@github.com:pirlruc/drawer.git
