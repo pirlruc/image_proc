@@ -22,7 +22,7 @@ rm -r llvm_dir
 
 # CMAKE
 sudo apt -y update
-sudo apt -y install build-essential libtool autoconf unzip wget
+sudo apt -y install build-essential libtool autoconf unzip wget libssl-dev
 
 sudo apt -y remove --purge --auto-remove cmake
 
