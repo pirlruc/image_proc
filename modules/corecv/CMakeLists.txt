@@ -22,6 +22,7 @@ if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"      CACHE PATH "Executable/dll output dir.")
   set(CMAKE_DEBUG_POSTFIX d)
   option(IMPROC_WITH_TESTS 			     "Building library with tests"  ON)
+  option(BUILD_SHARED_LIBS           "Building shared libraries"    ON)
 endif()
 
 # Add external dependencies
