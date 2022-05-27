@@ -36,5 +36,8 @@ cd cmake-$CMAKE_VERSION.$CMAKE_BUILD/
 make -j$(nproc)
 sudo make install
 
+# CPPCHECK
+sudo apt -y install cppcheck
+
 cd "$HOME_DIRECTORY"
 rm -rf cmake_dir
