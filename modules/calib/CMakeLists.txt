@@ -61,15 +61,17 @@ message(STATUS "Install Dir: ${CMAKE_INSTALL_PREFIX}")
 set(
   IMPROC_CALIB_LIB_FILES
 
+  ${PROJECT_SOURCE_DIR}/include/improc/calib/logger_calib.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/calib/point_matrix.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/calib/pixel_matrix.hpp
+  ${PROJECT_SOURCE_DIR}/include/improc/calib/homography_matrix.hpp
 )
 
 add_library(${PROJECT_NAME} SHARED ${IMPROC_CALIB_LIB_FILES})
 add_library(improc::calib ALIAS ${PROJECT_NAME})
 add_dependencies(${PROJECT_NAME} improc::services eigen)
 
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD           11)
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD           17)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD_REQUIRED  TRUE)
 set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE        CXX)
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION                ${PROJECT_VERSION})

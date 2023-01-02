@@ -64,10 +64,12 @@ endif()
 add_executable(
   ${PROJECT_NAME}_test
     
+  ${PROJECT_SOURCE_DIR}/test/test_logger_calib.cpp
   ${PROJECT_SOURCE_DIR}/test/test_point.cpp
   ${PROJECT_SOURCE_DIR}/test/test_pixel.cpp
+  ${PROJECT_SOURCE_DIR}/test/test_homography_matrix.cpp
 )
-set_target_properties(${PROJECT_NAME}_test PROPERTIES CXX_STANDARD           11)
+set_target_properties(${PROJECT_NAME}_test PROPERTIES CXX_STANDARD           17)
 set_target_properties(${PROJECT_NAME}_test PROPERTIES CXX_STANDARD_REQUIRED  TRUE)
 set_target_properties(${PROJECT_NAME}_test PROPERTIES LINKER_LANGUAGE        CXX)
 set_target_properties(${PROJECT_NAME}_test PROPERTIES FOLDER                 ${PROJECT_SOURCE_DIR}/test)

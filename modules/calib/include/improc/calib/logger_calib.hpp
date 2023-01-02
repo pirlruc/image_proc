@@ -17,8 +17,8 @@ namespace improc
             explicit CalibrationLogger(std::shared_ptr<spdlog::logger>&&      logger) : LoggerSingleton(std::move(logger)) {}
 
         public:
-            ServicesLogger(CalibrationLogger&  that)       = delete;
-            ServicesLogger(CalibrationLogger&& that)       = delete;
+            CalibrationLogger(CalibrationLogger&  that)    = delete;
+            CalibrationLogger(CalibrationLogger&& that)    = delete;
             void operator=(const CalibrationLogger&  that) = delete;
             void operator=(const CalibrationLogger&& that) = delete;
     };
