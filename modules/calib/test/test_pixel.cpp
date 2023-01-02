@@ -6,6 +6,7 @@ TEST(PixelMatrix,TestEmptyPixelMatrixConstructor) {
     improc::PixelMatrix<float,3> pixel_matrix {};
     EXPECT_EQ(pixel_matrix.rows(),2);
     EXPECT_EQ(pixel_matrix.cols(),3);
+    EXPECT_EQ(pixel_matrix.Number(),3);
 }
 
 TEST(PixelMatrix,TestConstructorFromEigenMatrix) {
@@ -54,6 +55,17 @@ TEST(PixelMatrix,TestV) {
     EXPECT_EQ(pixel_matrix.v()(2),6.0);
     pixel_matrix.v()(0) = 10.0;
     EXPECT_EQ(pixel_matrix.v()(0),10.0);
+}
+
+TEST(PixelMatrix,TestGetNormalizationMatrix) {
+    improc::PixelMatrix<float,4> pixel_matrix {};
+    pixel_matrix << 1,2,3,4,5,6,7,8;
+    auto norm_matrix = pixel_matrix.GetNormalizationMatrix();
+    EXPECT_NEAR(norm_matrix(0,0),0.894427, 1e-5);
+    EXPECT_NEAR(norm_matrix(1,1),0.894427, 1e-5);
+    EXPECT_NEAR(norm_matrix(0,2),-2.23607, 1e-5);
+    EXPECT_NEAR(norm_matrix(1,2),-5.81378, 1e-5);
+    EXPECT_EQ(norm_matrix(2,2),1.0);
 }
 
 TEST(PixelMatrix,TestNormalize) {

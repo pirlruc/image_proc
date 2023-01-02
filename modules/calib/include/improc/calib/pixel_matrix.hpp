@@ -16,7 +16,7 @@ namespace improc
      * @tparam MaxNumberVectors - maximum number of vector to consider in matrix
      */
     template    < typename Scalar
-                , int NumberVectors
+                , int NumberVectors     = Eigen::Dynamic
                 , int StorageOrder      = Eigen::ColMajor
                 , int MaxNumberVectors  = NumberVectors >
     class PixelMatrix : public Eigen::Matrix< Scalar
@@ -24,7 +24,13 @@ namespace improc
                                             , StorageOrder
                                             , 2, MaxNumberVectors >
     {
-        private:
+        public:
+            typedef Eigen::Matrix       < Scalar
+                                        , 3, 3
+                                        , StorageOrder
+                                        > NormalizationMatrixType;
+
+        private:    
             typedef PixelMatrix         < Scalar
                                         , NumberVectors
                                         , StorageOrder
@@ -35,13 +41,12 @@ namespace improc
                                         , StorageOrder
                                         , 2, MaxNumberVectors
                                         > EigenMatrixType;
-            typedef Eigen::Matrix       < Scalar
-                                        , 3, 3
-                                        , StorageOrder
-                                        > NormalizationMatrixType;
+            typedef Eigen::Homogeneous  < const EigenMatrixType
+                                        , Eigen::Vertical 
+                                        > HomogeneousPixelMatrixType;                                      
 
-            static constexpr size_t kComponentUIndex = 0;
-            static constexpr size_t kComponentVIndex = 1;
+            static constexpr size_t             kComponentUIndex = 0;
+            static constexpr size_t             kComponentVIndex = 1;
 
         public:
             typedef typename Eigen::DenseBase<EigenMatrixType>::RowXpr      RowVectorXpr;
@@ -56,15 +61,23 @@ namespace improc
             template<typename OtherDerived>
             PixelMatrix& operator=(const Eigen::MatrixBase<OtherDerived>& other);
 
-            ConstRowVectorXpr       u() const;
-            ConstRowVectorXpr       v() const;
-            RowVectorXpr            u();
-            RowVectorXpr            v();
+            ConstRowVectorXpr                   u() const;
+            ConstRowVectorXpr                   v() const;
+            RowVectorXpr                        u();
+            RowVectorXpr                        v();
 
-            PixelMatrix&            Normalize();
+            inline size_t                       Number() const
+            {
+                return this->cols();
+            }
 
-        private:
-            NormalizationMatrixType GetNormalizationMatrix();
+            inline HomogeneousPixelMatrixType   Homogeneous() const
+            {
+                return this->colwise().homogeneous();
+            }
+
+            NormalizationMatrixType             GetNormalizationMatrix() const;
+            PixelMatrix&                        Normalize();
     };
 
     #include <improc/calib/pixel_matrix.tpp>

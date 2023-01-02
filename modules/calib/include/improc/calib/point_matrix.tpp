@@ -180,7 +180,7 @@ improc::PointMatrix<Scalar,NumberVectors,StorageOrder,MaxNumberVectors>&
     improc::PointMatrix<Scalar,NumberVectors,StorageOrder,MaxNumberVectors>::Normalize()
 {
     IMPROC_CALIB_LOGGER_TRACE("Normalizing point data...");
-    this->operator=((this->GetNormalizationMatrix() * this->colwise().homogeneous()).colwise().hnormalized());
+    this->operator=((this->GetNormalizationMatrix() * this->Homogeneous()).colwise().hnormalized());
     return (*this);
 }
 
@@ -197,7 +197,7 @@ template< typename Scalar
         , int StorageOrder
         , int MaxNumberVectors >
 typename improc::PointMatrix<Scalar,NumberVectors,StorageOrder,MaxNumberVectors>::NormalizationMatrixType 
-    improc::PointMatrix<Scalar,NumberVectors,StorageOrder,MaxNumberVectors>::GetNormalizationMatrix()
+    improc::PointMatrix<Scalar,NumberVectors,StorageOrder,MaxNumberVectors>::GetNormalizationMatrix() const
 {
     IMPROC_CALIB_LOGGER_TRACE("Obtaining normalization matrix...");
     auto rowwise_mean = this->rowwise().mean();

@@ -16,7 +16,7 @@ namespace improc
      * @tparam MaxNumberVectors - maximum number of vector to consider in matrix
      */
     template    < typename Scalar
-                , int NumberVectors
+                , int NumberVectors     = Eigen::Dynamic
                 , int StorageOrder      = Eigen::ColMajor
                 , int MaxNumberVectors  = NumberVectors >
     class PointMatrix : public Eigen::Matrix< Scalar
@@ -24,6 +24,12 @@ namespace improc
                                             , StorageOrder
                                             , 3, MaxNumberVectors >
     {
+        public:
+            typedef Eigen::Matrix       < Scalar
+                                        , 4, 4
+                                        , StorageOrder
+                                        > NormalizationMatrixType;
+            
         private:
             typedef PointMatrix         < Scalar
                                         , NumberVectors
@@ -35,10 +41,9 @@ namespace improc
                                         , StorageOrder
                                         , 3, MaxNumberVectors
                                         > EigenMatrixType;
-            typedef Eigen::Matrix       < Scalar
-                                        , 4, 4
-                                        , StorageOrder
-                                        > NormalizationMatrixType;
+            typedef Eigen::Homogeneous  < const EigenMatrixType
+                                        , Eigen::Vertical 
+                                        > HomogeneousPointMatrixType;                                      
 
             static constexpr size_t kComponentXIndex = 0;
             static constexpr size_t kComponentYIndex = 1;
@@ -57,17 +62,25 @@ namespace improc
             template<typename OtherDerived>
             PointMatrix& operator=(const Eigen::MatrixBase<OtherDerived>& other);
 
-            ConstRowVectorXpr       x() const;
-            ConstRowVectorXpr       y() const;
-            ConstRowVectorXpr       z() const;
-            RowVectorXpr            x();
-            RowVectorXpr            y();
-            RowVectorXpr            z();
+            ConstRowVectorXpr                   x() const;
+            ConstRowVectorXpr                   y() const;
+            ConstRowVectorXpr                   z() const;
+            RowVectorXpr                        x();
+            RowVectorXpr                        y();
+            RowVectorXpr                        z();
 
-            PointMatrix&            Normalize();
+            inline size_t                       Number() const
+            {
+                return this->cols();
+            }
 
-        private:
-            NormalizationMatrixType GetNormalizationMatrix();
+            inline HomogeneousPointMatrixType   Homogeneous() const
+            {
+                return this->colwise().homogeneous();
+            }
+
+            NormalizationMatrixType             GetNormalizationMatrix() const;
+            PointMatrix&                        Normalize();
     };
 
     #include <improc/calib/point_matrix.tpp>
