@@ -1,9 +1,9 @@
 [submodule "modules/infrastructure"]
 	path = modules/infrastructure
-	url = git@github.com:pirlruc/infrastructure.git
+	url = https://github.com/pirlruc/infrastructure.git
 [submodule "modules/services"]
 	path = modules/services
-	url = git@github.com:pirlruc/services.git
+	url = https://github.com/pirlruc/services.git
 [submodule "modules/drawer"]
 	path = modules/drawer
-	url = git@github.com:pirlruc/drawer.git
+	url = https://github.com/pirlruc/drawer.git
