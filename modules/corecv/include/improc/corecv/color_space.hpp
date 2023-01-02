@@ -2,9 +2,9 @@
 #define IMPROC_CORECV_COLOR_SPACE_HPP
 
 #include <improc/improc_defs.hpp>
-#include <improc/exceptions.hpp>
+#include <improc/exception.hpp>
 #include <improc/corecv/logger_improc.hpp>
-#include <servproc/infrastructure/string.hpp>
+#include <improc/infrastructure/string.hpp>
 
 #include <opencv2/imgproc.hpp>
 

@@ -5,11 +5,11 @@
 #include <improc/corecv/logger_improc.hpp>
 #include <improc/corecv/color_space.hpp>
 #include <improc/corecv/image.hpp>
-#include <servproc/services/base_service.hpp>
+#include <improc/services/base_service.hpp>
 
 namespace improc {
-    template <typename key_type>
-    class IMPROC_EXPORTS ConvertColorSpace : public servproc::BaseService<key_type>
+    template <typename KeyType,typename ContextType>
+    class IMPROC_API ConvertColorSpace : public improc::BaseService<KeyType,ContextType>
     {
         private:
             static constexpr unsigned int   kImageDataKeyIndex  = 0;
@@ -21,13 +21,13 @@ namespace improc {
         public:
             ConvertColorSpace();
 
-            void                            Load(const Json::Value& service_json)            override;
-            void                            Run (servproc::Context<key_type>& context) const override;
+            ConvertColorSpace&              Load(const Json::Value& service_json)                       override;
+            void                            Run (improc::Context<KeyType,ContextType>& context) const   override;
     };
 
-    typedef ConvertColorSpace<std::string>    StringKeyConvertColorSpace;
+    typedef ConvertColorSpace<std::string,std::any> StringKeyHeterogeneousConvertColorSpace;
 }
 
-#include <convert_color_space.tpp>
+#include <improc/services/convert_color_space.tpp>
 
 #endif

@@ -11,5 +11,5 @@ improc::ThresholdType::ThresholdType(const std::string& threshold_type_str)
     static const std::unordered_map<std::string,ThresholdType::Value> kToElemType = { {"otsu"  ,ThresholdType::Value::kOtsu  }
                                                                                     , {"binary",ThresholdType::Value::kBinary} 
                                                                                     };
-    this->value_ = kToElemType.at(servproc::String::ToLower(threshold_type_str));
+    this->value_ = kToElemType.at(improc::String::ToLower(threshold_type_str));
 }

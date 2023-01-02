@@ -43,39 +43,39 @@ improc::Image improc::Image::Clone() const
 }
 
 
-void improc::Image::Resize(const cv::Size& to_image_size, const InterpolationType& interpolation);
-{
-    SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
-                      , spdlog::level::trace
-                      , "Resizing image using size..." );
-    if (this->data_.size() == image_size)
-    {
-        SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
-                          , spdlog::level::debug
-                          , "Resizing not performed. Image already has target size." );
-    }
-    else
-    {
-        cv::resize(this->data_,this->data_,to_image_size,0,0,interpolation.ToOpenCV());
-    }
-}
+// void improc::Image::Resize(const cv::Size& to_image_size, const InterpolationType& interpolation);
+// {
+//     SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
+//                       , spdlog::level::trace
+//                       , "Resizing image using size..." );
+//     if (this->data_.size() == image_size)
+//     {
+//         SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
+//                           , spdlog::level::debug
+//                           , "Resizing not performed. Image already has target size." );
+//     }
+//     else
+//     {
+//         cv::resize(this->data_,this->data_,to_image_size,0,0,interpolation.ToOpenCV());
+//     }
+// }
 
-void improc::Image::Resize(const cv::Size2d& scaling, const InterpolationType& interpolation);
-{
-    SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
-                      , spdlog::level::trace
-                      , "Resizing image using scale..." );
-    if (scaling.width == 1.0 && scaling.height == 1.0)
-    {
-        SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
-                          , spdlog::level::debug
-                          , "Resizing not performed. Image already has target size." );
-    }
-    else
-    {
-        cv::resize(this->data_,this->data_,cv::Size(),scaling.width,scaling.height,interpolation.ToOpenCV());
-    }
-}
+// void improc::Image::Resize(const cv::Size2d& scaling, const InterpolationType& interpolation);
+// {
+//     SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
+//                       , spdlog::level::trace
+//                       , "Resizing image using scale..." );
+//     if (scaling.width == 1.0 && scaling.height == 1.0)
+//     {
+//         SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
+//                           , spdlog::level::debug
+//                           , "Resizing not performed. Image already has target size." );
+//     }
+//     else
+//     {
+//         cv::resize(this->data_,this->data_,cv::Size(),scaling.width,scaling.height,interpolation.ToOpenCV());
+//     }
+// }
 
 improc::ColorSpaceImage::ColorSpaceImage() : improc::Image()
                                            , color_space_(improc::ColorSpace::kRGB) {}

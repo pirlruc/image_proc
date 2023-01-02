@@ -5,11 +5,11 @@
 #include <improc/corecv/logger_improc.hpp>
 #include <improc/corecv/image.hpp>
 #include <improc/corecv/interpolation_type.hpp>
-#include <servproc/services/base_service.hpp>
+#include <improc/services/base_service.hpp>
 
 namespace improc {
-    template <typename key_type>
-    class IMPROC_EXPORTS Resize : public servproc::BaseService<key_type>
+    template <typename KeyType,typename ContextType>
+    class IMPROC_API Resize : public improc::BaseService<KeyType,ContextType>
     {
         private:
             static constexpr unsigned int   kImageDataKeyIndex   = 0;
@@ -22,13 +22,13 @@ namespace improc {
         public:
             Resize();
 
-            void                            Load(const Json::Value& service_json)   override;
-            void                            Run (servproc::Context<key_type>& context) const    override;
+            void                            Load(const Json::Value& service_json)                       override;
+            void                            Run (improc::Context<KeyType,ContextType>& context) const   override;
     };
 
-    typedef Resize<std::string>    StringKeyResize;
+    typedef Resize<std::string,std::any>    StringKeyHeterogeneousResize;
 }
 
-#include <resize_image.tpp>
+#include <improc/services/resize_image.tpp>
 
 #endif

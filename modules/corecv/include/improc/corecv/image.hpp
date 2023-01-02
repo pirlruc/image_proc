@@ -2,9 +2,10 @@
 #define IMPROC_CORECV_IMAGE_HPP
 
 #include <improc/improc_defs.hpp>
-#include <improc/exceptions.hpp>
+#include <improc/exception.hpp>
 #include <improc/corecv/logger_improc.hpp>
 #include <improc/corecv/color_space.hpp>
+#include <improc/corecv/interpolation_type.hpp>
 
 #include <opencv2/core.hpp>
 
@@ -23,8 +24,8 @@ namespace improc {
 
             Image                       Clone()     const;
 
-            void                        Resize(const cv::Size&   to_image_size, const InterpolationType& interpolation);
-            void                        Resize(const cv::Size2d& scaling,       const InterpolationType& interpolation);
+            // void                        Resize(const cv::Size&   to_image_size, const InterpolationType& interpolation);
+            // void                        Resize(const cv::Size2d& scaling,       const InterpolationType& interpolation);
     };
 
 

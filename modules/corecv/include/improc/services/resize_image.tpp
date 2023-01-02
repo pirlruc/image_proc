@@ -1,17 +1,17 @@
-template <typename key_type>
-improc::Resize<key_type>::Resize() : servproc::BaseService<key_type>()
-                                   , to_image_size_(std::optional<cv::Size>())
-                                   , scale_(std::optional<cv::Size2d>())
-                                   , interpolation_(improc::Interpolation:Type::kLinear)
+template <typename KeyType,typename ContextType>
+improc::Resize<KeyType,ContextType>::Resize()   : improc::BaseService<KeyType,ContextType>()
+                                                , to_image_size_(std::optional<cv::Size>())
+                                                , scale_(std::optional<cv::Size2d>())
+                                                , interpolation_(improc::Interpolation:Type::kLinear)
 {}
 
-template <typename key_type>
-void improc::Resize<key_type>::Load(const Json::Value& service_json)
+template <typename KeyType,typename ContextType>
+void improc::Resize<KeyType,ContextType>::Load(const Json::Value& service_json)
 {
     SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
                       , spdlog::level::trace
                       , "Loading configuration for image resize service..." );
-    this->servproc::BaseService<key_type>::Load(service_json);
+    this->improc::BaseService<KeyType,ContextType>::Load(service_json);
 
     for (Json::Value::const_iterator service_json_iter = service_json.begin(); service_json_iter != service_json.end(); ++service_json_iter)
     {
@@ -69,14 +69,14 @@ void improc::Resize<key_type>::Load(const Json::Value& service_json)
     }
 }
 
-template <typename key_type>
-void improc::Resize<key_type>::Run(servproc::Context<key_type>& context) const
+template <typename KeyType,typename ContextType>
+void improc::Resize<KeyType,ContextType>::Run(improc::Context<KeyType,ContextType>& context) const
 {
     SPDLOG_LOGGER_CALL( improc::ImageProcLogger::get()->data()
                       , spdlog::level::trace
                       , "Running image resize service..." );
     improc::Image image {};
-    image.set_data(std::any_cast<cv::Mat>(context.Get(this->inputs_[improc::Resize<key_type>::kImageDataKeyIndex])));
+    image.set_data(std::any_cast<cv::Mat>(context.Get(this->inputs_[improc::Resize<KeyType,ContextType>::kImageDataKeyIndex])));
     if (this->to_image_size_.has_value() == true)
     {
         image.Resize(this->to_image_size_.value(),this->interpolation_);

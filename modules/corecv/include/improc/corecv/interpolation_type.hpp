@@ -3,7 +3,7 @@
 
 #include <improc/improc_defs.hpp>
 #include <improc/corecv/logger_improc.hpp>
-#include <servproc/infrastructure/string.hpp>
+#include <improc/infrastructure/string.hpp>
 
 #include <opencv2/imgproc.hpp>
 

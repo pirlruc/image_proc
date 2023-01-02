@@ -11,7 +11,7 @@ namespace improc {
      * @tparam type 
      */
     template <typename type>
-    class IMPROC_EXPORTS ImageDebugSingleton
+    class IMPROC_API ImageDebugSingleton
     {
         public:
             struct DebugImage
@@ -42,6 +42,6 @@ namespace improc {
     };
 }
 
-#include <image_debug_singleton.tpp>
+#include <improc/corecv/image_debug_singleton.tpp>
 
 #endif
