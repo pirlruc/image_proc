@@ -1,11 +1,20 @@
 #ifndef IMPROC_CALIB_PIXEL_MATRIX_HPP
 #define IMPROC_CALIB_PIXEL_MATRIX_HPP
 
+#include <improc/calib/logger_calib.hpp>
+
 #include <Eigen/Dense>
 
 namespace improc
 {
-
+    /**
+     * @brief Pixel matrix object and utilities
+     * 
+     * @tparam Scalar - data type of the pixel information
+     * @tparam NumberVectors - number of vector to consider in matrix
+     * @tparam StorageOrder - storage order of the pixel information
+     * @tparam MaxNumberVectors - maximum number of vector to consider in matrix
+     */
     template    < typename Scalar
                 , int NumberVectors
                 , int StorageOrder      = Eigen::ColMajor
