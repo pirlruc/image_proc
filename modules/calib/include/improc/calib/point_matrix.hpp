@@ -60,7 +60,7 @@ namespace improc
             NormalizationMatrixType GetNormalizationMatrix();
     };
 
-    #include <point_matrix.tpp>
+    #include <improc/calib/point_matrix.tpp>
 } 
 
 #endif

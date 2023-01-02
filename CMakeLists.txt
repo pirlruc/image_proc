@@ -25,5 +25,6 @@ endif()
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/modules/infrastructure ${CMAKE_BINARY_DIR}/infrastructure)
 add_subdirectory(${CMAKE_SOURCE_DIR}/modules/services       ${CMAKE_BINARY_DIR}/services)
+add_subdirectory(${CMAKE_SOURCE_DIR}/modules/calib          ${CMAKE_BINARY_DIR}/calib)
 add_subdirectory(${CMAKE_SOURCE_DIR}/modules/corecv         ${CMAKE_BINARY_DIR}/corecv)
 add_subdirectory(${CMAKE_SOURCE_DIR}/modules/drawer         ${CMAKE_BINARY_DIR}/drawer)

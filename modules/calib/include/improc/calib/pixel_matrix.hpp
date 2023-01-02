@@ -58,7 +58,7 @@ namespace improc
             NormalizationMatrixType GetNormalizationMatrix();
     };
 
-    #include <pixel_matrix.tpp>
+    #include <improc/calib/pixel_matrix.tpp>
 } 
 
 #endif

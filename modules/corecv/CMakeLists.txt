@@ -93,7 +93,7 @@ set(
 
 add_library(${PROJECT_NAME} SHARED ${IMPROC_CORECV_LIB_FILES})
 add_library(improc::corecv ALIAS ${PROJECT_NAME})
-add_dependencies(${PROJECT_NAME} improc::services ${OpenCV_LIBS})
+add_dependencies(${PROJECT_NAME} improc::services ${IMPROC_OPENCV_LIBS})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD           17)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD_REQUIRED  TRUE)
