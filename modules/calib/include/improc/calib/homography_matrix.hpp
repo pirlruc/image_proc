@@ -2,6 +2,7 @@
 #define IMPROC_CALIB_HOMOGRAPHY_MATRIX_HPP
 
 #include <improc/calib/pixel_matrix.hpp>
+#include <improc/exception.hpp>
 #include <improc/calib/logger_calib.hpp>
 
 #include <Eigen/Dense>
@@ -16,12 +17,14 @@ namespace improc
      */
     template    < typename Scalar
                 , int StorageOrder = Eigen::ColMajor >
-    class HomographyMatrix : public Eigen::Matrix   < Scalar
-                                                    , 3, 3
-                                                    , StorageOrder
-                                                    , 3, 3 >
+    class IMPROC_API HomographyMatrix : public Eigen::Matrix< Scalar
+                                                            , 3, 3
+                                                            , StorageOrder
+                                                            , 3, 3 >
     {
         private:
+            static constexpr unsigned int kMinimumPointCorrespondences = 4;
+            static constexpr unsigned int kNumberHomographyParameters  = 9;
             typedef HomographyMatrix< Scalar
                                     , StorageOrder
                                     > HomographyMatrixType;
@@ -30,11 +33,16 @@ namespace improc
                                     , StorageOrder
                                     , 3, 3
                                     > EigenMatrixType;
+            typedef Eigen::Matrix   < Scalar
+                                    , Eigen::Dynamic, kNumberHomographyParameters
+                                    , StorageOrder 
+                                    , Eigen::Dynamic, kNumberHomographyParameters
+                                    > ObservationMatrixType;
 
         public:
             HomographyMatrix();
 
-            template<typename PixelMatrixDerived>
+            template<typename PixelMatrixDerived, template<typename> class AxbSolver = Eigen::ColPivHouseholderQR, int QRPreConditioner = Eigen::ColPivHouseholderQRPreconditioner>
             HomographyMatrix( improc::PixelMatrix<PixelMatrixDerived> detected_pixels
                             , improc::PixelMatrix<PixelMatrixDerived> reference_pixels );
 
@@ -46,8 +54,8 @@ namespace improc
 
         private:
             template<typename PixelMatrixDerived>
-            static auto             GetObservationMatrixFromPointCorrespondences( const improc::PixelMatrix<PixelMatrixDerived>& detected_pixels
-                                                                                , const improc::PixelMatrix<PixelMatrixDerived>& reference_pixels );
+            static ObservationMatrixType    GetObservationMatrixFromPointCorrespondences( const improc::PixelMatrix<PixelMatrixDerived>& detected_pixels
+                                                                                        , const improc::PixelMatrix<PixelMatrixDerived>& reference_pixels );
 
     };
 

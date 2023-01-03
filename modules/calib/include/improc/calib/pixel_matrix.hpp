@@ -1,6 +1,7 @@
 #ifndef IMPROC_CALIB_PIXEL_MATRIX_HPP
 #define IMPROC_CALIB_PIXEL_MATRIX_HPP
 
+#include <improc/improc_defs.hpp>
 #include <improc/calib/logger_calib.hpp>
 
 #include <Eigen/Dense>
@@ -19,10 +20,10 @@ namespace improc
                 , int NumberVectors     = Eigen::Dynamic
                 , int StorageOrder      = Eigen::ColMajor
                 , int MaxNumberVectors  = NumberVectors >
-    class PixelMatrix : public Eigen::Matrix< Scalar
-                                            , 2, NumberVectors
-                                            , StorageOrder
-                                            , 2, MaxNumberVectors >
+    class IMPROC_API PixelMatrix : public Eigen::Matrix < Scalar
+                                                        , 2, NumberVectors
+                                                        , StorageOrder
+                                                        , 2, MaxNumberVectors >
     {
         public:
             typedef Eigen::Matrix       < Scalar
