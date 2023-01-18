@@ -7,8 +7,12 @@
 
 #include <opencv2/imgproc.hpp>
 
-namespace improc {
-    class MorphologicalOper
+namespace improc 
+{
+    /**
+     * @brief Morphological operation methods and utilities
+     */
+    class MorphologicalOper final
     {
         public:
             enum Value : IMPROC_ENUM_KEY_TYPE
@@ -25,9 +29,22 @@ namespace improc {
         public:
             MorphologicalOper();                              
             MorphologicalOper(const std::string& morphological_oper_str);
+
+            /**
+             * @brief Construct a new improc::MorphologicalOper object
+             * 
+             * @param morphological_oper_value - morphological operation value
+             */
             constexpr                   MorphologicalOper(Value morphological_oper_value): value_(morphological_oper_value) {}
+
+            /**
+             * @brief Obtain morphological operation value
+             */
             constexpr operator          Value()     const {return this->value_;}
 
+            /**
+             * @brief Obtain morphological operation string description
+             */
             constexpr std::string_view  ToString()  const
             {
                 switch (this->value_)
@@ -39,6 +56,9 @@ namespace improc {
                 }
             }
 
+            /**
+             * @brief Obtain morphological operation OpenCV code
+             */
             constexpr cv::MorphTypes    ToOpenCV()  const
             {
                 switch (this->value_)

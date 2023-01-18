@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <improc/corecv/image_format.hpp>
+#include <improc/corecv/structures/image_format.hpp>
 
 TEST(ImageFormat,TestEmptyImageFormatConstructor) {
     improc::ImageFormat image_format {};

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <improc/corecv/morphological_oper.hpp>
+#include <improc/corecv/structures/morphological_oper.hpp>
 
 TEST(MorphologicalOper,TestEmptyThresholdTypeConstructor) {
     improc::MorphologicalOper morph_oper {};

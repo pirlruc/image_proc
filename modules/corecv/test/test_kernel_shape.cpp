@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <improc/corecv/kernel_shape.hpp>
+#include <improc/corecv/structures/kernel_shape.hpp>
 
 TEST(KernelShape,TestEmptyKernelShapeConstructor) {
     improc::KernelShape kernel {};

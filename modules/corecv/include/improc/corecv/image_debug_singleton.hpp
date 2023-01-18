@@ -5,6 +5,7 @@
 #include <improc/corecv/image.h>
 
 namespace improc {
+    // TODO: Review implementation and add tests
     /**
      * @brief Singleton template for image debugging
      * 

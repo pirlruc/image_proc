@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <improc/corecv/color_space.hpp>
+#include <improc/corecv/structures/color_space.hpp>
 
 TEST(ColorSpace,TestEmptyColorSpaceConstructor) {
     improc::ColorSpace color_space {};

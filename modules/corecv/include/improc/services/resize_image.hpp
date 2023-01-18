@@ -8,6 +8,7 @@
 #include <improc/services/base_service.hpp>
 
 namespace improc {
+    // TODO: Review implementation and add tests
     template <typename KeyType,typename ContextType>
     class IMPROC_API Resize : public improc::BaseService<KeyType,ContextType>
     {

@@ -8,8 +8,12 @@
 
 #include <opencv2/imgproc.hpp>
 
-namespace improc {
-    class ColorSpace 
+namespace improc 
+{
+    /**
+     * @brief Color space methods and utilities
+     */
+    class ColorSpace final
     {
         public:
             enum Value : IMPROC_ENUM_KEY_TYPE
@@ -27,9 +31,22 @@ namespace improc {
         public:
             ColorSpace();                              
             ColorSpace(const std::string& color_space_str);
+
+            /**
+             * @brief Construct a new improc::ThresholdType object
+             * 
+             * @param color_space_value - color space value
+             */
             constexpr                   ColorSpace(Value color_space_value): value_(color_space_value) {}
+
+            /**
+             * @brief Obtain color space value
+             */
             constexpr operator          Value()     const {return this->value_;}
 
+            /**
+             * @brief Obtain color space string description
+             */
             constexpr std::string_view  ToString()  const
             {
                 switch (this->value_)
@@ -42,6 +59,9 @@ namespace improc {
                 }
             }
 
+            /**
+             * @brief Obtain color space number of channels
+             */
             constexpr unsigned int      GetNumberChannels() const
             {
                 switch (this->value_)
@@ -54,6 +74,11 @@ namespace improc {
                 }
             }
 
+            /**
+             * @brief Obtain OpenCV color conversion code from source to target color space.
+             * 
+             * @param to_color_space - target color space
+             */
             constexpr cv::ColorConversionCodes GetColorConversionCode(const ColorSpace& to_color_space) const
             {
                 switch (this->value_)

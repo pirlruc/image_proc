@@ -7,8 +7,12 @@
 
 #include <opencv2/core.hpp>
 
-namespace improc {
-    class ImageFormat
+namespace improc 
+{
+    /**
+     * @brief Image format methods and utilities
+     */
+    class ImageFormat final
     {
         public:
             enum Value : IMPROC_ENUM_KEY_TYPE
@@ -24,9 +28,22 @@ namespace improc {
         public:
             ImageFormat();                              
             ImageFormat(const std::string& image_format_str);
+
+            /**
+             * @brief Construct a new improc::ImageFormat object
+             * 
+             * @param image_format_value - image format value
+             */
             constexpr                   ImageFormat(Value image_format_value): value_(image_format_value) {}
+
+            /**
+             * @brief Obtain image format value
+             */
             constexpr operator          Value()     const {return this->value_;}
 
+            /**
+             * @brief Obtain image format string description
+             */
             constexpr std::string_view  ToString()  const
             {
                 switch (this->value_)
@@ -37,6 +54,9 @@ namespace improc {
                 }
             }
 
+            /**
+             * @brief Obtain image format OpenCV code
+             */
             constexpr std::string_view  ToOpenCV()  const
             {
                 switch (this->value_)

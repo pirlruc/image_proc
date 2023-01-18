@@ -7,8 +7,12 @@
 
 #include <opencv2/imgproc.hpp>
 
-namespace improc {
-    class InterpolationType 
+namespace improc 
+{
+    /**
+     * @brief Interpolation type methods and utilities
+     */
+    class InterpolationType final
     {
         public:
             enum Value : IMPROC_ENUM_KEY_TYPE
@@ -24,9 +28,22 @@ namespace improc {
         public:
             InterpolationType();                              
             InterpolationType(const std::string& interpolation_type_str);
+
+            /**
+             * @brief Construct a new improc::InterpolationType object
+             * 
+             * @param interpolation_type_value - interpolation type value
+             */
             constexpr                           InterpolationType(Value interpolation_type_value): value_(interpolation_type_value) {}
+
+            /**
+             * @brief Obtain interpolation type value
+             */
             constexpr operator                  Value()     const {return this->value_;}
 
+            /**
+             * @brief Obtain interpolation type string description
+             */
             constexpr std::string_view          ToString()  const
             {
                 switch (this->value_)
@@ -37,6 +54,9 @@ namespace improc {
                 }
             }
 
+            /**
+             * @brief Obtain interpolation type OpenCV code
+             */
             constexpr cv::InterpolationFlags    ToOpenCV()  const
             {
                 switch (this->value_)

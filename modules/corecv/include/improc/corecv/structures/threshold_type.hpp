@@ -7,8 +7,12 @@
 
 #include <opencv2/imgproc.hpp>
 
-namespace improc {
-    class ThresholdType 
+namespace improc 
+{
+    /**
+     * @brief Threshold type methods and utilities
+     */
+    class ThresholdType final
     {
         public:
             enum Value : IMPROC_ENUM_KEY_TYPE
@@ -23,9 +27,22 @@ namespace improc {
         public:
             ThresholdType();                              
             ThresholdType(const std::string& threshold_type_str);
+
+            /**
+             * @brief Construct a new improc::ThresholdType object
+             * 
+             * @param threshold_type_value - threshold type value
+             */
             constexpr                       ThresholdType(Value threshold_type_value): value_(threshold_type_value) {}
+
+            /**
+             * @brief Obtain threshold type value
+             */
             constexpr operator              Value()     const {return this->value_;}
 
+            /**
+             * @brief Obtain threshold type string description
+             */
             constexpr std::string_view      ToString()  const
             {
                 switch (this->value_)
@@ -35,6 +52,9 @@ namespace improc {
                 }
             }
 
+            /**
+             * @brief Obtain threshold type OpenCV code
+             */
             constexpr cv::ThresholdTypes    ToOpenCV()  const
             {
                 switch (this->value_)

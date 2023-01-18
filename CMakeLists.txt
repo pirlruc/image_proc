@@ -5,9 +5,9 @@ set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/install")
 
 project(
-    image_proc
-    VERSION     0.3.0
-    LANGUAGES   CXX
+  image_proc
+  VERSION     0.3.0
+  LANGUAGES   CXX
 )
 set(IMPROC_SUPERPROJECT_VERSION ${PROJECT_VERSION})
 
@@ -21,6 +21,9 @@ if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
   option(IMPROC_WITH_TESTS 			      "Building library with tests"          ON)
   option(IMPROC_WITH_COVERAGE  	      "Building library with code coverage"  OFF)
   option(BUILD_SHARED_LIBS            "Building shared libraries"            ON)
+  option(IMPROC_DRAWER_WITH_QRCODE_SUPPORT              "Building drawer module with QR-Code support"                 ON)
+  option(IMPROC_DRAWER_WITH_BARCODE_DATA_MATRIX_SUPPORT "Building drawer module with barcode and data matrix support" ON)
+  option(IMPROC_DRAWER_WITH_TEXT_SUPPORT                "Building drawer module with text generation support"         ON)
 endif()
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/modules/infrastructure ${CMAKE_BINARY_DIR}/infrastructure)

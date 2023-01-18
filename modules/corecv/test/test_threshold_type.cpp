@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <improc/corecv/threshold_type.hpp>
+#include <improc/corecv/structures/threshold_type.hpp>
 
 TEST(ThresholdType,TestEmptyThresholdTypeConstructor) {
     improc::ThresholdType threshold {};

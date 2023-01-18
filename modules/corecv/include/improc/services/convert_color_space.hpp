@@ -3,11 +3,12 @@
 
 #include <improc/improc_defs.hpp>
 #include <improc/corecv/logger_improc.hpp>
-#include <improc/corecv/color_space.hpp>
+#include <improc/corecv/structures/color_space.hpp>
 #include <improc/corecv/image.hpp>
 #include <improc/services/base_service.hpp>
 
 namespace improc {
+    // TODO: Review implementation and add tests
     template <typename KeyType,typename ContextType>
     class IMPROC_API ConvertColorSpace : public improc::BaseService<KeyType,ContextType>
     {

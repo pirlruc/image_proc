@@ -7,8 +7,12 @@
 
 #include <opencv2/imgproc.hpp>
 
-namespace improc {
-    class KernelShape
+namespace improc 
+{
+    /**
+     * @brief Kernel shape methods and utilities
+     */
+    class KernelShape final
     {
         public:
             enum Value : IMPROC_ENUM_KEY_TYPE
@@ -23,9 +27,22 @@ namespace improc {
         public:
             KernelShape();                              
             KernelShape(const std::string& kernel_shape_str);
+
+            /**
+             * @brief Construct a new improc::KernelShape object
+             * 
+             * @param kernel_shape_value - kernel shape value
+             */
             constexpr                   KernelShape(Value kernel_shape_value): value_(kernel_shape_value) {}
+
+            /**
+             * @brief Obtain kernel shape value
+             */
             constexpr operator          Value()     const {return this->value_;}
 
+            /**
+             * @brief Obtain kernel shape string description
+             */
             constexpr std::string_view  ToString()  const
             {
                 switch (this->value_)
@@ -35,6 +52,9 @@ namespace improc {
                 }
             }
 
+            /**
+             * @brief Obtain kernel shape OpenCV code
+             */
             constexpr cv::MorphShapes   ToOpenCV()  const
             {
                 switch (this->value_)

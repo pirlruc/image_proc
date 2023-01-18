@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <improc/corecv/interpolation_type.hpp>
+#include <improc/corecv/structures/interpolation_type.hpp>
 
 TEST(InterpolationType,TestEmptyInterpolationTypeConstructor) {
     improc::InterpolationType interpolation {};

@@ -70,6 +70,7 @@ endif()
 add_executable(
   ${PROJECT_NAME}_test
     
+  ${PROJECT_SOURCE_DIR}/test/test_logger_improc.cpp
   ${PROJECT_SOURCE_DIR}/test/test_color_space.cpp
   ${PROJECT_SOURCE_DIR}/test/test_threshold_type.cpp
   ${PROJECT_SOURCE_DIR}/test/test_kernel_shape.cpp
