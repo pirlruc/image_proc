@@ -14,7 +14,7 @@ namespace improc
      * @tparam Scalar - data type of the point information
      * @tparam NumberVectors - number of vector to consider in matrix
      * @tparam StorageOrder - storage order of the point information
-     * @tparam MaxNumberVectors - maximum number of vector to consider in matrix
+     * @tparam MaxNumberVectors - maximum number of vectors to consider in matrix
      */
     template    < typename Scalar
                 , int NumberVectors     = Eigen::Dynamic

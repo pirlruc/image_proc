@@ -63,6 +63,7 @@ set(
 
   ${PROJECT_SOURCE_DIR}/include/improc/calib/logger_calib.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/calib/point_matrix.hpp
+  ${PROJECT_SOURCE_DIR}/include/improc/calib/line_matrix.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/calib/pixel_matrix.hpp
   ${PROJECT_SOURCE_DIR}/include/improc/calib/homography_matrix.hpp
 )

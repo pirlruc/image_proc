@@ -10,7 +10,8 @@ template< typename Scalar
         , int NumberVectors
         , int StorageOrder
         , int MaxNumberVectors >
-improc::PointMatrix<Scalar,NumberVectors,StorageOrder,MaxNumberVectors>::PointMatrix() : EigenMatrixType() {}
+improc::PointMatrix<Scalar,NumberVectors,StorageOrder,MaxNumberVectors>::PointMatrix() 
+: EigenMatrixType() {}
 
 /**
  * @brief Construct a new improc::PointMatrix<Scalar,NumberVectors,StorageOrder,MaxNumberVectors> object
@@ -26,7 +27,8 @@ template< typename Scalar
         , int StorageOrder
         , int MaxNumberVectors >
 template<typename OtherDerived>
-improc::PointMatrix<Scalar,NumberVectors,StorageOrder,MaxNumberVectors>::PointMatrix(const Eigen::MatrixBase<OtherDerived>& other)  : EigenMatrixType(std::move(other)) {}
+improc::PointMatrix<Scalar,NumberVectors,StorageOrder,MaxNumberVectors>::PointMatrix(const Eigen::MatrixBase<OtherDerived>& other)
+: EigenMatrixType(std::move(other)) {}
 
 /**
  * @brief Assign a improc::PointMatrix<Scalar,NumberVectors,StorageOrder,MaxNumberVectors> object

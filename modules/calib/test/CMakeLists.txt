@@ -66,6 +66,7 @@ add_executable(
     
   ${PROJECT_SOURCE_DIR}/test/test_logger_calib.cpp
   ${PROJECT_SOURCE_DIR}/test/test_point.cpp
+  ${PROJECT_SOURCE_DIR}/test/test_line.cpp
   ${PROJECT_SOURCE_DIR}/test/test_pixel.cpp
   ${PROJECT_SOURCE_DIR}/test/test_homography_matrix.cpp
 )
