@@ -34,7 +34,7 @@ namespace improc
              * 
              * @param image_format_value - image format value
              */
-            constexpr                   ImageFormat(Value image_format_value): value_(image_format_value) {}
+            constexpr                   ImageFormat(Value image_format_value): value_(std::move(image_format_value)) {}
 
             /**
              * @brief Obtain image format value

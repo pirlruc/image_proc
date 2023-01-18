@@ -18,5 +18,5 @@ improc::MorphologicalOper::MorphologicalOper(const std::string& morphological_op
                                                                                         , {"open"  ,MorphologicalOper::Value::kOpen  }
                                                                                         , {"close" ,MorphologicalOper::Value::kClose } 
                                                                                         };
-    this->value_ = kToElemType.at(improc::String::ToLower(morphological_oper_str));
+    this->value_ = kToElemType.at(improc::String::ToLower(std::move(morphological_oper_str)));
 }

@@ -35,7 +35,7 @@ namespace improc
              * 
              * @param morphological_oper_value - morphological operation value
              */
-            constexpr                   MorphologicalOper(Value morphological_oper_value): value_(morphological_oper_value) {}
+            constexpr                   MorphologicalOper(Value morphological_oper_value): value_(std::move(morphological_oper_value)) {}
 
             /**
              * @brief Obtain morphological operation value

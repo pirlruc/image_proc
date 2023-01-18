@@ -16,5 +16,5 @@ improc::KernelShape::KernelShape(const std::string& kernel_shape_str)
     static const std::unordered_map<std::string,KernelShape::Value> kToElemType = { {"rectangle",KernelShape::Value::kRectangle}
                                                                                   , {"ellipse"  ,KernelShape::Value::kEllipse  } 
                                                                                   };
-    this->value_ = kToElemType.at(improc::String::ToLower(kernel_shape_str));
+    this->value_ = kToElemType.at(improc::String::ToLower(std::move(kernel_shape_str)));
 }

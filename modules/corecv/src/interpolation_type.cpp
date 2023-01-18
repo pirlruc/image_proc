@@ -17,5 +17,5 @@ improc::InterpolationType::InterpolationType(const std::string& interpolation_ty
                                                                                         , {"cubic"  ,InterpolationType::Value::kCubic  }
                                                                                         , {"nearest",InterpolationType::Value::kNearest}
                                                                                         };
-    this->value_ = kToElemType.at(improc::String::ToLower(interpolation_type_str));
+    this->value_ = kToElemType.at(improc::String::ToLower(std::move(interpolation_type_str)));
 }

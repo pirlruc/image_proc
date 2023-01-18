@@ -33,7 +33,7 @@ namespace improc
              * 
              * @param kernel_shape_value - kernel shape value
              */
-            constexpr                   KernelShape(Value kernel_shape_value): value_(kernel_shape_value) {}
+            constexpr                   KernelShape(Value kernel_shape_value): value_(std::move(kernel_shape_value)) {}
 
             /**
              * @brief Obtain kernel shape value

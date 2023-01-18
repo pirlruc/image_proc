@@ -10,6 +10,8 @@
 #include <opencv2/core.hpp>
 
 namespace improc {
+    // TODO: Review implementation and add tests
+    // TODO: Make compatible with cv::UMat and cv::MatExpr
     class Image
     {
         protected:
@@ -29,6 +31,7 @@ namespace improc {
     };
 
 
+    // TODO: Review implementation and add tests
     class ColorSpaceImage : public Image
     {
         private:

@@ -19,5 +19,5 @@ improc::ColorSpace::ColorSpace(const std::string& color_space_str)
                                                                                  , {"bgra",ColorSpace::Value::kBGRA}
                                                                                  , {"gray",ColorSpace::Value::kGray}
                                                                                  };
-    this->value_ = kToElemType.at(improc::String::ToLower(color_space_str));
+    this->value_ = kToElemType.at(improc::String::ToLower(std::move(color_space_str)));
 }

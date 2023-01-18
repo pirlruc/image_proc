@@ -33,7 +33,7 @@ namespace improc
              * 
              * @param threshold_type_value - threshold type value
              */
-            constexpr                       ThresholdType(Value threshold_type_value): value_(threshold_type_value) {}
+            constexpr                       ThresholdType(Value threshold_type_value): value_(std::move(threshold_type_value)) {}
 
             /**
              * @brief Obtain threshold type value

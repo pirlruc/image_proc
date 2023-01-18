@@ -34,7 +34,7 @@ namespace improc
              * 
              * @param interpolation_type_value - interpolation type value
              */
-            constexpr                           InterpolationType(Value interpolation_type_value): value_(interpolation_type_value) {}
+            constexpr                           InterpolationType(Value interpolation_type_value): value_(std::move(interpolation_type_value)) {}
 
             /**
              * @brief Obtain interpolation type value

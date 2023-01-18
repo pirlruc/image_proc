@@ -17,5 +17,5 @@ improc::ImageFormat::ImageFormat(const std::string& image_format_str)
                                                                                   , {"jpeg"    ,ImageFormat::Value::kJPEG    }
                                                                                   , {"jpeg2000",ImageFormat::Value::kJPEG2000}
                                                                                   };
-    this->value_ = kToElemType.at(improc::String::ToLower(image_format_str));
+    this->value_ = kToElemType.at(improc::String::ToLower(std::move(image_format_str)));
 }
