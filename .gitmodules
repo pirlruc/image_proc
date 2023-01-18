@@ -7,3 +7,6 @@
 [submodule "modules/drawer"]
 	path = modules/drawer
 	url = https://github.com/pirlruc/drawer.git
+[submodule "modules/corecv"]
+	path = modules/corecv
+	url = https://github.com/pirlruc/corecv.git
