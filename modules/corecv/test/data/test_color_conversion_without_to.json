@@ -1,5 +1,0 @@
-{
-    "inputs": ["image","from_color_space"],
-    "outputs": "image",
-    "from_color_space": "bgr"
-}
