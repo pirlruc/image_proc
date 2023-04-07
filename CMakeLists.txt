@@ -6,7 +6,7 @@ set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/install")
 
 project(
   image_proc
-  VERSION     0.3.0
+  VERSION     0.3.4
   LANGUAGES   CXX
 )
 set(IMPROC_SUPERPROJECT_VERSION ${PROJECT_VERSION})
@@ -18,7 +18,7 @@ if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
   set(CMAKE_PDB_OUTPUT_DIRECTORY      "${CMAKE_BINARY_DIR}/bin"      CACHE PATH "PDB (MSVC debug symbol)output dir.")
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  "${CMAKE_BINARY_DIR}/bin"      CACHE PATH "Executable/dll output dir.")
   set(CMAKE_DEBUG_POSTFIX d)
-  option(IMPROC_WITH_TESTS 			      "Building library with tests"          ON)
+  option(IMPROC_WITH_TESTS 			      "Building library with tests"          OFF)
   option(IMPROC_WITH_COVERAGE  	      "Building library with code coverage"  OFF)
   option(BUILD_SHARED_LIBS            "Building shared libraries"            ON)
   option(IMPROC_DRAWER_WITH_QRCODE_SUPPORT              "Building drawer module with QR-Code support"                 ON)
