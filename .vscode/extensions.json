@@ -2,13 +2,13 @@
 	// See https://go.microsoft.com/fwlink/?LinkId=827846 to learn about workspace recommendations.
 	// List of extensions which should be recommended for users of this workspace.
 	"recommendations": [
-		  ms-vscode.cmake-tools
-		, ms-vscode.cpptools
-		, mhutchie.git-graph
-		, eamodio.gitlens
-		, gruntfuggly.todo-tree
-		, ms-vsliveshare.vsliveshare
-		, github.codespaces
+		  "ms-vscode.cmake-tools"
+		, "ms-vscode.cpptools"
+		, "mhutchie.git-graph"
+		, "eamodio.gitlens"
+		, "gruntfuggly.todo-tree"
+		, "ms-vsliveshare.vsliveshare"
+		, "github.codespaces"
 	],
 	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
 	"unwantedRecommendations": [
